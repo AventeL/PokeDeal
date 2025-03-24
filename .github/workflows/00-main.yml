@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - master
+      - dev
   workflow_dispatch:
 
 concurrency:
@@ -13,36 +13,5 @@ env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
-  token:
-    runs-on: ubuntu-latest
-    steps:
-      - name: GH_TOKEN
-        if: env.GH_TOKEN == ''
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "GH_TOKEN=${GITHUB_TOKEN}" >> $GITHUB_ENV
-
   test-analyze:
     uses: ./.github/workflows/01-test-analyze.yml
-
-  build-ios:
-    # set if false to disable iOS branch of build
-    if: ${{ needs.conventional-release.outputs.new_release_published == 'true' }}
-    uses: ./.github/workflows/03a-build-ios.yml
-    needs:
-      - test-analyze
-    with:
-      screenshot: ${{ needs.parse-screenshot.outputs.contains_screenshot }}
-      ipa: "true"
-    secrets: inherit
-
-  build-android:
-    # set if false to disable android branch of build
-    if: ${{ needs.conventional-release.outputs.new_release_published == 'true' }}
-    uses: ./.github/workflows/03b-build-android.yml
-    needs:
-      - test-analyze
-    with:
-      screenshot: ${{ needs.parse-screenshot.outputs.contains_screenshot }}
-      apk: "true"
-    secrets: inherit
