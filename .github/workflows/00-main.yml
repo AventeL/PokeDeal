@@ -7,10 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}
-
-env:
-  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  group: main-workflow
 
 jobs:
   test-analyze:
