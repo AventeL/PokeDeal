@@ -1,0 +1,98 @@
+name: build-android
+on:
+  workflow_call:
+    inputs:
+      screenshot:
+        type: string
+        required: true
+      apk:
+        description: 'Run APK build'
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      screenshot:
+        description: 'Run screenshot build'
+        type: choice
+        options:  ['true', 'false']
+        required: true
+      apk:
+        description: 'Run APK build'
+        type: choice
+        options:  ['true', 'false']
+        required: true
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+          working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Keystore
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+          working-directory: android
+
+      - run: bundle install
+
+      - run: bundle exec fastlane versioning
+        env:
+          PLAY_STORE_CONFIG_JSON: ${{ secrets.PLAY_STORE_CONFIG_JSON }}
+
+      - name: Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+      - run: flutter build apk --debug --target=integration_test/screenshot_test.dart
+        if: ${{ inputs.screenshot == 'true' }}
+
+      - name: Archive integration test apk
+        if: ${{ inputs.screenshot == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+          retention-days: 3
+
+      # Build android Release
+
+      - run: flutter build appbundle --build-number ${{ env.ANDROID_VERSION_CODE }} --build-name ${{ env.ANDROID_VERSION_NAME }} --target lib/main.dart
+        if: ${{ inputs.apk == 'true' }}
+
+      - name: Archive appbundle
+        if: ${{ inputs.apk == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 3
