@@ -67,5 +67,5 @@ lib/generated_plugin_registrant.dart
 
 # Other
 ./idea/
-
+lib/config/config.dart
 # End of https://www.toptal.com/developers/gitignore/api/flutter
