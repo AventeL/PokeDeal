@@ -26,14 +26,14 @@ void main() {
       ),
     );
 
-    expect(find.widgetWithText(Tab, 'Login'), findsOneWidget);
-    expect(find.widgetWithText(Tab, 'Register'), findsOneWidget);
+    expect(find.widgetWithText(Tab, 'Connexion'), findsOneWidget);
+    expect(find.widgetWithText(Tab, 'Inscription'), findsOneWidget);
 
-    await tester.tap(find.widgetWithText(Tab, 'Register'));
+    await tester.tap(find.widgetWithText(Tab, 'Inscription'));
     await tester.pumpAndSettle();
     expect(find.byType(RegisterPageView), findsOneWidget);
 
-    await tester.tap(find.widgetWithText(Tab, 'Login'));
+    await tester.tap(find.widgetWithText(Tab, 'Connexion'));
     await tester.pumpAndSettle();
     expect(find.byType(LoginPageView), findsOneWidget);
   });

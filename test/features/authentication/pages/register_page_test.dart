@@ -18,9 +18,6 @@ void main() {
 
       final confirmPasswordField = find.byKey(Key('confirmPasswordField'));
       expect(confirmPasswordField, findsOneWidget);
-
-      final pseudoField = find.byKey(Key('pseudoField'));
-      expect(pseudoField, findsOneWidget);
     },
   );
 }

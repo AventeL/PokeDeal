@@ -59,8 +59,9 @@ class _GetMoreInfoProfilePageState extends State<GetMoreInfoProfilePage> {
                     ),
                   ),
                   FloatingActionButton(
+                    key: Key('continueButton'),
                     onPressed: () => onRegister(context),
-                    child: Text('Valider'),
+                    child: Text('Continuer'),
                   ),
                 ],
               ),

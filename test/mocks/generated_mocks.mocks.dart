@@ -7,14 +7,14 @@ import 'dart:async' as _i6;
 
 import 'package:bloc/bloc.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i8;
 import 'package:pokedeal/features/authentication/data/authentication_data_source_interface.dart'
     as _i4;
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart'
+    as _i5;
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart'
     as _i2;
 import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart'
     as _i3;
-import 'package:supabase_flutter/supabase_flutter.dart' as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -48,8 +48,8 @@ class _FakeIAuthenticationDataSource_2 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeAuthResponse_3 extends _i1.SmartFake implements _i5.AuthResponse {
-  _FakeAuthResponse_3(Object parent, Invocation parentInvocation)
+class _FakeUserProfile_3 extends _i1.SmartFake implements _i5.UserProfile {
+  _FakeUserProfile_3(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -178,6 +178,12 @@ class MockAuthenticationBloc extends _i1.Mock
 class MockAuthenticationRepository extends _i1.Mock
     implements _i2.AuthenticationRepository {
   @override
+  set userProfile(_i5.UserProfile? _userProfile) => super.noSuchMethod(
+    Invocation.setter(#userProfile, _userProfile),
+    returnValueForMissingStub: null,
+  );
+
+  @override
   _i4.IAuthenticationDataSource get authenticationDataSource =>
       (super.noSuchMethod(
             Invocation.getter(#authenticationDataSource),
@@ -193,48 +199,58 @@ class MockAuthenticationRepository extends _i1.Mock
           as _i4.IAuthenticationDataSource);
 
   @override
-  _i6.Future<_i5.AuthResponse> signInWithEmail(
+  _i6.Future<_i5.UserProfile> signInWithEmail(
     String? email,
     String? password,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithEmail, [email, password]),
-            returnValue: _i6.Future<_i5.AuthResponse>.value(
-              _FakeAuthResponse_3(
+            returnValue: _i6.Future<_i5.UserProfile>.value(
+              _FakeUserProfile_3(
                 this,
                 Invocation.method(#signInWithEmail, [email, password]),
               ),
             ),
-            returnValueForMissingStub: _i6.Future<_i5.AuthResponse>.value(
-              _FakeAuthResponse_3(
+            returnValueForMissingStub: _i6.Future<_i5.UserProfile>.value(
+              _FakeUserProfile_3(
                 this,
                 Invocation.method(#signInWithEmail, [email, password]),
               ),
             ),
           )
-          as _i6.Future<_i5.AuthResponse>);
+          as _i6.Future<_i5.UserProfile>);
 
   @override
-  _i6.Future<_i5.AuthResponse> signUpWithEmail(
+  _i6.Future<_i5.UserProfile> signUpWithEmail(
     String? email,
     String? password,
+    String? pseudo,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#signUpWithEmail, [email, password]),
-            returnValue: _i6.Future<_i5.AuthResponse>.value(
-              _FakeAuthResponse_3(
+            Invocation.method(#signUpWithEmail, [email, password, pseudo]),
+            returnValue: _i6.Future<_i5.UserProfile>.value(
+              _FakeUserProfile_3(
                 this,
-                Invocation.method(#signUpWithEmail, [email, password]),
+                Invocation.method(#signUpWithEmail, [email, password, pseudo]),
               ),
             ),
-            returnValueForMissingStub: _i6.Future<_i5.AuthResponse>.value(
-              _FakeAuthResponse_3(
+            returnValueForMissingStub: _i6.Future<_i5.UserProfile>.value(
+              _FakeUserProfile_3(
                 this,
-                Invocation.method(#signUpWithEmail, [email, password]),
+                Invocation.method(#signUpWithEmail, [email, password, pseudo]),
               ),
             ),
           )
-          as _i6.Future<_i5.AuthResponse>);
+          as _i6.Future<_i5.UserProfile>);
+
+  @override
+  _i6.Future<_i5.UserProfile?> getUserProfile() =>
+      (super.noSuchMethod(
+            Invocation.method(#getUserProfile, []),
+            returnValue: _i6.Future<_i5.UserProfile?>.value(),
+            returnValueForMissingStub: _i6.Future<_i5.UserProfile?>.value(),
+          )
+          as _i6.Future<_i5.UserProfile?>);
 
   @override
   _i6.Future<void> signOut() =>
@@ -252,48 +268,58 @@ class MockAuthenticationRepository extends _i1.Mock
 class MockIAuthenticationDataSource extends _i1.Mock
     implements _i4.IAuthenticationDataSource {
   @override
-  _i6.Future<_i5.AuthResponse> signInWithEmail(
+  _i6.Future<_i5.UserProfile> signInWithEmail(
     String? email,
     String? password,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithEmail, [email, password]),
-            returnValue: _i6.Future<_i5.AuthResponse>.value(
-              _FakeAuthResponse_3(
+            returnValue: _i6.Future<_i5.UserProfile>.value(
+              _FakeUserProfile_3(
                 this,
                 Invocation.method(#signInWithEmail, [email, password]),
               ),
             ),
-            returnValueForMissingStub: _i6.Future<_i5.AuthResponse>.value(
-              _FakeAuthResponse_3(
+            returnValueForMissingStub: _i6.Future<_i5.UserProfile>.value(
+              _FakeUserProfile_3(
                 this,
                 Invocation.method(#signInWithEmail, [email, password]),
               ),
             ),
           )
-          as _i6.Future<_i5.AuthResponse>);
+          as _i6.Future<_i5.UserProfile>);
 
   @override
-  _i6.Future<_i5.AuthResponse> signUpWithEmail(
+  _i6.Future<_i5.UserProfile> signUpWithEmail(
     String? email,
     String? password,
+    String? pseudo,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#signUpWithEmail, [email, password]),
-            returnValue: _i6.Future<_i5.AuthResponse>.value(
-              _FakeAuthResponse_3(
+            Invocation.method(#signUpWithEmail, [email, password, pseudo]),
+            returnValue: _i6.Future<_i5.UserProfile>.value(
+              _FakeUserProfile_3(
                 this,
-                Invocation.method(#signUpWithEmail, [email, password]),
+                Invocation.method(#signUpWithEmail, [email, password, pseudo]),
               ),
             ),
-            returnValueForMissingStub: _i6.Future<_i5.AuthResponse>.value(
-              _FakeAuthResponse_3(
+            returnValueForMissingStub: _i6.Future<_i5.UserProfile>.value(
+              _FakeUserProfile_3(
                 this,
-                Invocation.method(#signUpWithEmail, [email, password]),
+                Invocation.method(#signUpWithEmail, [email, password, pseudo]),
               ),
             ),
           )
-          as _i6.Future<_i5.AuthResponse>);
+          as _i6.Future<_i5.UserProfile>);
+
+  @override
+  _i6.Future<_i5.UserProfile?> getUserProfile() =>
+      (super.noSuchMethod(
+            Invocation.method(#getUserProfile, []),
+            returnValue: _i6.Future<_i5.UserProfile?>.value(),
+            returnValueForMissingStub: _i6.Future<_i5.UserProfile?>.value(),
+          )
+          as _i6.Future<_i5.UserProfile?>);
 
   @override
   _i6.Future<void> signOut() =>
@@ -303,19 +329,4 @@ class MockIAuthenticationDataSource extends _i1.Mock
             returnValueForMissingStub: _i6.Future<void>.value(),
           )
           as _i6.Future<void>);
-
-  @override
-  String getCurrentUserEmail() =>
-      (super.noSuchMethod(
-            Invocation.method(#getCurrentUserEmail, []),
-            returnValue: _i8.dummyValue<String>(
-              this,
-              Invocation.method(#getCurrentUserEmail, []),
-            ),
-            returnValueForMissingStub: _i8.dummyValue<String>(
-              this,
-              Invocation.method(#getCurrentUserEmail, []),
-            ),
-          )
-          as String);
 }

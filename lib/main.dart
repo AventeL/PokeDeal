@@ -6,14 +6,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'config/config.dart';
 
-void setupSupabase() async {
+Future<void> setupSupabase() async {
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupSupabase();
-  initInjectionDependencies();
+  await setupSupabase();
+  await initInjectionDependencies();
   await getIt<AuthenticationRepository>().getUserProfile();
   runApp(const MyApp());
 }

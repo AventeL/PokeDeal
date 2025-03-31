@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
 
@@ -22,27 +22,18 @@ void main() {
     authenticationBloc.close();
   });
 
-  User mockUser = User(
-    id: '',
-    appMetadata: {},
-    userMetadata: {},
-    aud: 'mockAud',
-    createdAt: DateTime.now().toIso8601String(),
-  );
-
-  Session mockSession = Session(
-    accessToken: 'mockAccessToken',
-    tokenType: 'mockTokenType',
-    user: mockUser,
+  UserProfile mockUser = UserProfile(
+    id: '1',
+    email: 'test@gmail.com',
+    pseudo: 'test',
+    createdAt: DateTime.now(),
   );
 
   group('AuthenticationBloc Login with email', () {
     void mockSignInWithEmail() {
       when(
         authenticationRepository.signInWithEmail('test@gmail.com', '123456'),
-      ).thenAnswer(
-        (_) async => AuthResponse(session: mockSession, user: mockUser),
-      );
+      ).thenAnswer((_) async => mockUser);
     }
 
     void mockSignInWithEmailFail() {
@@ -69,8 +60,8 @@ void main() {
           authenticationRepository.signInWithEmail('test@gmail.com', '123456'),
         ).called(1);
         expect(
-          (bloc.state as AuthenticationAuthenticated).session,
-          mockSession,
+          (bloc.state as AuthenticationAuthenticated).userProfile,
+          mockUser,
         );
       },
     );
@@ -102,15 +93,21 @@ void main() {
   group('AuthenticationBloc Sign up with email', () {
     void mockSignUpWithEmail() {
       when(
-        authenticationRepository.signUpWithEmail('test@gmail.com', '123456'),
-      ).thenAnswer(
-        (_) async => AuthResponse(session: mockSession, user: mockUser),
-      );
+        authenticationRepository.signUpWithEmail(
+          'test@gmail.com',
+          '123456',
+          'test',
+        ),
+      ).thenAnswer((_) async => mockUser);
     }
 
     void mockSignUpWithEmailFail() {
       when(
-        authenticationRepository.signUpWithEmail('test@gmail.com', '123456'),
+        authenticationRepository.signUpWithEmail(
+          'test@gmail.com',
+          '123456',
+          'test',
+        ),
       ).thenThrow(Exception('Failed to sign up'));
     }
 
@@ -122,18 +119,26 @@ void main() {
       },
       act: (bloc) {
         bloc.add(
-          AuthenticationEventSignUpWithEmail('test@gmail.com', '123456'),
+          AuthenticationEventSignUpWithEmail(
+            'test@gmail.com',
+            '123456',
+            'test',
+          ),
         );
       },
       expect:
           () => [AuthenticationLoading(), isA<AuthenticationAuthenticated>()],
       verify: (bloc) {
         verify(
-          authenticationRepository.signUpWithEmail('test@gmail.com', '123456'),
+          authenticationRepository.signUpWithEmail(
+            'test@gmail.com',
+            '123456',
+            'test',
+          ),
         ).called(1);
         expect(
-          (bloc.state as AuthenticationAuthenticated).session,
-          mockSession,
+          (bloc.state as AuthenticationAuthenticated).userProfile,
+          mockUser,
         );
       },
     );
@@ -146,13 +151,21 @@ void main() {
       },
       act: (bloc) {
         bloc.add(
-          AuthenticationEventSignUpWithEmail('test@gmail.com', '123456'),
+          AuthenticationEventSignUpWithEmail(
+            'test@gmail.com',
+            '123456',
+            'test',
+          ),
         );
       },
       expect: () => [AuthenticationLoading(), isA<AuthenticationError>()],
       verify: (bloc) {
         verify(
-          authenticationRepository.signUpWithEmail('test@gmail.com', '123456'),
+          authenticationRepository.signUpWithEmail(
+            'test@gmail.com',
+            '123456',
+            'test',
+          ),
         ).called(1);
         expect(
           (bloc.state as AuthenticationError).message,
