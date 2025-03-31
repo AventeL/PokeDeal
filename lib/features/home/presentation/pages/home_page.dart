@@ -2,33 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:pokedeal/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<Widget> screens = [
+    Center(child: Text('Echanges')),
+    Center(child: Text('Collection')),
+    Center(child: Text('Profil')),
+  ];
+  int index = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Page')),
-      body: Column(
-        children: [
-          Center(
-            child: Text(
-              'Welcome to the Home Page! ${Supabase.instance.client.auth.currentSession?.user.email ?? ''}',
+      body: Padding(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        child: Column(
+          children: [
+            Expanded(child: _buildScreen(index)),
+            FloatingActionButton(
+              onPressed: () {
+                context.read<AuthenticationBloc>().add(
+                  AuthenticationEventSignOut(),
+                );
+              },
+              child: const Icon(Icons.logout),
             ),
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              context.read<AuthenticationBloc>().add(
-                AuthenticationEventSignOut(),
-              );
-            },
-            child: const Icon(Icons.logout),
-          ),
-        ],
+          ],
+        ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: index,
+        onTap: (index) {
+          setState(() {
+            this.index = index;
+          });
+        },
+      ),
     );
+  }
+
+  Widget _buildScreen(int index) {
+    return screens[index];
   }
 }
