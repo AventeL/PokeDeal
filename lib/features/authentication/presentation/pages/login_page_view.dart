@@ -21,6 +21,7 @@ class _LoginPageViewState extends State<LoginPageView> {
       children: [
         16.height,
         TextField(
+          key: const Key('emailField'),
           controller: emailController,
           decoration: InputDecoration(
             labelText: 'Email',
@@ -28,6 +29,7 @@ class _LoginPageViewState extends State<LoginPageView> {
           ),
         ),
         TextField(
+          key: const Key('passwordField'),
           controller: passwordController,
           decoration: InputDecoration(
             labelText: 'Password',
@@ -37,7 +39,11 @@ class _LoginPageViewState extends State<LoginPageView> {
         Spacer(),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: ElevatedButton(onPressed: onLogin, child: const Text('Login')),
+          child: ElevatedButton(
+            key: const Key('loginButton'),
+            onPressed: onLogin,
+            child: const Text('Login'),
+          ),
         ),
       ],
     );
