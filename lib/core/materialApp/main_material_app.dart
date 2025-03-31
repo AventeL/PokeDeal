@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/routes/router.dart';
 import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:pokedeal/theme/custom_theme.dart';
 
 class MainMaterialApp extends StatelessWidget {
   const MainMaterialApp({super.key});
@@ -19,6 +20,9 @@ class MainMaterialApp extends StatelessWidget {
         routerConfig: router,
         title: 'PokeDeal',
         debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
       ),
     );
   }
