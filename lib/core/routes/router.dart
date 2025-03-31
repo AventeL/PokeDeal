@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedeal/features/authentication/presentation/pages/authentication_gate.dart';
-import 'package:pokedeal/features/home/presentation/pages/home_page.dart';
+import 'package:pokedeal/features/authentication/presentation/pages/get_info_profile_page.dart';
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -11,9 +12,17 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const AuthenticationGate(),
     ),
     GoRoute(
-      path: '/home',
-      name: '/home',
-      builder: (context, state) => const HomePage(),
+      path: '/get_info_profile',
+      name: 'get_info_profile',
+      pageBuilder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        return MaterialPage(
+          child: GetMoreInfoProfilePage(
+            email: extra?['email'] as String? ?? "",
+            password: extra?['password'] as String? ?? "",
+          ),
+        );
+      },
     ),
   ],
 );

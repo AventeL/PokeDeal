@@ -10,13 +10,16 @@ final class AuthenticationInitial extends AuthenticationState {}
 final class AuthenticationLoading extends AuthenticationState {}
 
 final class AuthenticationAuthenticated extends AuthenticationState {
-  final Session session;
+  final UserProfile userProfile;
   final DateTime timestamp;
 
-  AuthenticationAuthenticated({required this.session, required this.timestamp});
+  AuthenticationAuthenticated({
+    required this.userProfile,
+    required this.timestamp,
+  });
 
   @override
-  List<Object> get props => [session, timestamp];
+  List<Object> get props => [userProfile, timestamp];
 }
 
 final class AuthenticationUnauthenticated extends AuthenticationState {}

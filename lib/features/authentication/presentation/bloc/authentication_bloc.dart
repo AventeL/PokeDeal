@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -19,9 +19,6 @@ class AuthenticationBloc
       _onAuthenticationEventSignUpWithEmail,
     );
     on<AuthenticationEventSignOut>(_onAuthenticationEventSignOut);
-    on<AuthenticationEventAuthenticateUser>(
-      _onAuthenticationEventAuthenticateUser,
-    );
   }
 
   void _onAuthenticationEventSignInWithEmail(
@@ -30,13 +27,13 @@ class AuthenticationBloc
   ) async {
     try {
       emit(AuthenticationLoading());
-      final authResponse = await authenticationRepository.signInWithEmail(
+      final user = await authenticationRepository.signInWithEmail(
         event.email,
         event.password,
       );
       emit(
         AuthenticationAuthenticated(
-          session: authResponse.session!,
+          userProfile: user,
           timestamp: DateTime.now(),
         ),
       );
@@ -53,13 +50,14 @@ class AuthenticationBloc
   ) async {
     try {
       emit(AuthenticationLoading());
-      final authResponse = await authenticationRepository.signUpWithEmail(
+      final user = await authenticationRepository.signUpWithEmail(
         event.email,
         event.password,
+        event.pseudo,
       );
       emit(
         AuthenticationAuthenticated(
-          session: authResponse.session!,
+          userProfile: user,
           timestamp: DateTime.now(),
         ),
       );
@@ -84,9 +82,4 @@ class AuthenticationBloc
       );
     }
   }
-
-  void _onAuthenticationEventAuthenticateUser(
-    AuthenticationEventAuthenticateUser event,
-    Emitter<AuthenticationState> emit,
-  ) async {}
 }
