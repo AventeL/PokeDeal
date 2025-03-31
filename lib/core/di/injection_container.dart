@@ -1,7 +1,8 @@
 import 'package:get_it/get_it.dart';
+import 'package:pokedeal/features/Authentication/data/authentication_data_source.dart';
+import 'package:pokedeal/features/Authentication/data/authentication_data_source_interface.dart';
 import 'package:pokedeal/features/Authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/Authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:pokedeal/features/authentication/data/authentication_data_source.dart';
 
 final GetIt getIt = GetIt.I;
 
@@ -23,13 +24,13 @@ void initBloc() {
 void initRepository() {
   getIt.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepository(
-      authenticationDataSource: getIt<AuthenticationDataSource>(),
+      authenticationDataSource: getIt<IAuthenticationDataSource>(),
     ),
   );
 }
 
 void initDataSource() {
-  getIt.registerLazySingleton<AuthenticationDataSource>(
+  getIt.registerLazySingleton<IAuthenticationDataSource>(
     () => AuthenticationDataSource(),
   );
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:pokedeal/features/Authentication/domain/repository/authentication_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -33,9 +34,16 @@ class AuthenticationBloc
         event.email,
         event.password,
       );
-      emit(AuthenticationAuthenticated(authResponse.session!));
+      emit(
+        AuthenticationAuthenticated(
+          session: authResponse.session!,
+          timestamp: DateTime.now(),
+        ),
+      );
     } catch (e) {
-      emit(AuthenticationError(e.toString()));
+      emit(
+        AuthenticationError(message: e.toString(), timestamp: DateTime.now()),
+      );
     }
   }
 
@@ -49,9 +57,16 @@ class AuthenticationBloc
         event.email,
         event.password,
       );
-      emit(AuthenticationAuthenticated(authResponse.session!));
+      emit(
+        AuthenticationAuthenticated(
+          session: authResponse.session!,
+          timestamp: DateTime.now(),
+        ),
+      );
     } catch (e) {
-      emit(AuthenticationError(e.toString()));
+      emit(
+        AuthenticationError(message: e.toString(), timestamp: DateTime.now()),
+      );
     }
   }
 
@@ -64,7 +79,9 @@ class AuthenticationBloc
       await authenticationRepository.signOut();
       emit(AuthenticationUnauthenticated());
     } catch (e) {
-      emit(AuthenticationError(e.toString()));
+      emit(
+        AuthenticationError(message: e.toString(), timestamp: DateTime.now()),
+      );
     }
   }
 
