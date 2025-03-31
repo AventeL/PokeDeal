@@ -26,6 +26,7 @@ class _RegisterPageViewState extends State<RegisterPageView> {
               children: [
                 16.height,
                 TextField(
+                  key: const Key('emailField'),
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
@@ -33,6 +34,7 @@ class _RegisterPageViewState extends State<RegisterPageView> {
                   ),
                 ),
                 TextField(
+                  key: const Key('passwordField'),
                   controller: passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
@@ -40,6 +42,7 @@ class _RegisterPageViewState extends State<RegisterPageView> {
                   ),
                 ),
                 TextField(
+                  key: const Key('confirmPasswordField'),
                   controller: confirmPasswordController,
                   decoration: InputDecoration(
                     labelText: 'Confirm Password',
@@ -53,6 +56,7 @@ class _RegisterPageViewState extends State<RegisterPageView> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
+            key: const Key('registerButton'),
             onPressed: onRegister,
             child: const Text('Register'),
           ),

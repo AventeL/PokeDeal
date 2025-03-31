@@ -1,0 +1,8 @@
+Pour les tests, on utilise des mocks
+
+Il faut rentrer chaque Mocks dans le fichier generated_mocks.dart
+
+Après avoir touché à ce fichier il faut absolument lancer la commande :
+
+Si le fichier existe déjà : flutter pub run build_runner build --delete-conflicting-outputs
+Si le fichier existe pas : flutter pub run build_runner build
