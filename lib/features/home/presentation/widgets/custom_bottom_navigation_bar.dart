@@ -23,6 +23,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Collection'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
       ],
+      selectedItemColor: Theme.of(context).colorScheme.primary,
     );
   }
 }
