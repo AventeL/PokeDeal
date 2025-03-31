@@ -19,8 +19,8 @@ void main() {
       final confirmPasswordField = find.byKey(Key('confirmPasswordField'));
       expect(confirmPasswordField, findsOneWidget);
 
-      final registerButton = find.byKey(Key('registerButton'));
-      expect(registerButton, findsOneWidget);
+      final pseudoField = find.byKey(Key('pseudoField'));
+      expect(pseudoField, findsOneWidget);
     },
   );
 }

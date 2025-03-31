@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedeal/core/di/injection_container.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:pokedeal/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
@@ -26,6 +28,8 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Expanded(child: _buildScreen(index)),
+            if (getIt<AuthenticationRepository>().userProfile != null)
+              Text(getIt<AuthenticationRepository>().userProfile!.email),
             FloatingActionButton(
               onPressed: () {
                 context.read<AuthenticationBloc>().add(

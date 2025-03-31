@@ -22,17 +22,21 @@ class AuthenticationPage extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return DefaultTabController(
-          length: 2,
-          child: Column(
-            children: const [
-              TabBar(tabs: [Tab(text: 'Login'), Tab(text: 'Register')]),
-              Expanded(
-                child: TabBarView(
-                  children: [LoginPageView(), RegisterPageView()],
+        return SafeArea(
+          child: DefaultTabController(
+            length: 2,
+            child: Column(
+              children: const [
+                TabBar(
+                  tabs: [Tab(text: 'Connexion'), Tab(text: 'Inscription')],
                 ),
-              ),
-            ],
+                Expanded(
+                  child: TabBarView(
+                    children: [LoginPageView(), RegisterPageView()],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
