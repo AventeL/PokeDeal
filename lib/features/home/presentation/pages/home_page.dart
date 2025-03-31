@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedeal/features/Authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:pokedeal/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
