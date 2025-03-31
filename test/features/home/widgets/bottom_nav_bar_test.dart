@@ -10,23 +10,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedeal/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
 void main() {
-  testWidgets('CustomBottomNavigationBar displays correct items', (WidgetTester tester) async {
-    // 1. Chargez le widget
+  testWidgets('CustomBottomNavigationBar displays correct items', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          bottomNavigationBar: CustomBottomNavigationBar(),
+          bottomNavigationBar: CustomBottomNavigationBar(
+            currentIndex: 1,
+            onTap: (index) {},
+          ),
         ),
       ),
     );
 
-    // 2. Vérifiez que le BottomNavigationBar est bien affiché
     expect(find.byType(BottomNavigationBar), findsOneWidget);
 
-    // 3. Vérifiez la présence des icônes
-    expect(find.byIcon(Icons.compare_arrows), findsOneWidget); // Icône "Echanges"
-    expect(find.byIcon(Icons.book), findsOneWidget); // Icône "Collection"
-    expect(find.byIcon(Icons.person), findsOneWidget); // Icône "Profil"
+    // Icônes
+    expect(find.byIcon(Icons.compare_arrows), findsOneWidget);
+    expect(find.byIcon(Icons.book), findsOneWidget);
+    expect(find.byIcon(Icons.person), findsOneWidget);
 
     // 4. Vérifiez la présence des labels
     expect(find.text('Echanges'), findsOneWidget);
