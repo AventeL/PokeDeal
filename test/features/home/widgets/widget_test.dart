@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedeal/features/home/presentation/widgets/custo_bottom_navigation_bar.dart';
+import 'package:pokedeal/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
 void main() {
   testWidgets('CustomBottomNavigationBar displays correct items', (WidgetTester tester) async {
