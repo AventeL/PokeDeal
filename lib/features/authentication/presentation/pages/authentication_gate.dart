@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedeal/features/Authentication/presentation/pages/authentication_page.dart';
+import 'package:pokedeal/features/authentication/presentation/pages/authentication_page.dart';
 import 'package:pokedeal/features/home/presentation/pages/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

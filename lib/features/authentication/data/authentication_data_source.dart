@@ -1,4 +1,4 @@
-import 'package:pokedeal/features/Authentication/data/authentication_data_source_interface.dart';
+import 'package:pokedeal/features/authentication/data/authentication_data_source_interface.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthenticationDataSource implements IAuthenticationDataSource {

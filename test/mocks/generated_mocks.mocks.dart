@@ -8,11 +8,11 @@ import 'dart:async' as _i6;
 import 'package:bloc/bloc.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i8;
-import 'package:pokedeal/features/Authentication/data/authentication_data_source_interface.dart'
+import 'package:pokedeal/features/authentication/data/authentication_data_source_interface.dart'
     as _i4;
-import 'package:pokedeal/features/Authentication/domain/repository/authentication_repository.dart'
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart'
     as _i2;
-import 'package:pokedeal/features/Authentication/presentation/bloc/authentication_bloc.dart'
+import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart'
     as _i3;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i5;
 

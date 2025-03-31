@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedeal/features/Authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:pokedeal/features/Authentication/presentation/pages/login_page_view.dart';
-import 'package:pokedeal/features/Authentication/presentation/pages/register_page_view.dart';
+import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:pokedeal/features/authentication/presentation/pages/login_page_view.dart';
+import 'package:pokedeal/features/authentication/presentation/pages/register_page_view.dart';
 
 class AuthenticationPage extends StatelessWidget {
   const AuthenticationPage({super.key});
