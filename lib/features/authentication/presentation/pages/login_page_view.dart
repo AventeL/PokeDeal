@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
-import 'package:pokedeal/features/Authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
 
 class LoginPageView extends StatefulWidget {
   const LoginPageView({super.key});

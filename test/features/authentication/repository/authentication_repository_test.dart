@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:pokedeal/features/Authentication/data/authentication_data_source_interface.dart';
+import 'package:pokedeal/features/authentication/data/authentication_data_source_interface.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

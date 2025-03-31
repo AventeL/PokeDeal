@@ -1,21 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:pokedeal/core/utils/constants/color_constants.dart';
 
 ThemeData lightTheme = ThemeData(
   colorScheme: ColorScheme.light(
-    primary: const Color(0xFFEE6B2F),
-    secondary: const Color(0xFF30A7D7),
+    primary: primaryColor,
+    secondary: secondaryColor,
     tertiary: const Color(0xFFD9D9D9),
     brightness: Brightness.light,
+    error: errorColor,
   ),
-  scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+  scaffoldBackgroundColor: bgLightColor,
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.white,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(color: Colors.grey),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(color: Colors.grey),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(color: Color(0xFFEE6B2F)),
+    ),
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
-  colorScheme: ColorScheme.light(
-    primary: const Color(0xFFEE6B2F),
-    secondary: const Color(0xFF30A7D7),
+  colorScheme: ColorScheme.dark(
+    primary: primaryColor,
+    secondary: secondaryColor,
     tertiary: const Color(0xFFD9D9D9),
+    error: errorColor,
     brightness: Brightness.dark,
   ),
-  scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+  scaffoldBackgroundColor: bgDarkColor,
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.grey[800],
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(color: Colors.grey),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(color: Colors.grey),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(color: Color(0xFFEE6B2F)),
+    ),
+  ),
 );

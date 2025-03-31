@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:pokedeal/features/Authentication/domain/repository/authentication_repository.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'authentication_event.dart';

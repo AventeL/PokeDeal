@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedeal/features/Authentication/presentation/pages/register_page_view.dart';
+import 'package:pokedeal/features/authentication/presentation/pages/register_page_view.dart';
 
 void main() {
   testWidgets(

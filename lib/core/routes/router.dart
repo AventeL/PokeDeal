@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:pokedeal/features/Authentication/presentation/pages/authentication_gate.dart';
+import 'package:pokedeal/features/authentication/presentation/pages/authentication_gate.dart';
 import 'package:pokedeal/features/home/presentation/pages/home_page.dart';
 
 final GoRouter router = GoRouter(

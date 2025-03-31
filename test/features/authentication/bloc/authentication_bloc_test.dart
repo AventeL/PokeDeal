@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:pokedeal/features/Authentication/domain/repository/authentication_repository.dart';
-import 'package:pokedeal/features/Authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
+import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
