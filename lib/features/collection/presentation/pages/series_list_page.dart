@@ -49,7 +49,7 @@ class SeriesListPage extends StatelessWidget {
           );
         }
 
-        return const Center(child: Text('No series available'));
+        return const Center(child: Text('Aucune série trouvée'));
       },
     );
   }

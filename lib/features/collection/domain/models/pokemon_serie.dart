@@ -5,11 +5,7 @@ class PokemonSerie extends Equatable {
   final String id;
   final String? logoUrl;
 
-  const PokemonSerie({
-    required this.name,
-    required this.id,
-    required this.logoUrl,
-  });
+  const PokemonSerie({required this.name, required this.id, this.logoUrl});
 
   factory PokemonSerie.fromJson(Map<String, dynamic> json) {
     return PokemonSerie(
