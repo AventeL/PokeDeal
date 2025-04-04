@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedeal/core/di/injection_container.dart';
-import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
-import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/pages/series_list_page.dart';
 import 'package:pokedeal/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +12,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Widget> screens = [
     Center(child: Text('Echanges')),
-    Center(child: Text('Collection')),
+    SeriesListPage(),
     Center(child: Text('Profil')),
   ];
   int index = 1;
@@ -25,21 +22,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        child: Column(
-          children: [
-            Expanded(child: _buildScreen(index)),
-            if (getIt<AuthenticationRepository>().userProfile != null)
-              Text(getIt<AuthenticationRepository>().userProfile!.email),
-            FloatingActionButton(
-              onPressed: () {
-                context.read<AuthenticationBloc>().add(
-                  AuthenticationEventSignOut(),
-                );
-              },
-              child: const Icon(Icons.logout),
-            ),
-          ],
-        ),
+        child: Column(children: [Expanded(child: _buildScreen(index))]),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: index,
