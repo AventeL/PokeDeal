@@ -1,10 +1,9 @@
+import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/features/authentication/data/authentication_data_source_interface.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthenticationDataSource implements IAuthenticationDataSource {
-  final SupabaseClient supabaseClient = Supabase.instance.client;
-
   @override
   Future<UserProfile> signInWithEmail(String email, String password) async {
     final authResponse = await supabaseClient.auth.signInWithPassword(
