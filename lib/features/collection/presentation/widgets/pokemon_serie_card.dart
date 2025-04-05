@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
 
 class PokemonSerieCard extends StatefulWidget {
-  final String name;
+  final PokemonSerie pokemonSerie;
 
-  const PokemonSerieCard({super.key, required this.name});
+  const PokemonSerieCard({super.key, required this.pokemonSerie});
 
   @override
   State<PokemonSerieCard> createState() => _PokemonSerieCardState();
@@ -44,7 +45,7 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    widget.name,
+                    widget.pokemonSerie.name,
                     style: Theme.of(context).textTheme.titleMedium,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -61,37 +62,42 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
             ),
           ),
         ),
-        if (isDeployed)
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(borderRadius),
-                  bottomRight: Radius.circular(borderRadius),
-                ),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text(
-                      'EV 1',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'EV 2',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+        if (isDeployed && widget.pokemonSerie.sets != null) buildListSets(),
       ],
+    );
+  }
+
+  Widget buildListSets() {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(borderRadius),
+          bottomRight: Radius.circular(borderRadius),
+        ),
+      ),
+      child: Column(
+        children:
+            widget.pokemonSerie.sets!.map((set) {
+              return Container(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      set.name,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    Text(
+                      set.cardCount.total.toString(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+      ),
     );
   }
 }

@@ -21,7 +21,8 @@ class CollectionPokemonBloc
   ) async {
     try {
       emit(CollectionPokemonLoading());
-      List<PokemonSerie> series = await collectionPokemonRepository.getSeries();
+      List<PokemonSerie> series =
+          await collectionPokemonRepository.getSeriesWithSets();
       emit(CollectionPokemonSeriesGet(series: series));
     } catch (e) {
       emit(CollectionPokemonError(message: e.toString()));

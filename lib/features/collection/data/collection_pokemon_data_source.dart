@@ -23,4 +23,17 @@ class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
       throw Exception("Impossible de récupérer les séries");
     }
   }
+
+  @override
+  Future<PokemonSerie> getSerieWithSets(String serieId) async {
+    try {
+      String url = "https://api.tcgdex.net/v2/fr/series/$serieId";
+      http.Response response = await http.get(Uri.parse(url));
+      PokemonSerie serie = PokemonSerie.fromJson(jsonDecode(response.body));
+
+      return serie;
+    } catch (e) {
+      throw Exception("Impossible de récupérer la série");
+    }
+  }
 }

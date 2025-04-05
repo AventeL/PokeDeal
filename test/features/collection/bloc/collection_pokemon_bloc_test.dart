@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/collection_pokemon_bloc.dart';
 
@@ -22,20 +23,22 @@ void main() {
   });
 
   group('CollectionPokemonGetSeriesEvent', () {
-    void mockGetSeries() {
-      when(collectionPokemonRepository.getSeries()).thenAnswer((_) async => []);
+    void mockGetSeriesWithSets() {
+      when(
+        collectionPokemonRepository.getSeriesWithSets(),
+      ).thenAnswer((_) async => <PokemonSerie>[]);
     }
 
-    void mockGetSeriesFail() {
+    void mockGetSeriesWithSetsFail() {
       when(
-        collectionPokemonRepository.getSeries(),
+        collectionPokemonRepository.getSeriesWithSets(),
       ).thenThrow(Exception('Failed to get series'));
     }
 
     blocTest<CollectionPokemonBloc, CollectionPokemonState>(
       'emits [CollectionPokemonLoading, CollectionPokemonSeriesGet] when successful',
       build: () {
-        mockGetSeries();
+        mockGetSeriesWithSets();
         return collectionPokemonBloc;
       },
       act: (bloc) {
@@ -44,14 +47,14 @@ void main() {
       expect:
           () => [CollectionPokemonLoading(), isA<CollectionPokemonSeriesGet>()],
       verify: (bloc) {
-        verify(collectionPokemonRepository.getSeries()).called(1);
+        verify(collectionPokemonRepository.getSeriesWithSets()).called(1);
       },
     );
 
     blocTest<CollectionPokemonBloc, CollectionPokemonState>(
       'emits [CollectionPokemonLoading, CollectionPokemonError] when failed',
       build: () {
-        mockGetSeriesFail();
+        mockGetSeriesWithSetsFail();
         return collectionPokemonBloc;
       },
       act: (bloc) {
@@ -59,7 +62,7 @@ void main() {
       },
       expect: () => [CollectionPokemonLoading(), isA<CollectionPokemonError>()],
       verify: (bloc) {
-        verify(collectionPokemonRepository.getSeries()).called(1);
+        verify(collectionPokemonRepository.getSeriesWithSets()).called(1);
         expect(
           (bloc.state as CollectionPokemonError).message,
           Exception('Failed to get series').toString(),

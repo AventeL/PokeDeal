@@ -39,7 +39,9 @@ class SeriesListPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: PokemonSerieCard(name: state.series[index].name),
+                        child: PokemonSerieCard(
+                          pokemonSerie: state.series[index],
+                        ),
                       );
                     },
                   ),
