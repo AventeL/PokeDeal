@@ -1,12 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source_interface.dart';
+import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
+import 'package:pokedeal/features/collection/domain/models/card/card_variant.dart';
+import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/card_count.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/card_category.dart';
 import 'package:pokedeal/features/collection/domain/models/legal.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
@@ -142,6 +146,49 @@ void main() {
           verifyNever(dataSource.getSet('set1'));
         },
       );
+    });
+  });
+
+  group('getCard', () {
+    BasePokemonCard mockCard = BasePokemonCard(
+      localId: 'localId',
+      category: CardCategory.trainer,
+      illustrator: 'Illustrator Name',
+      id: 'cardId',
+      name: 'Card Name',
+      image: 'https://example.com/card.png',
+      setBrief: PokemonSetBrief(
+        id: 'setId',
+        name: 'Set Name',
+        cardCount: CardCount(total: 100, official: 50),
+      ),
+      variants: CardVariant(
+        firstEdition: true,
+        holo: false,
+        reverse: false,
+        promo: false,
+        normal: true,
+      ),
+    );
+
+    test('returns PokemonCard when card is found', () async {
+      when(dataSource.getCard(id: 'cardId')).thenAnswer((_) async => mockCard);
+
+      final result = await repository.getCard(id: 'cardId');
+
+      expect(result, isA<BasePokemonCard>());
+      expect(result.id, 'cardId');
+      verify(dataSource.getCard(id: 'cardId')).called(1);
+    });
+
+    test('returns cached PokemonCard when card is already cached', () async {
+      repository.cardsMap['cardId'] = mockCard;
+
+      final result = await repository.getCard(id: 'cardId');
+
+      expect(result, isA<BasePokemonCard>());
+      expect(result.id, 'cardId');
+      verifyNever(dataSource.getCard(id: 'cardId'));
     });
   });
 }

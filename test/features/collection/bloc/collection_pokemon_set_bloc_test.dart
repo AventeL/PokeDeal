@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/card_count.dart';
 import 'package:pokedeal/features/collection/domain/models/legal.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
