@@ -5,7 +5,7 @@ import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dar
 
 class TrainerCard extends BasePokemonCard {
   final String effect;
-  final String trainerType;
+  final String? trainerType;
 
   const TrainerCard({
     required super.id,
@@ -18,7 +18,7 @@ class TrainerCard extends BasePokemonCard {
     super.illustrator,
     super.rarity,
     required this.effect,
-    required this.trainerType,
+    this.trainerType,
   });
 
   factory TrainerCard.fromJson(Map<String, dynamic> json) {

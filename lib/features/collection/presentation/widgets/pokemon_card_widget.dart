@@ -4,15 +4,19 @@ import 'package:pokedeal/core/helper/pokemon_card_image_helper.dart';
 
 class PokemonCardWidget extends StatelessWidget {
   final String cardUrl;
+  final VoidCallback? onTap;
 
-  const PokemonCardWidget({super.key, required this.cardUrl});
+  const PokemonCardWidget({super.key, required this.cardUrl, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: PokemonCardImageHelper.gererateImageUrl(
-        cardUrl,
-        quality: PokemonCardQuality.low,
+    return InkWell(
+      onTap: onTap,
+      child: CachedNetworkImage(
+        imageUrl: PokemonCardImageHelper.gererateImageUrl(
+          cardUrl,
+          quality: PokemonCardQuality.low,
+        ),
       ),
     );
   }

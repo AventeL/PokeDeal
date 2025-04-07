@@ -5,7 +5,6 @@ import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dar
 
 class EnergyCard extends BasePokemonCard {
   final String energyType;
-  final String effect;
 
   const EnergyCard({
     required super.id,
@@ -18,7 +17,6 @@ class EnergyCard extends BasePokemonCard {
     super.illustrator,
     super.rarity,
     required this.energyType,
-    required this.effect,
   });
 
   factory EnergyCard.fromJson(Map<String, dynamic> json) {
@@ -33,7 +31,6 @@ class EnergyCard extends BasePokemonCard {
       setBrief: PokemonSetBrief.fromJson(json['set']),
       variants: CardVariant.fromJson(json['variants']),
       energyType: json['energyType'],
-      effect: json['effect'],
     );
   }
 }

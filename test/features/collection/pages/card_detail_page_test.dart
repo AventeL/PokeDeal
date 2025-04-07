@@ -1,0 +1,149 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:pokedeal/core/di/injection_container.dart';
+import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
+import 'package:pokedeal/features/collection/domain/models/card/card_variant.dart';
+import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/card_count.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/card_category.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
+import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/pages/card_detail_page.dart';
+
+import '../../../mocks/generated_mocks.mocks.dart';
+
+void main() {
+  final mockRepository = MockCollectionPokemonRepository();
+  final mockBloc = MockCollectionPokemonCardBloc();
+
+  setUp(() {
+    getIt.registerLazySingleton<CollectionPokemonRepository>(
+      () => mockRepository,
+    );
+    getIt.registerLazySingleton<CollectionPokemonCardBloc>(() => mockBloc);
+  });
+
+  tearDown(() {
+    getIt.reset();
+  });
+
+  Widget mockPage = CardDetailPage(
+    cardId: 'cardId',
+    cardBrief: PokemonCardBrief(
+      id: 'cardId',
+      name: 'Card Name',
+      image: 'https://example.com/card.png',
+      localId: 'localId',
+    ),
+  );
+
+  testWidgets(
+    'CardDetailsPage shows CircularProgressIndicator when state is CollectionPokemonCardLoading',
+    (WidgetTester tester) async {
+      when(mockBloc.state).thenReturn(CollectionPokemonCardLoading());
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: BlocProvider<CollectionPokemonCardBloc>(
+              create: (context) => mockBloc,
+              child: mockPage,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'CardDetailsPage shows error message when state is CollectionPokemonCardError',
+    (WidgetTester tester) async {
+      when(
+        mockBloc.state,
+      ).thenReturn(CollectionPokemonCardError(message: 'An error occurred'));
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: BlocProvider<CollectionPokemonCardBloc>(
+              create: (context) => mockBloc,
+              child: mockPage,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Error: An error occurred'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'CardDetailsPage shows card details when state is CollectionPokemonCardsGet',
+    (WidgetTester tester) async {
+      when(mockBloc.state).thenReturn(
+        CollectionPokemonCardsGet(
+          card: BasePokemonCard(
+            localId: 'localId',
+            category: CardCategory.trainer,
+            illustrator: 'Illustrator Name',
+            id: 'cardId',
+            name: 'Card Name',
+            image: 'https://example.com/card.png',
+            setBrief: PokemonSetBrief(
+              id: 'setId',
+              name: 'Set Name',
+              cardCount: CardCount(total: 100, official: 50),
+            ),
+            variants: CardVariant(
+              firstEdition: true,
+              holo: false,
+              reverse: false,
+              promo: false,
+              normal: true,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: BlocProvider<CollectionPokemonCardBloc>(
+              create: (context) => mockBloc,
+              child: mockPage,
+            ),
+          ),
+        ),
+      );
+
+      //@todo à continuer dans un prochain ticket
+
+      expect(find.text('Card Name'), findsOneWidget);
+      expect(find.byType(Image), findsOneWidget);
+    },
+  );
+
+  testWidgets('CardDetailsPage shows error message when state is Initial', (
+    WidgetTester tester,
+  ) async {
+    when(mockBloc.state).thenReturn(CollectionPokemonCardInitial());
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: BlocProvider<CollectionPokemonCardBloc>(
+            create: (context) => mockBloc,
+            child: mockPage,
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Carte indisponible'), findsOneWidget);
+  });
+}

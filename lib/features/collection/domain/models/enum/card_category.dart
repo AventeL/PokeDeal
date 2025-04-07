@@ -3,14 +3,14 @@ enum CardCategory { pokemon, trainer, energy }
 extension CardCategoryExtension on CardCategory {
   static CardCategory fromString(String category) {
     switch (category.toLowerCase()) {
-      case 'pokemon':
+      case 'pokémon':
         return CardCategory.pokemon;
-      case 'trainer':
+      case 'dresseur':
         return CardCategory.trainer;
-      case 'energy':
+      case 'énergie':
         return CardCategory.energy;
       default:
-        throw ArgumentError('Invalid card category: $category');
+        throw ArgumentError('Catégorie invalide: $category');
     }
   }
 }

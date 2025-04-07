@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/routes/router.dart';
 import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 import 'package:pokedeal/theme/custom_theme.dart';
@@ -25,6 +26,9 @@ class MainMaterialApp extends StatelessWidget {
         ),
         BlocProvider<CollectionPokemonSetBloc>(
           create: (context) => getIt<CollectionPokemonSetBloc>(),
+        ),
+        BlocProvider<CollectionPokemonCardBloc>(
+          create: (context) => getIt<CollectionPokemonCardBloc>(),
         ),
       ],
       child: MaterialApp.router(

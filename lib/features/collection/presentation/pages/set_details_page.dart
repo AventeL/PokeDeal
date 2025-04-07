@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_unavailable_widget.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_widget.dart';
@@ -82,10 +84,22 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                           return PokemonCardUnavailableWidget(
                             card: card,
                             totalCard: setWithCards.cards.length,
+                            onTap:
+                                () => navigateToCardPage(
+                                  cardId: card.id,
+                                  cardBrief: card,
+                                ),
                           );
                         }
 
-                        return PokemonCardWidget(cardUrl: card.image!);
+                        return PokemonCardWidget(
+                          cardUrl: card.image!,
+                          onTap:
+                              () => navigateToCardPage(
+                                cardId: card.id,
+                                cardBrief: card,
+                              ),
+                        );
                       },
                     ),
                   ),
@@ -96,6 +110,19 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
           return const Center(child: Text('Aucune données à afficher'));
         },
       ),
+    );
+  }
+
+  void navigateToCardPage({
+    required String cardId,
+    required PokemonCardBrief cardBrief,
+  }) {
+    context.read<CollectionPokemonCardBloc>().add(
+      CollectionPokemonGetCardEvent(cardId: cardId),
+    );
+    context.push(
+      '/card_details',
+      extra: {'cardId': cardId, 'cardBrief': cardBrief},
     );
   }
 }

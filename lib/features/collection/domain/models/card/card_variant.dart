@@ -18,7 +18,7 @@ class CardVariant {
       firstEdition: json['firstEdition'],
       holo: json['holo'],
       reverse: json['reverse'],
-      promo: json['promo'],
+      promo: json['wPromo'],
       normal: json['normal'],
     );
   }
