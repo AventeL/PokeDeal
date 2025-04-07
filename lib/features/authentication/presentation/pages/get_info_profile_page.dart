@@ -42,28 +42,46 @@ class _GetMoreInfoProfilePageState extends State<GetMoreInfoProfilePage> {
           }
 
           return SafeArea(
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          key: Key('pseudoField'),
-                          controller: pseudoController,
-                          validator: PseudoValidator.validate,
-                          decoration: InputDecoration(labelText: 'Pseudo'),
-                        ),
-                      ],
+            child: Container(
+              margin: EdgeInsets.all(20),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Pseudo',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          TextFormField(
+                            key: Key('pseudoField'),
+                            controller: pseudoController,
+                            validator: PseudoValidator.validate,
+                            decoration: InputDecoration(labelText: 'Pseudo'),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  FloatingActionButton(
-                    key: Key('continueButton'),
-                    onPressed: () => onRegister(context),
-                    child: Text('Continuer'),
-                  ),
-                ],
+                    ElevatedButton(
+                      key: Key('continueButton'),
+                      onPressed: () => onRegister(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        "Continuer",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
