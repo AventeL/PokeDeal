@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:pokedeal/helper/pokemon_card_image_helper.dart';
+import 'package:pokedeal/core/helper/pokemon_card_image_helper.dart';
 
 class PokemonCardWidget extends StatelessWidget {
   final String cardUrl;
