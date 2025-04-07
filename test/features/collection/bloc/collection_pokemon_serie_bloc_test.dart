@@ -3,17 +3,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
-import 'package:pokedeal/features/collection/presentation/bloc/collection_pokemon_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
 
 void main() {
-  late CollectionPokemonBloc collectionPokemonBloc;
+  late CollectionPokemonSerieBloc collectionPokemonBloc;
   late CollectionPokemonRepository collectionPokemonRepository;
 
   setUp(() {
     collectionPokemonRepository = MockCollectionPokemonRepository();
-    collectionPokemonBloc = CollectionPokemonBloc(
+    collectionPokemonBloc = CollectionPokemonSerieBloc(
       collectionPokemonRepository: collectionPokemonRepository,
     );
   });
@@ -35,7 +35,7 @@ void main() {
       ).thenThrow(Exception('Failed to get series'));
     }
 
-    blocTest<CollectionPokemonBloc, CollectionPokemonState>(
+    blocTest<CollectionPokemonSerieBloc, CollectionPokemonSerieState>(
       'emits [CollectionPokemonLoading, CollectionPokemonSeriesGet] when successful',
       build: () {
         mockGetSeriesWithSets();
@@ -45,13 +45,16 @@ void main() {
         bloc.add(CollectionPokemonGetSeriesEvent());
       },
       expect:
-          () => [CollectionPokemonLoading(), isA<CollectionPokemonSeriesGet>()],
+          () => [
+            CollectionPokemonSerieLoading(),
+            isA<CollectionPokemonSeriesGet>(),
+          ],
       verify: (bloc) {
         verify(collectionPokemonRepository.getSeriesWithSets()).called(1);
       },
     );
 
-    blocTest<CollectionPokemonBloc, CollectionPokemonState>(
+    blocTest<CollectionPokemonSerieBloc, CollectionPokemonSerieState>(
       'emits [CollectionPokemonLoading, CollectionPokemonError] when failed',
       build: () {
         mockGetSeriesWithSetsFail();
@@ -60,11 +63,15 @@ void main() {
       act: (bloc) {
         bloc.add(CollectionPokemonGetSeriesEvent());
       },
-      expect: () => [CollectionPokemonLoading(), isA<CollectionPokemonError>()],
+      expect:
+          () => [
+            CollectionPokemonSerieLoading(),
+            isA<CollectionPokemonSerieError>(),
+          ],
       verify: (bloc) {
         verify(collectionPokemonRepository.getSeriesWithSets()).called(1);
         expect(
-          (bloc.state as CollectionPokemonError).message,
+          (bloc.state as CollectionPokemonSerieError).message,
           Exception('Failed to get series').toString(),
         );
       },

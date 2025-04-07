@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set_with_cards.dart';
 
 import 'collection_pokemon_data_source_interface.dart';
 
@@ -30,10 +31,21 @@ class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
       String url = "https://api.tcgdex.net/v2/fr/series/$serieId";
       http.Response response = await http.get(Uri.parse(url));
       PokemonSerie serie = PokemonSerie.fromJson(jsonDecode(response.body));
-
       return serie;
     } catch (e) {
       throw Exception("Impossible de récupérer la série");
     }
+  }
+
+  @override
+  Future<PokemonSetWithCards> getSetWithCards(String setId) async {
+    String url = "https://api.tcgdex.net/v2/fr/sets/$setId";
+    print(url);
+    http.Response response = await http.get(Uri.parse(url));
+    PokemonSetWithCards set = PokemonSetWithCards.fromJson(
+      jsonDecode(response.body),
+    );
+
+    return set;
   }
 }

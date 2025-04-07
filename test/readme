@@ -6,3 +6,8 @@ Après avoir touché à ce fichier il faut absolument lancer la commande :
 
 Si le fichier existe déjà : flutter pub run build_runner build --delete-conflicting-outputs
 Si le fichier existe pas : flutter pub run build_runner build
+
+Générer une interface lcov
+    Afin de voir le coverage de chaque fichier du projet, il faut lancer 2 commandes :
+        1. flutter test --coverage (qui va lancer tout les tests)
+        2. genhtml -o coverage coverage/lcov.info (qui va générer le ficher html)

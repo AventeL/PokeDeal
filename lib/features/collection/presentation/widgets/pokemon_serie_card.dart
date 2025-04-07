@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/pokemon_set_card.dart';
 
 class PokemonSerieCard extends StatefulWidget {
   final PokemonSerie pokemonSerie;
@@ -80,24 +83,16 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
       child: Column(
         children:
             widget.pokemonSerie.sets!.map((set) {
-              return Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      set.name,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Text(
-                      set.cardCount.total.toString(),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                ),
+              return PokemonSetCardWidget(
+                set: set,
+                onTap: () => navigateToSetDetailsPage(set),
               );
             }).toList(),
       ),
     );
+  }
+
+  void navigateToSetDetailsPage(PokemonSet set) {
+    context.push('/set_details', extra: set);
   }
 }
