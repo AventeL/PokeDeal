@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:pokedeal/features/collection/domain/models/card_count.dart';
 import 'package:pokedeal/features/collection/domain/models/legal.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
 
 class PokemonSet extends Equatable {
   final List<PokemonCardBrief> cards;
@@ -12,6 +13,7 @@ class PokemonSet extends Equatable {
   final String? logoUrl;
   final String? symbolUrl;
   final CardCount cardCount;
+  final PokemonSerieBrief serieBrief;
 
   const PokemonSet({
     required this.name,
@@ -22,6 +24,7 @@ class PokemonSet extends Equatable {
     required this.cards,
     this.releaseDate,
     required this.legal,
+    required this.serieBrief,
   });
 
   factory PokemonSet.fromJson(Map<String, dynamic> json) {
@@ -37,6 +40,7 @@ class PokemonSet extends Equatable {
               .toList(),
       releaseDate: DateTime.tryParse(json['releaseDate']),
       legal: Legal.fromJson(json['legal']),
+      serieBrief: PokemonSerieBrief.fromJson(json['serie']),
     );
   }
 

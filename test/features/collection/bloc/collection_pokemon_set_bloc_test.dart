@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/collection/domain/models/card_count.dart';
 import 'package:pokedeal/features/collection/domain/models/legal.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
@@ -43,6 +44,7 @@ void main() {
             ),
           ],
           legal: Legal(expanded: false, standard: true),
+          serieBrief: const PokemonSerieBrief(id: 'id', name: 'name'),
         ),
       );
     }

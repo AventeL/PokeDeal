@@ -5,38 +5,41 @@ import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 
 class CollectionPokemonRepository {
   final ICollectionPokemonDataSource collectionPokemonDataSource;
+  List<PokemonSerieBrief> seriesBriefs = [];
   List<PokemonSerie> series = [];
-  Map<String, PokemonSet> setsDetails = {};
+  Map<String, PokemonSet> setsMap = {};
 
   CollectionPokemonRepository({required this.collectionPokemonDataSource});
 
   Future<List<PokemonSerieBrief>> getSeriesBriefs() async {
+    if (seriesBriefs.isNotEmpty) {
+      return seriesBriefs;
+    }
     List<PokemonSerieBrief> series =
         await collectionPokemonDataSource.getSeriesBriefs();
     series = series.reversed.toList();
-
+    seriesBriefs.addAll(series);
     return series;
   }
 
   Future<List<PokemonSerie>> getSeriesWithSets() async {
-    List<PokemonSerieBrief> sets =
-        await collectionPokemonDataSource.getSeriesBriefs();
+    List<PokemonSerieBrief> seriesBriefs = await getSeriesBriefs();
     List<PokemonSerie> newList = [];
-    for (var serie in sets) {
+    for (var serie in seriesBriefs) {
       newList.add(await collectionPokemonDataSource.getSerie(serie.id));
     }
-    newList = newList.reversed.toList();
-    series = newList;
+
+    series.addAll(newList);
     return newList;
   }
 
   Future<PokemonSet> getSetWithCards({required String setId}) async {
     PokemonSet setWithCards;
-    if (setsDetails.containsKey(setId)) {
-      return setsDetails[setId]!;
+    if (setsMap.containsKey(setId)) {
+      return setsMap[setId]!;
     } else {
       setWithCards = await collectionPokemonDataSource.getSet(setId);
-      setsDetails[setId] = setWithCards;
+      setsMap[setId] = setWithCards;
     }
     return setWithCards;
   }

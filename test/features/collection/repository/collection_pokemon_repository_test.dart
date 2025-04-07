@@ -28,18 +28,8 @@ void main() {
   ];
 
   final mockSeries = [
-    PokemonSerie(
-      id: "1",
-      name: 'Serie 1',
-      sets: [],
-      serieBrief: PokemonSerieBrief(id: "1", name: 'Serie 1'),
-    ),
-    PokemonSerie(
-      id: "2",
-      name: 'Serie 2',
-      sets: [],
-      serieBrief: PokemonSerieBrief(id: "2", name: 'Serie 2'),
-    ),
+    PokemonSerie(id: "1", name: 'Serie 1', sets: []),
+    PokemonSerie(id: "2", name: 'Serie 2', sets: []),
   ];
 
   group('getSeriesBriefs', () {
@@ -105,6 +95,7 @@ void main() {
     final mockSetWithCards = PokemonSet(
       name: 'Set 1',
       id: 'set1',
+      serieBrief: PokemonSerieBrief(id: 'serie1', name: 'Serie 1'),
       cardCount: CardCount(total: 100, official: 100),
       cards: [
         PokemonCardBrief(
@@ -141,7 +132,7 @@ void main() {
       test(
         'returns cached PokemonSetWithCards when set is already cached',
         () async {
-          repository.setsDetails['set1'] = mockSetWithCards;
+          repository.setsMap['set1'] = mockSetWithCards;
 
           final result = await repository.getSetWithCards(setId: 'set1');
 
