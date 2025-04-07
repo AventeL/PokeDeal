@@ -120,8 +120,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                                   controller: _tabController,
                                   indicatorSize: TabBarIndicatorSize.tab,
                                   tabs: const [
-                                    Tab(text: 'Login'),
-                                    Tab(text: 'Register'),
+                                    Tab(text: 'Connexion'),
+                                    Tab(text: 'Inscription'),
                                   ],
                                   indicatorPadding: const EdgeInsets.symmetric(
                                     horizontal: 20,
