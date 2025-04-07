@@ -8,7 +8,7 @@ class PokemonCardBrief extends Equatable {
 
   const PokemonCardBrief({
     required this.id,
-    required this.image,
+    this.image,
     required this.localId,
     required this.name,
   });
