@@ -1,7 +1,7 @@
 class EmailValidator {
   static String? validate(String? email) {
     if (email == null || email.isEmpty) {
-      return 'L\'email ne peux pas être vide';
+      return 'L\'email ne peut pas être vide';
     }
     final RegExp regex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
