@@ -1,66 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
-import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
 
 class LoginPageView extends StatefulWidget {
-  const LoginPageView({super.key});
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+
+  const LoginPageView({
+    super.key,
+    required this.emailController,
+    required this.passwordController,
+  });
 
   @override
   State<LoginPageView> createState() => _LoginPageViewState();
 }
 
 class _LoginPageViewState extends State<LoginPageView> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 16.0,
       children: [
         16.height,
+        Row(
+          children: [
+            Expanded(
+              child: Divider(
+                color: Colors.grey,
+                thickness: 1,
+                indent: 10,
+                endIndent: 10,
+              ),
+            ),
+            Text(
+              "Ou connectez-vous avec",
+              style: TextStyle(color: Colors.grey),
+            ),
+            Expanded(
+              child: Divider(
+                color: Colors.grey,
+                thickness: 1,
+                indent: 10,
+                endIndent: 10,
+              ),
+            ),
+          ],
+        ),
+        Text('Email', style: Theme.of(context).textTheme.titleMedium),
         TextField(
           key: const Key('emailField'),
-          controller: emailController,
+          controller: widget.emailController,
           decoration: InputDecoration(
-            labelText: 'Email',
+            labelText: 'votre@email.com',
             border: OutlineInputBorder(),
           ),
         ),
+        Text('Mot de passe', style: Theme.of(context).textTheme.titleMedium),
         TextField(
           key: const Key('passwordField'),
-          controller: passwordController,
+          controller: widget.passwordController,
           decoration: InputDecoration(
-            labelText: 'Password',
+            labelText: 'Votre mot de passe',
             border: OutlineInputBorder(),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () {
+              print("Mot de passe oublié cliqué !");
+            },
+            child: const Text(
+              'Mot de passe oublié',
+              style: TextStyle(color: Colors.blue),
+            ),
           ),
         ),
         Spacer(),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ElevatedButton(
-            key: const Key('loginButton'),
-            onPressed: onLogin,
-            child: const Text('Login'),
-          ),
-        ),
       ],
-    );
-  }
-
-  void onLogin() {
-    String email = emailController.text;
-    String password = passwordController.text;
-    if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
-      );
-      return;
-    }
-
-    context.read<AuthenticationBloc>().add(
-      AuthenticationEventSignInWithEmail(email, password),
     );
   }
 }
