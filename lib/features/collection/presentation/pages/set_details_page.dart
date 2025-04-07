@@ -50,6 +50,17 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
           }
           if (state is CollectionPokemonSetWithCardsGet) {
             setWithCards = state.setWithCards;
+            if (setWithCards.cards.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'Les cartes pour ${widget.setInfo.name} ne sont pas encore disponibles',
+                  ),
+                ),
+              );
+            }
 
             return Column(
               children: [
