@@ -32,9 +32,13 @@ void main() {
     await tester.tap(find.widgetWithText(Tab, 'Inscription'));
     await tester.pumpAndSettle();
     expect(find.byType(RegisterPageView), findsOneWidget);
+    final button = find.widgetWithText(ElevatedButton, "S'inscrire");
+    expect(button, findsOneWidget);
 
     await tester.tap(find.widgetWithText(Tab, 'Connexion'));
     await tester.pumpAndSettle();
     expect(find.byType(LoginPageView), findsOneWidget);
+    final button2 = find.widgetWithText(ElevatedButton, "Se connecter");
+    expect(button2, findsOneWidget);
   });
 }

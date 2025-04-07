@@ -6,8 +6,19 @@ void main() {
   testWidgets(
     'Register page has email, password and confirm password TextFields and a button',
     (WidgetTester tester) async {
+      final emailController = TextEditingController();
+      final passwordController = TextEditingController();
+      final confirmPasswordController = TextEditingController();
       await tester.pumpWidget(
-        MaterialApp(home: Scaffold(body: RegisterPageView())),
+        MaterialApp(
+          home: Scaffold(
+            body: RegisterPageView(
+              emailController: emailController,
+              passwordController: passwordController,
+              confirmPasswordController: confirmPasswordController,
+            ),
+          ),
+        ),
       );
 
       final emailField = find.byKey(Key('emailField'));
