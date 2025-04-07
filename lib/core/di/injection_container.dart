@@ -6,7 +6,8 @@ import 'package:pokedeal/features/authentication/presentation/bloc/authenticatio
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source.dart';
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source_interface.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
-import 'package:pokedeal/features/collection/presentation/bloc/collection_pokemon_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final GetIt getIt = GetIt.I;
@@ -25,8 +26,13 @@ void initBloc() {
       authenticationRepository: getIt<AuthenticationRepository>(),
     ),
   );
-  getIt.registerFactory<CollectionPokemonBloc>(
-    () => CollectionPokemonBloc(
+  getIt.registerFactory<CollectionPokemonSerieBloc>(
+    () => CollectionPokemonSerieBloc(
+      collectionPokemonRepository: getIt<CollectionPokemonRepository>(),
+    ),
+  );
+  getIt.registerFactory<CollectionPokemonSetBloc>(
+    () => CollectionPokemonSetBloc(
       collectionPokemonRepository: getIt<CollectionPokemonRepository>(),
     ),
   );

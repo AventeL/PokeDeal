@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedeal/features/authentication/presentation/pages/authentication_gate.dart';
 import 'package:pokedeal/features/authentication/presentation/pages/get_info_profile_page.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
+import 'package:pokedeal/features/collection/presentation/pages/set_details_page.dart';
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -22,6 +24,14 @@ final GoRouter router = GoRouter(
             password: extra?['password'] as String? ?? "",
           ),
         );
+      },
+    ),
+    GoRoute(
+      path: '/set_details',
+      name: 'set_details',
+      builder: (context, state) {
+        final PokemonSet setInfo = state.extra as PokemonSet;
+        return SetDetailsPage(setInfo: setInfo);
       },
     ),
   ],

@@ -24,6 +24,8 @@ class PokemonSerie extends Equatable {
               ? (json['sets'] as List<dynamic>?)
                   ?.map((set) => PokemonSet.fromJson(set))
                   .toList()
+                  .reversed
+                  .toList()
               : null,
     );
   }
