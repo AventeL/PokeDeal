@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
-import 'package:pokedeal/helper/pokemon_card_image_helper.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_unavailable_widget.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_widget.dart';
 
 class SetDetailsPage extends StatefulWidget {
   final PokemonSetBrief setInfo;
@@ -68,17 +68,13 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                         PokemonCardBrief card = setWithCards.cards[index];
 
                         if (card.image == null) {
-                          return const Center(
-                            child: Text('Image not available'),
+                          return PokemonCardUnavailableWidget(
+                            card: card,
+                            totalCard: setWithCards.cards.length,
                           );
                         }
 
-                        return CachedNetworkImage(
-                          imageUrl: PokemonCardImageHelper.gererateImageUrl(
-                            card.image!,
-                            quality: PokemonCardQuality.low,
-                          ),
-                        );
+                        return PokemonCardWidget(cardUrl: card.image!);
                       },
                     ),
                   ),
