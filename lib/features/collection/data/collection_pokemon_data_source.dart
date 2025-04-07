@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
@@ -45,5 +46,18 @@ class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
     PokemonSet set = PokemonSet.fromJson(jsonDecode(response.body));
 
     return set;
+  }
+
+  @override
+  Future<BasePokemonCard> getCard({
+    required String localId,
+    required String setId,
+  }) async {
+    String url = "https://api.tcgdex.net/v2/fr/sets/$setId/$localId";
+
+    http.Response response = await http.get(Uri.parse(url));
+    BasePokemonCard card = BasePokemonCard.fromJson(jsonDecode(response.body));
+
+    return card;
   }
 }
