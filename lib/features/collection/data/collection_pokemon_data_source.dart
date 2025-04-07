@@ -49,11 +49,8 @@ class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
   }
 
   @override
-  Future<BasePokemonCard> getCard({
-    required String localId,
-    required String setId,
-  }) async {
-    String url = "https://api.tcgdex.net/v2/fr/sets/$setId/$localId";
+  Future<BasePokemonCard> getCard({required String id}) async {
+    String url = "https://api.tcgdex.net/v2/fr/cards/$id";
 
     http.Response response = await http.get(Uri.parse(url));
     BasePokemonCard card = BasePokemonCard.fromJson(jsonDecode(response.body));

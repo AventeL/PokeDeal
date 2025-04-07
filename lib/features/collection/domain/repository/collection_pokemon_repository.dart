@@ -1,4 +1,5 @@
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source_interface.dart';
+import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
@@ -8,6 +9,7 @@ class CollectionPokemonRepository {
   List<PokemonSerieBrief> seriesBriefs = [];
   List<PokemonSerie> series = [];
   Map<String, PokemonSet> setsMap = {};
+  Map<String, BasePokemonCard> cardsMap = {};
 
   CollectionPokemonRepository({required this.collectionPokemonDataSource});
 
@@ -42,5 +44,15 @@ class CollectionPokemonRepository {
       setsMap[setId] = setWithCards;
     }
     return setWithCards;
+  }
+
+  Future<BasePokemonCard> getCard({required String id}) async {
+    BasePokemonCard card;
+    if (cardsMap.containsKey(id)) {
+      return cardsMap[id]!;
+    }
+    card = await collectionPokemonDataSource.getCard(id: id);
+    cardsMap[id] = card;
+    return card;
   }
 }

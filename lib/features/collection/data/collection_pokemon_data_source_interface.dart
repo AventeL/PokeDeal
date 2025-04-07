@@ -10,8 +10,5 @@ abstract class ICollectionPokemonDataSource {
 
   Future<PokemonSet> getSet(String setId);
 
-  Future<BasePokemonCard> getCard({
-    required String localId,
-    required String setId,
-  });
+  Future<BasePokemonCard> getCard({required String id});
 }
