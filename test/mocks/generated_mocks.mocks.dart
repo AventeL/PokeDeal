@@ -19,7 +19,9 @@ import 'package:pokedeal/features/collection/data/collection_pokemon_data_source
     as _i9;
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart'
     as _i11;
-import 'package:pokedeal/features/collection/domain/models/pokemon_set_with_cards.dart'
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart'
+    as _i14;
+import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart'
     as _i10;
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart'
     as _i4;
@@ -91,9 +93,8 @@ class _FakeICollectionPokemonDataSource_7 extends _i1.SmartFake
   ) : super(parent, parentInvocation);
 }
 
-class _FakePokemonSetWithCards_8 extends _i1.SmartFake
-    implements _i10.PokemonSetWithCards {
-  _FakePokemonSetWithCards_8(Object parent, Invocation parentInvocation)
+class _FakePokemonSet_8 extends _i1.SmartFake implements _i10.PokemonSet {
+  _FakePokemonSet_8(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -591,34 +592,34 @@ class MockCollectionPokemonRepository extends _i1.Mock
   );
 
   @override
-  Map<String, _i10.PokemonSetWithCards> get setsDetails =>
+  Map<String, _i10.PokemonSet> get setsDetails =>
       (super.noSuchMethod(
             Invocation.getter(#setsDetails),
-            returnValue: <String, _i10.PokemonSetWithCards>{},
-            returnValueForMissingStub: <String, _i10.PokemonSetWithCards>{},
+            returnValue: <String, _i10.PokemonSet>{},
+            returnValueForMissingStub: <String, _i10.PokemonSet>{},
           )
-          as Map<String, _i10.PokemonSetWithCards>);
+          as Map<String, _i10.PokemonSet>);
 
   @override
-  set setsDetails(Map<String, _i10.PokemonSetWithCards>? _setsDetails) =>
+  set setsDetails(Map<String, _i10.PokemonSet>? _setsDetails) =>
       super.noSuchMethod(
         Invocation.setter(#setsDetails, _setsDetails),
         returnValueForMissingStub: null,
       );
 
   @override
-  _i12.Future<List<_i11.PokemonSerie>> getSeries() =>
+  _i12.Future<List<_i14.PokemonSerieBrief>> getSeriesBriefs() =>
       (super.noSuchMethod(
-            Invocation.method(#getSeries, []),
-            returnValue: _i12.Future<List<_i11.PokemonSerie>>.value(
-              <_i11.PokemonSerie>[],
+            Invocation.method(#getSeriesBriefs, []),
+            returnValue: _i12.Future<List<_i14.PokemonSerieBrief>>.value(
+              <_i14.PokemonSerieBrief>[],
             ),
             returnValueForMissingStub:
-                _i12.Future<List<_i11.PokemonSerie>>.value(
-                  <_i11.PokemonSerie>[],
+                _i12.Future<List<_i14.PokemonSerieBrief>>.value(
+                  <_i14.PokemonSerieBrief>[],
                 ),
           )
-          as _i12.Future<List<_i11.PokemonSerie>>);
+          as _i12.Future<List<_i14.PokemonSerieBrief>>);
 
   @override
   _i12.Future<List<_i11.PokemonSerie>> getSeriesWithSets() =>
@@ -635,26 +636,23 @@ class MockCollectionPokemonRepository extends _i1.Mock
           as _i12.Future<List<_i11.PokemonSerie>>);
 
   @override
-  _i12.Future<_i10.PokemonSetWithCards> getSetWithCards({
-    required String? setId,
-  }) =>
+  _i12.Future<_i10.PokemonSet> getSetWithCards({required String? setId}) =>
       (super.noSuchMethod(
             Invocation.method(#getSetWithCards, [], {#setId: setId}),
-            returnValue: _i12.Future<_i10.PokemonSetWithCards>.value(
-              _FakePokemonSetWithCards_8(
+            returnValue: _i12.Future<_i10.PokemonSet>.value(
+              _FakePokemonSet_8(
                 this,
                 Invocation.method(#getSetWithCards, [], {#setId: setId}),
               ),
             ),
-            returnValueForMissingStub:
-                _i12.Future<_i10.PokemonSetWithCards>.value(
-                  _FakePokemonSetWithCards_8(
-                    this,
-                    Invocation.method(#getSetWithCards, [], {#setId: setId}),
-                  ),
-                ),
+            returnValueForMissingStub: _i12.Future<_i10.PokemonSet>.value(
+              _FakePokemonSet_8(
+                this,
+                Invocation.method(#getSetWithCards, [], {#setId: setId}),
+              ),
+            ),
           )
-          as _i12.Future<_i10.PokemonSetWithCards>);
+          as _i12.Future<_i10.PokemonSet>);
 }
 
 /// A class which mocks [IAuthenticationDataSource].
@@ -732,55 +730,48 @@ class MockIAuthenticationDataSource extends _i1.Mock
 class MockICollectionPokemonDataSource extends _i1.Mock
     implements _i9.ICollectionPokemonDataSource {
   @override
-  _i12.Future<List<_i11.PokemonSerie>> getSeries() =>
+  _i12.Future<List<_i14.PokemonSerieBrief>> getSeriesBriefs() =>
       (super.noSuchMethod(
-            Invocation.method(#getSeries, []),
-            returnValue: _i12.Future<List<_i11.PokemonSerie>>.value(
-              <_i11.PokemonSerie>[],
+            Invocation.method(#getSeriesBriefs, []),
+            returnValue: _i12.Future<List<_i14.PokemonSerieBrief>>.value(
+              <_i14.PokemonSerieBrief>[],
             ),
             returnValueForMissingStub:
-                _i12.Future<List<_i11.PokemonSerie>>.value(
-                  <_i11.PokemonSerie>[],
+                _i12.Future<List<_i14.PokemonSerieBrief>>.value(
+                  <_i14.PokemonSerieBrief>[],
                 ),
           )
-          as _i12.Future<List<_i11.PokemonSerie>>);
+          as _i12.Future<List<_i14.PokemonSerieBrief>>);
 
   @override
-  _i12.Future<_i11.PokemonSerie> getSerieWithSets(String? serieId) =>
+  _i12.Future<_i11.PokemonSerie> getSerie(String? serieId) =>
       (super.noSuchMethod(
-            Invocation.method(#getSerieWithSets, [serieId]),
+            Invocation.method(#getSerie, [serieId]),
             returnValue: _i12.Future<_i11.PokemonSerie>.value(
               _FakePokemonSerie_9(
                 this,
-                Invocation.method(#getSerieWithSets, [serieId]),
+                Invocation.method(#getSerie, [serieId]),
               ),
             ),
             returnValueForMissingStub: _i12.Future<_i11.PokemonSerie>.value(
               _FakePokemonSerie_9(
                 this,
-                Invocation.method(#getSerieWithSets, [serieId]),
+                Invocation.method(#getSerie, [serieId]),
               ),
             ),
           )
           as _i12.Future<_i11.PokemonSerie>);
 
   @override
-  _i12.Future<_i10.PokemonSetWithCards> getSetWithCards(String? setId) =>
+  _i12.Future<_i10.PokemonSet> getSet(String? setId) =>
       (super.noSuchMethod(
-            Invocation.method(#getSetWithCards, [setId]),
-            returnValue: _i12.Future<_i10.PokemonSetWithCards>.value(
-              _FakePokemonSetWithCards_8(
-                this,
-                Invocation.method(#getSetWithCards, [setId]),
-              ),
+            Invocation.method(#getSet, [setId]),
+            returnValue: _i12.Future<_i10.PokemonSet>.value(
+              _FakePokemonSet_8(this, Invocation.method(#getSet, [setId])),
             ),
-            returnValueForMissingStub:
-                _i12.Future<_i10.PokemonSetWithCards>.value(
-                  _FakePokemonSetWithCards_8(
-                    this,
-                    Invocation.method(#getSetWithCards, [setId]),
-                  ),
-                ),
+            returnValueForMissingStub: _i12.Future<_i10.PokemonSet>.value(
+              _FakePokemonSet_8(this, Invocation.method(#getSet, [setId])),
+            ),
           )
-          as _i12.Future<_i10.PokemonSetWithCards>);
+          as _i12.Future<_i10.PokemonSet>);
 }

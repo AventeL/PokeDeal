@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 
 class PokemonSetCardWidget extends StatelessWidget {
-  final PokemonSet set;
+  final PokemonSetBrief set;
   final VoidCallback? onTap;
 
   const PokemonSetCardWidget({super.key, required this.set, this.onTap});

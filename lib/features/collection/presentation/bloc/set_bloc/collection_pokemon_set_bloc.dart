@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set_with_cards.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 
 part 'collection_pokemon_set_event.dart';
@@ -23,7 +23,7 @@ class CollectionPokemonSetBloc
   ) async {
     try {
       emit(CollectionPokemonSetLoading());
-      PokemonSetWithCards setWithCards = await collectionPokemonRepository
+      PokemonSet setWithCards = await collectionPokemonRepository
           .getSetWithCards(setId: event.setId);
       emit(CollectionPokemonSetWithCardsGet(setWithCards: setWithCards));
     } catch (e) {

@@ -2,21 +2,22 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set_with_cards.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 
 import 'collection_pokemon_data_source_interface.dart';
 
 class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
   @override
-  Future<List<PokemonSerie>> getSeries() async {
+  Future<List<PokemonSerieBrief>> getSeriesBriefs() async {
     try {
       String url = "https://api.tcgdex.net/v2/fr/series";
-      List<PokemonSerie> series = [];
+      List<PokemonSerieBrief> series = [];
 
       http.Response response = await http.get(Uri.parse(url));
 
       for (var item in jsonDecode(response.body)) {
-        series.add(PokemonSerie.fromJson(item));
+        series.add(PokemonSerieBrief.fromJson(item));
       }
 
       return series;
@@ -26,7 +27,7 @@ class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
   }
 
   @override
-  Future<PokemonSerie> getSerieWithSets(String serieId) async {
+  Future<PokemonSerie> getSerie(String serieId) async {
     try {
       String url = "https://api.tcgdex.net/v2/fr/series/$serieId";
       http.Response response = await http.get(Uri.parse(url));
@@ -38,13 +39,11 @@ class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
   }
 
   @override
-  Future<PokemonSetWithCards> getSetWithCards(String setId) async {
+  Future<PokemonSet> getSet(String setId) async {
     String url = "https://api.tcgdex.net/v2/fr/sets/$setId";
     print(url);
     http.Response response = await http.get(Uri.parse(url));
-    PokemonSetWithCards set = PokemonSetWithCards.fromJson(
-      jsonDecode(response.body),
-    );
+    PokemonSet set = PokemonSet.fromJson(jsonDecode(response.body));
 
     return set;
   }

@@ -1,17 +1,20 @@
 import 'package:equatable/equatable.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 
 class PokemonSerie extends Equatable {
   final String name;
   final String id;
   final String? logoUrl;
-  final List<PokemonSet>? sets;
+  final List<PokemonSetBrief> sets;
+  final PokemonSerieBrief serieBrief;
 
   const PokemonSerie({
     required this.name,
     required this.id,
     this.logoUrl,
-    this.sets,
+    required this.sets,
+    required this.serieBrief,
   });
 
   factory PokemonSerie.fromJson(Map<String, dynamic> json) {
@@ -19,14 +22,13 @@ class PokemonSerie extends Equatable {
       name: json['name'],
       id: json['id'],
       logoUrl: json['logo'],
+      serieBrief: PokemonSerieBrief.fromJson(json['serie']),
       sets:
-          json['sets'] != null
-              ? (json['sets'] as List<dynamic>?)
-                  ?.map((set) => PokemonSet.fromJson(set))
-                  .toList()
-                  .reversed
-                  .toList()
-              : null,
+          (json['sets'] as List<dynamic>?)!
+              .map((set) => PokemonSetBrief.fromJson(set))
+              .toList()
+              .reversed
+              .toList(),
     );
   }
 

@@ -1,38 +1,41 @@
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source_interface.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set_with_cards.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 
 class CollectionPokemonRepository {
   final ICollectionPokemonDataSource collectionPokemonDataSource;
   List<PokemonSerie> series = [];
-  Map<String, PokemonSetWithCards> setsDetails = {};
+  Map<String, PokemonSet> setsDetails = {};
 
   CollectionPokemonRepository({required this.collectionPokemonDataSource});
 
-  Future<List<PokemonSerie>> getSeries() async {
-    List<PokemonSerie> series = await collectionPokemonDataSource.getSeries();
+  Future<List<PokemonSerieBrief>> getSeriesBriefs() async {
+    List<PokemonSerieBrief> series =
+        await collectionPokemonDataSource.getSeriesBriefs();
     series = series.reversed.toList();
-    this.series = series;
+
     return series;
   }
 
   Future<List<PokemonSerie>> getSeriesWithSets() async {
-    List<PokemonSerie> sets = await collectionPokemonDataSource.getSeries();
+    List<PokemonSerieBrief> sets =
+        await collectionPokemonDataSource.getSeriesBriefs();
     List<PokemonSerie> newList = [];
     for (var serie in sets) {
-      newList.add(await collectionPokemonDataSource.getSerieWithSets(serie.id));
+      newList.add(await collectionPokemonDataSource.getSerie(serie.id));
     }
     newList = newList.reversed.toList();
     series = newList;
     return newList;
   }
 
-  Future<PokemonSetWithCards> getSetWithCards({required String setId}) async {
-    PokemonSetWithCards setWithCards;
+  Future<PokemonSet> getSetWithCards({required String setId}) async {
+    PokemonSet setWithCards;
     if (setsDetails.containsKey(setId)) {
       return setsDetails[setId]!;
     } else {
-      setWithCards = await collectionPokemonDataSource.getSetWithCards(setId);
+      setWithCards = await collectionPokemonDataSource.getSet(setId);
       setsDetails[setId] = setWithCards;
     }
     return setWithCards;

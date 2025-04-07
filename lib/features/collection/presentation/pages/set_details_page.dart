@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_card.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set_with_cards.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 import 'package:pokedeal/helper/pokemon_card_image_helper.dart';
 
 class SetDetailsPage extends StatefulWidget {
-  final PokemonSet setInfo;
+  final PokemonSetBrief setInfo;
 
   const SetDetailsPage({super.key, required this.setInfo});
 
@@ -17,7 +17,7 @@ class SetDetailsPage extends StatefulWidget {
 }
 
 class _SetDetailsPageState extends State<SetDetailsPage> {
-  late PokemonSetWithCards setWithCards;
+  late PokemonSet setWithCards;
   bool isLoading = false;
 
   @override
@@ -65,7 +65,7 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                       ),
                       itemCount: setWithCards.cards.length,
                       itemBuilder: (context, index) {
-                        PokemonCard card = setWithCards.cards[index];
+                        PokemonCardBrief card = setWithCards.cards[index];
 
                         if (card.image == null) {
                           return const Center(

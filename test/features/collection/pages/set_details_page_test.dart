@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/features/collection/domain/models/card_count.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/pages/set_details_page.dart';
@@ -37,7 +37,7 @@ void main() {
             body: BlocProvider<CollectionPokemonSetBloc>(
               create: (context) => mockBloc,
               child: SetDetailsPage(
-                setInfo: PokemonSet(
+                setInfo: PokemonSetBrief(
                   name: 'Set 1',
                   id: 'set1',
                   cardCount: CardCount(total: 100, official: 100),
@@ -65,7 +65,7 @@ void main() {
             body: BlocProvider<CollectionPokemonSetBloc>(
               create: (context) => mockBloc,
               child: SetDetailsPage(
-                setInfo: PokemonSet(
+                setInfo: PokemonSetBrief(
                   name: 'Set 1',
                   id: 'set1',
                   cardCount: CardCount(total: 100, official: 100),

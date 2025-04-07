@@ -1,10 +1,11 @@
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set_with_cards.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 
 abstract class ICollectionPokemonDataSource {
-  Future<List<PokemonSerie>> getSeries();
+  Future<List<PokemonSerieBrief>> getSeriesBriefs();
 
-  Future<PokemonSerie> getSerieWithSets(String serieId);
+  Future<PokemonSerie> getSerie(String serieId);
 
-  Future<PokemonSetWithCards> getSetWithCards(String setId);
+  Future<PokemonSet> getSet(String setId);
 }

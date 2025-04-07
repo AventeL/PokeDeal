@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/pages/series_list_page.dart';
@@ -15,9 +16,24 @@ void main() {
   final mockRepository = MockCollectionPokemonRepository();
 
   List<PokemonSerie> series = [
-    PokemonSerie(id: "1", name: 'Serie 1'),
-    PokemonSerie(id: "2", name: 'Serie 2'),
-    PokemonSerie(id: "3", name: 'Serie 3'),
+    PokemonSerie(
+      id: "1",
+      name: 'Serie 1',
+      sets: [],
+      serieBrief: PokemonSerieBrief(id: "1", name: 'Serie 1'),
+    ),
+    PokemonSerie(
+      id: "2",
+      name: 'Serie 2',
+      sets: [],
+      serieBrief: PokemonSerieBrief(id: "2", name: 'Serie 2'),
+    ),
+    PokemonSerie(
+      id: "3",
+      name: 'Serie 3',
+      sets: [],
+      serieBrief: PokemonSerieBrief(id: "3", name: 'Serie 3'),
+    ),
   ];
 
   setUp(() {

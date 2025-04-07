@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/collection/domain/models/card_count.dart';
 import 'package:pokedeal/features/collection/domain/models/legal.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_card.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set_with_cards.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 
@@ -30,12 +30,12 @@ void main() {
       when(
         collectionPokemonRepository.getSetWithCards(setId: 'setId'),
       ).thenAnswer(
-        (_) async => PokemonSetWithCards(
+        (_) async => PokemonSet(
           name: 'name',
           id: 'id',
           cardCount: CardCount(total: 100, official: 20),
           cards: [
-            PokemonCard(
+            PokemonCardBrief(
               id: 'id',
               image: 'image',
               localId: 'localId',

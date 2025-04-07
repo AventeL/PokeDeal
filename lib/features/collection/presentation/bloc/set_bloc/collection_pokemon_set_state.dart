@@ -19,7 +19,7 @@ final class CollectionPokemonSetError extends CollectionPokemonSetState {
 }
 
 final class CollectionPokemonSetWithCardsGet extends CollectionPokemonSetState {
-  final PokemonSetWithCards setWithCards;
+  final PokemonSet setWithCards;
 
   CollectionPokemonSetWithCardsGet({required this.setWithCards});
 

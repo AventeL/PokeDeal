@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 
-class PokemonCard extends Equatable {
+class PokemonCardBrief extends Equatable {
   final String id;
   final String? image;
   final String localId;
   final String name;
 
-  const PokemonCard({
+  const PokemonCardBrief({
     required this.id,
     required this.image,
     required this.localId,
     required this.name,
   });
 
-  factory PokemonCard.fromJson(Map<String, dynamic> json) {
-    return PokemonCard(
+  factory PokemonCardBrief.fromJson(Map<String, dynamic> json) {
+    return PokemonCardBrief(
       id: json['id'],
       image: json['image'],
       localId: json['localId'],

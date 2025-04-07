@@ -3,10 +3,10 @@ import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source_interface.dart';
 import 'package:pokedeal/features/collection/domain/models/card_count.dart';
 import 'package:pokedeal/features/collection/domain/models/legal.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_card.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set_with_cards.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
@@ -22,80 +22,77 @@ void main() {
     );
   });
 
+  final mockSeriesBriefs = [
+    PokemonSerieBrief(name: 'name1', id: 'id1'),
+    PokemonSerieBrief(name: 'name2', id: 'id2'),
+  ];
+
   final mockSeries = [
     PokemonSerie(
-      id: '1',
+      id: "1",
       name: 'Serie 1',
-      sets: [
-        PokemonSet(
-          name: 'set1',
-          id: 'idSet1',
-          cardCount: CardCount(total: 100, official: 100),
-        ),
-      ],
+      sets: [],
+      serieBrief: PokemonSerieBrief(id: "1", name: 'Serie 1'),
     ),
     PokemonSerie(
-      id: '2',
+      id: "2",
       name: 'Serie 2',
-      sets: [
-        PokemonSet(
-          name: 'set2',
-          id: 'idSet2',
-          cardCount: CardCount(total: 200, official: 200),
-        ),
-      ],
+      sets: [],
+      serieBrief: PokemonSerieBrief(id: "2", name: 'Serie 2'),
     ),
   ];
 
-  group('getSeries', () {
-    test('getSeries returns a list of PokemonSerie', () async {
-      when(dataSource.getSeries()).thenAnswer((_) async => mockSeries);
+  group('getSeriesBriefs', () {
+    test('getSeriesBriefs returns a list of PokemonSerieBriefs', () async {
+      when(
+        dataSource.getSeriesBriefs(),
+      ).thenAnswer((_) async => mockSeriesBriefs);
 
-      final result = await repository.getSeries();
+      final result = await repository.getSeriesBriefs();
 
-      expect(result, isA<List<PokemonSerie>>());
+      expect(result, isA<List<PokemonSerieBrief>>());
       expect(result.length, 2);
-      expect(result, mockSeries.reversed.toList());
+      expect(result, mockSeriesBriefs.reversed.toList());
     });
 
-    test('getSeries returns an empty list when no series are found', () async {
-      when(dataSource.getSeries()).thenAnswer((_) async => []);
+    test(
+      'getSeriesBriefs returns an empty list when no series are found',
+      () async {
+        when(dataSource.getSeriesBriefs()).thenAnswer((_) async => []);
 
-      final result = await repository.getSeries();
+        final result = await repository.getSeriesBriefs();
 
-      expect(result, isA<List<PokemonSerie>>());
-      expect(result.isEmpty, true);
-    });
+        expect(result, isA<List<PokemonSerieBrief>>());
+        expect(result.isEmpty, true);
+      },
+    );
   });
 
   group('getSeriesWithSets', () {
     test(
       'getSeriesWithSets returns a list of PokemonSerie with sets',
       () async {
-        when(dataSource.getSeries()).thenAnswer((_) async => mockSeries);
         when(
-          dataSource.getSerieWithSets('1'),
-        ).thenAnswer((_) async => mockSeries[0]);
-        when(
-          dataSource.getSerieWithSets('2'),
-        ).thenAnswer((_) async => mockSeries[1]);
+          dataSource.getSeriesBriefs(),
+        ).thenAnswer((_) async => mockSeriesBriefs);
+        when(dataSource.getSerie('1')).thenAnswer((_) async => mockSeries[0]);
+        when(dataSource.getSerie('2')).thenAnswer((_) async => mockSeries[1]);
 
         final result = await repository.getSeriesWithSets();
 
         expect(result, isA<List<PokemonSerie>>());
-        verify(dataSource.getSeries()).called(1);
-        verify(dataSource.getSerieWithSets('1')).called(1);
-        verify(dataSource.getSerieWithSets('2')).called(1);
-        verifyNever(dataSource.getSerieWithSets('3'));
+        verify(dataSource.getSeriesBriefs()).called(1);
+        verify(dataSource.getSerie('id1')).called(1);
+        verify(dataSource.getSerie('id2')).called(1);
+        verifyNever(dataSource.getSerie('3'));
         expect(result.length, 2);
-        expect(result, mockSeries.reversed.toList());
       },
     );
   });
 
   group('getSeriesWithSets', () {
     test('getSeriesWithSets returns [] if no series are found', () async {
-      when(dataSource.getSeries()).thenAnswer((_) async => []);
+      when(dataSource.getSeriesBriefs()).thenAnswer((_) async => []);
 
       final result = await repository.getSeriesWithSets();
 
@@ -105,18 +102,18 @@ void main() {
   });
 
   group('getSetWithCards', () {
-    final mockSetWithCards = PokemonSetWithCards(
+    final mockSetWithCards = PokemonSet(
       name: 'Set 1',
       id: 'set1',
       cardCount: CardCount(total: 100, official: 100),
       cards: [
-        PokemonCard(
+        PokemonCardBrief(
           id: '1',
           image: 'image1',
           localId: 'local1',
           name: 'Card 1',
         ),
-        PokemonCard(
+        PokemonCardBrief(
           id: '2',
           image: 'image2',
           localId: 'local2',
@@ -130,15 +127,15 @@ void main() {
     group('getSetWithCards', () {
       test('returns PokemonSetWithCards when set is found', () async {
         when(
-          dataSource.getSetWithCards('set1'),
+          dataSource.getSet('set1'),
         ).thenAnswer((_) async => mockSetWithCards);
 
         final result = await repository.getSetWithCards(setId: 'set1');
 
-        expect(result, isA<PokemonSetWithCards>());
+        expect(result, isA<PokemonSet>());
         expect(result.id, 'set1');
         expect(result.cards.length, 2);
-        verify(dataSource.getSetWithCards('set1')).called(1);
+        verify(dataSource.getSet('set1')).called(1);
       });
 
       test(
@@ -148,10 +145,10 @@ void main() {
 
           final result = await repository.getSetWithCards(setId: 'set1');
 
-          expect(result, isA<PokemonSetWithCards>());
+          expect(result, isA<PokemonSet>());
           expect(result.id, 'set1');
           expect(result.cards.length, 2);
-          verifyNever(dataSource.getSetWithCards('set1'));
+          verifyNever(dataSource.getSet('set1'));
         },
       );
     });

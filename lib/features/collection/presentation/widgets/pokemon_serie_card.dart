@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/pokemon_set_card.dart';
 
 class PokemonSerieCard extends StatefulWidget {
@@ -65,7 +65,7 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
             ),
           ),
         ),
-        if (isDeployed && widget.pokemonSerie.sets != null) buildListSets(),
+        if (isDeployed) buildListSets(),
       ],
     );
   }
@@ -82,7 +82,7 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
       ),
       child: Column(
         children:
-            widget.pokemonSerie.sets!.map((set) {
+            widget.pokemonSerie.sets.map((set) {
               return PokemonSetCardWidget(
                 set: set,
                 onTap: () => navigateToSetDetailsPage(set),
@@ -92,7 +92,7 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
     );
   }
 
-  void navigateToSetDetailsPage(PokemonSet set) {
+  void navigateToSetDetailsPage(PokemonSetBrief set) {
     context.push('/set_details', extra: set);
   }
 }
