@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 
 class PokemonCardUnavailableWidget extends StatelessWidget {
   final PokemonCardBrief card;

@@ -17,7 +17,7 @@ class PokemonCardBrief extends Equatable {
     return PokemonCardBrief(
       id: json['id'],
       image: json['image'],
-      localId: json['localId'],
+      localId: json['localId'].toString(),
       name: json['name'],
     );
   }

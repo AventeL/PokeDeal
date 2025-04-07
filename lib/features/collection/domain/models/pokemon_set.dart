@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/card_count.dart';
 import 'package:pokedeal/features/collection/domain/models/legal.dart';
-import 'package:pokedeal/features/collection/domain/models/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
 
 class PokemonSet extends Equatable {
