@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/authentication/data/authentication_data_source_interface.dart';
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
 
@@ -15,33 +15,25 @@ void main() {
     repository = AuthenticationRepository(authenticationDataSource: dataSource);
   });
 
-  final mockUser = User(
-    id: 'test_id',
-    appMetadata: {},
-    userMetadata: {},
-    aud: 'mockAud',
-    createdAt: DateTime.now().toIso8601String(),
-  );
-
-  final mockSession = Session(
-    accessToken: 'mockAccessToken',
-    tokenType: 'mockTokenType',
-    user: mockUser,
+  UserProfile mockUser = UserProfile(
+    id: '1',
+    email: 'test@gmail.com',
+    pseudo: 'test',
+    createdAt: DateTime.now(),
   );
 
   group('signInWithEmail', () {
     test('signInWithEmail returns AuthResponse on success', () async {
-      when(dataSource.signInWithEmail('test@gmail.com', '123456')).thenAnswer(
-        (_) async => AuthResponse(session: mockSession, user: mockUser),
-      );
+      when(
+        dataSource.signInWithEmail('test@gmail.com', '123456'),
+      ).thenAnswer((_) async => mockUser);
 
       final response = await repository.signInWithEmail(
         'test@gmail.com',
         '123456',
       );
 
-      expect(response.session, mockSession);
-      expect(response.user, mockUser);
+      expect(response, mockUser);
       verify(dataSource.signInWithEmail('test@gmail.com', '123456')).called(1);
     });
 
@@ -68,28 +60,33 @@ void main() {
 
   group('signUpWithEmail', () {
     test('signUpWithEmail returns AuthResponse on success', () async {
-      when(dataSource.signUpWithEmail('test@gmail.com', '123456')).thenAnswer(
-        (_) async => AuthResponse(session: mockSession, user: mockUser),
-      );
+      when(
+        dataSource.signUpWithEmail('test@gmail.com', '123456', 'test'),
+      ).thenAnswer((_) async => mockUser);
 
       final response = await repository.signUpWithEmail(
         'test@gmail.com',
         '123456',
+        'test',
       );
 
-      expect(response.session, mockSession);
-      expect(response.user, mockUser);
-      verify(dataSource.signUpWithEmail('test@gmail.com', '123456')).called(1);
+      expect(response, mockUser);
+      verify(
+        dataSource.signUpWithEmail('test@gmail.com', '123456', 'test'),
+      ).called(1);
     });
 
     test('signUpWithEmail throws an exception on failure', () async {
       when(
-        dataSource.signUpWithEmail('test@gmail.com', '123456'),
+        dataSource.signUpWithEmail('test@gmail.com', '123456', 'test'),
       ).thenThrow(Exception('Failed to sign up'));
 
       expect(
-        () async =>
-            await repository.signUpWithEmail('test@gmail.com', '123456'),
+        () async => await repository.signUpWithEmail(
+          'test@gmail.com',
+          '123456',
+          'test',
+        ),
         throwsA(
           predicate(
             (e) =>
@@ -99,7 +96,49 @@ void main() {
         ),
       );
 
-      verify(dataSource.signUpWithEmail('test@gmail.com', '123456')).called(1);
+      verify(
+        dataSource.signUpWithEmail('test@gmail.com', '123456', 'test'),
+      ).called(1);
+    });
+  });
+
+  group('getUserProfile', () {
+    test('getUserProfile returns UserProfile on success', () async {
+      when(dataSource.getUserProfile()).thenAnswer((_) async => mockUser);
+
+      final response = await repository.getUserProfile();
+
+      expect(response, mockUser);
+      verify(dataSource.getUserProfile()).called(1);
+    });
+
+    test('getUserProfile returns cached UserProfile if it exists', () async {
+      repository.userProfile = mockUser;
+
+      final response = await repository.getUserProfile();
+
+      expect(response, mockUser);
+      verifyNever(dataSource.getUserProfile());
+    });
+
+    test('getUserProfile throws an exception on failure', () async {
+      when(
+        dataSource.getUserProfile(),
+      ).thenThrow(Exception('Failed to get user profile'));
+
+      expect(
+        () async => await repository.getUserProfile(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is Exception &&
+                e.toString() ==
+                    Exception('Failed to get user profile').toString(),
+          ),
+        ),
+      );
+
+      verify(dataSource.getUserProfile()).called(1);
     });
   });
 

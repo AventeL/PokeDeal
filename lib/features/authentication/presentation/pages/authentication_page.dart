@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedeal/features/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:pokedeal/features/authentication/presentation/pages/login_page_view.dart';
 import 'package:pokedeal/features/authentication/presentation/pages/register_page_view.dart';
+
+import 'login_page_view.dart';
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
@@ -53,92 +54,105 @@ class _AuthenticationPageState extends State<AuthenticationPage>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return SafeArea(
       child: Column(
         children: [
-          Container(
-            width: double.infinity,
-            height: 250,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.primary,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                Text(
-                  "PokeDeal",
-                  style: Theme.of(
-                    context,
-                  ).textTheme.headlineLarge?.copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  "Gérez et échangez votre collection de cartes\nPokemon !",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(20),
-            child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-              listener: (context, state) {
-                if (state is AuthenticationError && mounted) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(state.message)));
-                }
-              },
-              builder: (context, state) {
-                if (state is AuthenticationLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TabBar(
-                      controller: _tabController,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      tabs: const [Tab(text: 'Login'), Tab(text: 'Register')],
-                      indicatorPadding: const EdgeInsets.symmetric(
-                        horizontal: 20,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        bottom: Radius.circular(20),
                       ),
-                      dividerColor: Colors.transparent,
-                    ),
-                    SizedBox(
-                      height: 500,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          LoginPageView(
-                            emailController: emailController,
-                            passwordController: passwordController,
-                          ),
-                          RegisterPageView(
-                            emailController: emailController,
-                            passwordController: passwordController,
-                            confirmPasswordController:
-                                confirmPasswordController,
-                          ),
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.secondary,
+                          Theme.of(context).colorScheme.primary,
                         ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
                     ),
-                  ],
-                );
-              },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 20),
+                        Text(
+                          "PokeDeal",
+                          style: Theme.of(context).textTheme.headlineLarge
+                              ?.copyWith(color: Colors.white),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "Gérez et échangez votre collection de cartes\nPokemon !",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(20),
+                    child:
+                        BlocConsumer<AuthenticationBloc, AuthenticationState>(
+                          listener: (context, state) {
+                            if (state is AuthenticationError && mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.message)),
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is AuthenticationLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+
+                            return Column(
+                              children: [
+                                TabBar(
+                                  controller: _tabController,
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                  tabs: const [
+                                    Tab(text: 'Login'),
+                                    Tab(text: 'Register'),
+                                  ],
+                                  indicatorPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                  ),
+                                  dividerColor: Colors.transparent,
+                                ),
+                                SizedBox(
+                                  height: 500,
+                                  child: TabBarView(
+                                    controller: _tabController,
+                                    children: [
+                                      LoginPageView(
+                                        emailController: emailController,
+                                        passwordController: passwordController,
+                                      ),
+                                      RegisterPageView(
+                                        emailController: emailController,
+                                        passwordController: passwordController,
+                                        confirmPasswordController:
+                                            confirmPasswordController,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                  ),
+                ],
+              ),
             ),
           ),
           Padding(
