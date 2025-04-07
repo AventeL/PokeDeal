@@ -15,7 +15,6 @@ class PokemonSerie extends Equatable {
   });
 
   factory PokemonSerie.fromJson(Map<String, dynamic> json) {
-    print(json);
     return PokemonSerie(
       name: json['name'],
       id: json['id'],

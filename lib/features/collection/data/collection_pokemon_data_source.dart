@@ -41,7 +41,6 @@ class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
   @override
   Future<PokemonSet> getSet(String setId) async {
     String url = "https://api.tcgdex.net/v2/fr/sets/$setId";
-    print(url);
     http.Response response = await http.get(Uri.parse(url));
     PokemonSet set = PokemonSet.fromJson(jsonDecode(response.body));
 

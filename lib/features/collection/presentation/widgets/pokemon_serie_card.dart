@@ -19,15 +19,25 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
 
   Color bgColor = Colors.white;
 
+  BorderRadius get adaptativeBorderRadius =>
+      !isDeployed
+          ? BorderRadius.circular(borderRadius)
+          : BorderRadius.only(
+            topLeft: Radius.circular(borderRadius),
+            topRight: Radius.circular(borderRadius),
+            bottomLeft: Radius.circular(0),
+            bottomRight: Radius.circular(0),
+          );
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Material(
           color: bgColor,
-          borderRadius: BorderRadius.circular(borderRadius),
+          borderRadius: adaptativeBorderRadius,
           child: InkWell(
-            borderRadius: BorderRadius.circular(borderRadius),
+            borderRadius: adaptativeBorderRadius,
             onTap: () {
               setState(() {
                 isDeployed = !isDeployed;
@@ -35,15 +45,7 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-              decoration: BoxDecoration(
-                borderRadius:
-                    !isDeployed
-                        ? BorderRadius.circular(borderRadius)
-                        : BorderRadius.only(
-                          topLeft: Radius.circular(borderRadius),
-                          topRight: Radius.circular(borderRadius),
-                        ),
-              ),
+              decoration: BoxDecoration(borderRadius: adaptativeBorderRadius),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
