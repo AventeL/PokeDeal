@@ -21,6 +21,8 @@ class RegisterPageView extends StatefulWidget {
 
 class _RegisterPageViewState extends State<RegisterPageView> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isPasswordVisible = false;
+  bool isConfirmPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +79,25 @@ class _RegisterPageViewState extends State<RegisterPageView> {
               TextFormField(
                 key: const Key('passwordField'),
                 controller: widget.passwordController,
+                obscureText: !isPasswordVisible,
                 validator: PasswordValidator.validate,
                 decoration: InputDecoration(
                   labelText: 'Mot de passe',
                   border: OutlineInputBorder(),
+                  suffixIconColor: Theme.of(context).colorScheme.primary,
+                  suffixIcon: IconButton(
+                    key: const Key('passwordVisibilityButton'),
+                    onPressed: () {
+                      setState(() {
+                        isPasswordVisible = !isPasswordVisible;
+                      });
+                    },
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                  ),
                 ),
               ),
               Text(
@@ -89,11 +106,26 @@ class _RegisterPageViewState extends State<RegisterPageView> {
               ),
               TextFormField(
                 key: const Key('confirmPasswordField'),
+                obscureText: !isConfirmPasswordVisible,
                 controller: widget.confirmPasswordController,
                 validator: PasswordValidator.validate,
                 decoration: InputDecoration(
                   labelText: 'Confirmer le mot de passe',
                   border: OutlineInputBorder(),
+                  suffixIconColor: Theme.of(context).colorScheme.primary,
+                  suffixIcon: IconButton(
+                    key: const Key('confirmPasswordVisibilityButton'),
+                    onPressed: () {
+                      setState(() {
+                        isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                      });
+                    },
+                    icon: Icon(
+                      isConfirmPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                  ),
                 ),
               ),
             ],

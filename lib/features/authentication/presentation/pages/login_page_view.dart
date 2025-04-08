@@ -19,6 +19,7 @@ class LoginPageView extends StatefulWidget {
 
 class _LoginPageViewState extends State<LoginPageView> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +77,24 @@ class _LoginPageViewState extends State<LoginPageView> {
                 key: const Key('passwordField'),
                 controller: widget.passwordController,
                 validator: PasswordValidator.validate,
+                obscureText: !isPasswordVisible,
                 decoration: InputDecoration(
                   labelText: 'Mot de passe',
                   border: OutlineInputBorder(),
+                  suffixIconColor: Theme.of(context).colorScheme.primary,
+                  suffixIcon: IconButton(
+                    key: const Key('passwordVisibilityButton'),
+                    onPressed: () {
+                      setState(() {
+                        isPasswordVisible = !isPasswordVisible;
+                      });
+                    },
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                  ),
                 ),
               ),
             ],
