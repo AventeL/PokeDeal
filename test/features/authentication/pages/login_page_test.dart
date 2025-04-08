@@ -25,5 +25,39 @@ void main() {
 
     final passwordField = find.byKey(Key('passwordField'));
     expect(passwordField, findsOneWidget);
+
+    final passwordVisibilityButton = find.byKey(
+      Key('passwordVisibilityButton'),
+    );
+    expect(passwordVisibilityButton, findsOneWidget);
+    Icon icon = tester.widget<Icon>(
+      find.descendant(
+        of: passwordVisibilityButton,
+        matching: find.byType(Icon),
+      ),
+    );
+    expect(icon.icon, Icons.visibility);
+
+    await tester.tap(passwordVisibilityButton);
+    await tester.pump();
+
+    icon = tester.widget<Icon>(
+      find.descendant(
+        of: passwordVisibilityButton,
+        matching: find.byType(Icon),
+      ),
+    );
+    expect(icon.icon, Icons.visibility_off);
+
+    await tester.tap(passwordVisibilityButton);
+    await tester.pump();
+
+    icon = tester.widget<Icon>(
+      find.descendant(
+        of: passwordVisibilityButton,
+        matching: find.byType(Icon),
+      ),
+    );
+    expect(icon.icon, Icons.visibility);
   });
 }
