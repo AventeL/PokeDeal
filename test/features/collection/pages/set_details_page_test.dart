@@ -134,6 +134,8 @@ void main() {
 
       expect(find.byType(PokemonCardWidget), findsOneWidget);
       expect(find.byType(PokemonCardUnavailableWidget), findsOneWidget);
+      expect(find.byType(LinearProgressIndicator), findsOneWidget);
+      expect(find.text('58/100'), findsOneWidget);
     },
   );
 
@@ -174,4 +176,4 @@ void main() {
       findsOneWidget,
     );
   });
-}
+} // @TODO faire les tests pour la barre de progression & le nombre de cartes
