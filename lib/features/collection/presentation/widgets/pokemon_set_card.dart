@@ -28,7 +28,7 @@ class PokemonSetCardWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              set.symbolUrl != null
+              set.logoUrl != null
                   ? Image.network(
                     '${set.logoUrl!}.png',
                     width: 70,
