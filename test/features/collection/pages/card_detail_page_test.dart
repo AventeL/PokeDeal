@@ -88,15 +88,17 @@ void main() {
       when(mockBloc.state).thenReturn(
         CollectionPokemonCardsGet(
           card: BasePokemonCard(
-            localId: 'localId',
+            localId: '1',
             category: CardCategory.trainer,
             illustrator: 'Illustrator Name',
             id: 'cardId',
             name: 'Card Name',
             image: 'https://example.com/card.png',
+            rarity: 'Rare',
             setBrief: PokemonSetBrief(
               id: 'setId',
               name: 'Set Name',
+              symbolUrl: 'https://example.com/card',
               cardCount: CardCount(total: 100, official: 50),
             ),
             variants: CardVariant(
@@ -121,10 +123,13 @@ void main() {
         ),
       );
 
-      //@todo à continuer dans un prochain ticket
-
-      expect(find.text('Card Name'), findsOneWidget);
-      expect(find.byType(Image), findsOneWidget);
+      expect(find.text('Card Name'), findsNWidgets(2));
+      expect(find.byType(Image), findsNWidgets(2));
+      expect(find.text("1/100"), findsOneWidget);
+      expect(find.text('Rare'), findsOneWidget);
+      expect(find.text('Set Name'), findsOneWidget);
+      expect(find.byIcon(Icons.brush), findsOneWidget);
+      expect(find.text('Illustrator Name'), findsOneWidget);
     },
   );
 

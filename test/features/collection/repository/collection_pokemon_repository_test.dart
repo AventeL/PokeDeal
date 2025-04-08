@@ -151,7 +151,7 @@ void main() {
 
   group('getCard', () {
     BasePokemonCard mockCard = BasePokemonCard(
-      localId: 'localId',
+      localId: '1',
       category: CardCategory.trainer,
       illustrator: 'Illustrator Name',
       id: 'cardId',
@@ -160,6 +160,7 @@ void main() {
       setBrief: PokemonSetBrief(
         id: 'setId',
         name: 'Set Name',
+        symbolUrl: 'https://example.com/card.png',
         cardCount: CardCount(total: 100, official: 50),
       ),
       variants: CardVariant(

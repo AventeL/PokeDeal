@@ -25,6 +25,8 @@ class PokemonCardUnavailableWidget extends StatelessWidget {
         borderRadius: borderRadius,
         onTap: onTap,
         child: Container(
+          height: 224,
+          width: 150,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
             borderRadius: borderRadius,
