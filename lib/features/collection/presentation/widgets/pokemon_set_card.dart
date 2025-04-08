@@ -18,7 +18,12 @@ class PokemonSetCardWidget extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
-          decoration: BoxDecoration(color: Color(0xFF2C2C2C)),
+          decoration: BoxDecoration(
+            color:
+                Theme.of(context).brightness == Brightness.light
+                    ? Colors.white
+                    : Color(0xFF2C2C2C),
+          ),
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,9 +62,7 @@ class PokemonSetCardWidget extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: 270,
-                          height: 4,
+                        Expanded(
                           child: LinearProgressIndicator(
                             value: percentage,
                             backgroundColor: Colors.grey,
