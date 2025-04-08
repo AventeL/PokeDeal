@@ -41,12 +41,13 @@ class CardDetailPage extends StatelessWidget {
           if (state is CollectionPokemonCardsGet) {
             return Column(
               children: [
-                CachedNetworkImage(
-                  imageUrl: PokemonCardImageHelper.gererateImageUrl(
-                    state.card.image!,
-                    quality: PokemonCardQuality.high,
+                if (state.card.image != null)
+                  CachedNetworkImage(
+                    imageUrl: PokemonCardImageHelper.gererateImageUrl(
+                      state.card.image!,
+                      quality: PokemonCardQuality.high,
+                    ),
                   ),
-                ),
                 Text('Card Details Loaded ${state.card.category}'),
               ],
             );
