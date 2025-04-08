@@ -45,13 +45,24 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-              decoration: BoxDecoration(borderRadius: adaptativeBorderRadius),
+              decoration: BoxDecoration(
+                borderRadius: adaptativeBorderRadius,
+                color:
+                    Theme.of(context).brightness == Brightness.light
+                        ? bgColor
+                        : Color(0xFF2C2C2C),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     widget.pokemonSerie.name,
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color:
+                          Theme.of(context).brightness == Brightness.light
+                              ? Colors.black
+                              : Colors.white,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -60,6 +71,10 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
                     alignment: Alignment.centerRight,
                     child: Icon(
                       isDeployed ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                      color:
+                          Theme.of(context).brightness == Brightness.light
+                              ? Colors.black
+                              : Colors.white,
                     ),
                   ),
                 ],
@@ -76,7 +91,10 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: bgColor,
+        color:
+            Theme.of(context).brightness == Brightness.light
+                ? Colors.white
+                : Color(0xFF2C2C2C),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(borderRadius),
           bottomRight: Radius.circular(borderRadius),
