@@ -30,16 +30,16 @@ class PokemonSetCardWidget extends StatelessWidget {
             children: [
               set.symbolUrl != null
                   ? Image.network(
-                    '${set.symbolUrl!}.png',
-                    width: 50,
+                    '${set.logoUrl!}.png',
+                    width: 70,
                     height: 50,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   )
                   : Image.asset(
                     'assets/images/pokeball.png',
-                    width: 50,
+                    width: 70,
                     height: 50,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
               20.width,
               Expanded(

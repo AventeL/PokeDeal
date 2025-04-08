@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
@@ -64,14 +65,15 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
               );
             }
 
-            return Container(
-              padding: const EdgeInsets.all(16),
-              child: SingleChildScrollView(
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    8.height,
                     Container(
-                      height: 60,
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color:
                             Theme.of(context).brightness == Brightness.light
@@ -81,52 +83,48 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                           Radius.circular(20),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Progression',
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium?.copyWith(
-                                    color:
-                                        Theme.of(context).brightness ==
-                                                Brightness.light
-                                            ? Colors.black
-                                            : Colors.white,
-                                  ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Progression',
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.copyWith(
+                                  color:
+                                      Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? Colors.black
+                                          : Colors.white,
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '58/100',
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium?.copyWith(
-                                    color:
-                                        Theme.of(context).brightness ==
-                                                Brightness.light
-                                            ? Colors.black
-                                            : Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Expanded(
-                              child: LinearProgressIndicator(
-                                value: 58 / 100,
-                                backgroundColor: Colors.grey[300],
-                                color: Theme.of(context).colorScheme.primary,
                               ),
-                            ),
-                          ],
-                        ),
+                              const SizedBox(width: 8),
+                              Text(
+                                '58/100',
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.copyWith(
+                                  color:
+                                      Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? Colors.black
+                                          : Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          8.height,
+                          LinearProgressIndicator(
+                            value: 58 / 100,
+                            backgroundColor: Colors.grey[300],
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 16),
+                    16.height,
                     Text(
                       "Les cartes",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -136,44 +134,41 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                                 : Colors.white,
                       ),
                     ),
-                    SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 2 / 3,
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 8,
-                        ),
-                        itemCount: setWithCards.cards.length,
-                        itemBuilder: (context, index) {
-                          PokemonCardBrief card = setWithCards.cards[index];
+                    16.height,
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 2 / 3,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                      ),
+                      itemCount: setWithCards.cards.length,
+                      itemBuilder: (context, index) {
+                        PokemonCardBrief card = setWithCards.cards[index];
 
-                          if (card.image == null) {
-                            return PokemonCardUnavailableWidget(
-                              card: card,
-                              totalCard: setWithCards.cards.length,
-                              onTap:
-                                  () => navigateToCardPage(
-                                    cardId: card.id,
-                                    cardBrief: card,
-                                  ),
-                            );
-                          }
-
-                          return PokemonCardWidget(
-                            cardUrl: card.image!,
+                        if (card.image == null) {
+                          return PokemonCardUnavailableWidget(
+                            card: card,
+                            totalCard: setWithCards.cards.length,
                             onTap:
                                 () => navigateToCardPage(
                                   cardId: card.id,
                                   cardBrief: card,
                                 ),
                           );
-                        },
-                      ),
+                        }
+
+                        return PokemonCardWidget(
+                          cardUrl: card.image!,
+                          onTap:
+                              () => navigateToCardPage(
+                                cardId: card.id,
+                                cardBrief: card,
+                              ),
+                        );
+                      },
                     ),
                   ],
                 ),
