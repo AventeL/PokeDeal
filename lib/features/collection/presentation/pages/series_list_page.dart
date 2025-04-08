@@ -34,12 +34,13 @@ class SeriesListPage extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               8.height,
-              Center(
-                child: Text(
-                  'Liste des séries',
-                  style: Theme.of(context).textTheme.titleLarge,
+              Text(
+                'Ma Collection',
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               Expanded(

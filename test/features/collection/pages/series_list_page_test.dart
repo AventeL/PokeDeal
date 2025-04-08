@@ -65,7 +65,7 @@ void main() {
 
     await tester.pump();
 
-    expect(find.text('Liste des séries'), findsOneWidget);
+    expect(find.text('Ma Collection'), findsOneWidget);
     expect(find.byType(ListView), findsOneWidget);
     expect(find.byType(PokemonSerieCard), findsNWidgets(3));
     expect(find.text('Serie 1'), findsOneWidget);
