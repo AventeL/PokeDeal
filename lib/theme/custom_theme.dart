@@ -9,6 +9,7 @@ ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     error: errorColor,
   ),
+  disabledColor: Color(0xFFBDBDBD),
   scaffoldBackgroundColor: bgLightColor,
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
@@ -36,6 +37,7 @@ ThemeData darkTheme = ThemeData(
     error: errorColor,
     brightness: Brightness.dark,
   ),
+  disabledColor: Color(0xFFBDBDBD),
   scaffoldBackgroundColor: bgDarkColor,
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
