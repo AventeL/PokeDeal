@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/helper/pokemon_card_image_helper.dart';
+import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
 
@@ -115,7 +116,7 @@ class CardDetailPage extends StatelessWidget {
                                         '${state.card.localId}/${state.card.setBrief.cardCount.total}',
                                       ),
                                     ),
-                                    const SizedBox(width: 8),
+                                    8.width,
                                     Text(state.card.rarity ?? 'Inconnu'),
                                   ],
                                 ),
@@ -135,7 +136,7 @@ class CardDetailPage extends StatelessWidget {
                                           height: 30,
                                           fit: BoxFit.cover,
                                         ),
-                                    const SizedBox(width: 8),
+                                    8.width,
                                     Flexible(
                                       child: Text(
                                         state.card.setBrief.name,
