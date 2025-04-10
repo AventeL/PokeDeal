@@ -17,7 +17,6 @@ class AuthenticationPage extends StatefulWidget {
 class _AuthenticationPageState extends State<AuthenticationPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late ValueNotifier<int> _tabIndexNotifier;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -27,12 +26,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    _tabIndexNotifier = ValueNotifier<int>(_tabController.index);
-
     _tabController.addListener(() {
-      if (_tabController.index != _tabIndexNotifier.value) {
-        _tabIndexNotifier.value = _tabController.index;
-      }
+      setState(() {});
     });
     super.initState();
   }
@@ -40,7 +35,6 @@ class _AuthenticationPageState extends State<AuthenticationPage>
   @override
   void dispose() {
     _tabController.dispose();
-    _tabIndexNotifier.dispose();
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -90,7 +84,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                           style: Theme.of(context).textTheme.headlineLarge
                               ?.copyWith(color: Colors.white),
                         ),
-                        const SizedBox(height: 20),
+                        20.height,
                         Text(
                           "Gérez et échangez votre collection de cartes\nPokemon !",
                           textAlign: TextAlign.center,
@@ -157,74 +151,72 @@ class _AuthenticationPageState extends State<AuthenticationPage>
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
-            bottom: MediaQuery.of(context).padding.bottom,
-            top: 16,
-          ),
-          child: ValueListenableBuilder<int>(
-            valueListenable: _tabIndexNotifier,
-            builder: (context, index, _) {
-              return ElevatedButton(
-                onPressed: () {
-                  String email = emailController.text;
-                  String password = passwordController.text;
-                  if (index == 0) {
-                    if (email.isEmpty || password.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Veuillez remplir tous les champs'),
-                        ),
-                      );
-                      return;
-                    }
-                    _onLogin(email, password);
-                  } else {
-                    String confirmPassword = confirmPasswordController.text;
-                    if (email.isEmpty ||
-                        password.isEmpty ||
-                        confirmPassword.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Veuillez remplir tous les champs'),
-                        ),
-                      );
-                      return;
-                    }
-                    if (password != confirmPassword) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Les mots de passe ne correspondent pas',
-                          ),
-                        ),
-                      );
-                      return;
-                    }
-                    context.go(
-                      '/get_info_profile',
-                      extra: {'email': email, 'password': password},
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  index == 0 ? "Se connecter" : "S'inscrire",
-                  style: TextStyle(color: Colors.white),
+        buildButton(),
+      ],
+    );
+  }
+
+  Widget buildButton() {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom:
+            MediaQuery.of(context).padding.bottom == 0
+                ? 16
+                : MediaQuery.of(context).padding.bottom,
+        top: 16,
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          String email = emailController.text;
+          String password = passwordController.text;
+          if (_tabController.index == 0) {
+            if (email.isEmpty || password.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Veuillez remplir tous les champs'),
                 ),
               );
-            },
+              return;
+            }
+            _onLogin(email, password);
+          } else {
+            String confirmPassword = confirmPasswordController.text;
+            if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Veuillez remplir tous les champs'),
+                ),
+              );
+              return;
+            }
+            if (password != confirmPassword) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Les mots de passe ne correspondent pas'),
+                ),
+              );
+              return;
+            }
+            context.go(
+              '/get_info_profile',
+              extra: {'email': email, 'password': password},
+            );
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          minimumSize: const Size(double.infinity, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
-      ],
+        child: Text(
+          _tabController.index == 0 ? "Se connecter" : "S'inscrire",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
     );
   }
 }
