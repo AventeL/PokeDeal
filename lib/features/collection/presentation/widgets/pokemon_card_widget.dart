@@ -10,12 +10,15 @@ class PokemonCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: CachedNetworkImage(
-        imageUrl: PokemonCardImageHelper.gererateImageUrl(
-          cardUrl,
-          quality: PokemonCardQuality.low,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: CachedNetworkImage(
+          imageUrl: PokemonCardImageHelper.gererateImageUrl(
+            cardUrl,
+            quality: PokemonCardQuality.low,
+          ),
         ),
       ),
     );

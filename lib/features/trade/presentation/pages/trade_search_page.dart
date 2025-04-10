@@ -23,8 +23,8 @@ class TradeSearchPage extends StatelessWidget {
               itemCount: 10,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TradeProfileCardWidget(),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: TradeProfileCardWidget(onTap: onProfileTap),
                 );
               },
             ),
@@ -33,4 +33,6 @@ class TradeSearchPage extends StatelessWidget {
       ),
     );
   }
+
+  void onProfileTap() {}
 }

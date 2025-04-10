@@ -14,17 +14,14 @@ class PokemonSetCardWidget extends StatelessWidget {
         set.cardCount.total > 0
             ? set.cardCount.total / set.cardCount.total
             : 0.0;
+
+    Color bgColor = Theme.of(context).colorScheme.tertiaryContainer;
+
     return Material(
-      color: Colors.transparent,
+      color: bgColor,
       child: InkWell(
         onTap: onTap,
         child: Container(
-          decoration: BoxDecoration(
-            color:
-                Theme.of(context).brightness == Brightness.light
-                    ? Colors.white
-                    : Color(0xFF2C2C2C),
-          ),
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +67,7 @@ class PokemonSetCardWidget extends StatelessWidget {
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                        SizedBox(width: 8),
+                        8.width,
                         Text(
                           '${(percentage * 100).toStringAsFixed(1)}%',
                           style: Theme.of(context).textTheme.bodyMedium,

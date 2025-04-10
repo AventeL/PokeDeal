@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/helper/pokemon_card_image_helper.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
 
@@ -42,131 +43,13 @@ class CardDetailPage extends StatelessWidget {
             return Center(child: Text('Error: ${state.message}'));
           }
           if (state is CollectionPokemonCardsGet) {
-            return Container(
-              padding: const EdgeInsets.all(16),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color:
-                          Theme.of(context).brightness == Brightness.light
-                              ? Colors.white
-                              : Color(0xFF2C2C2C),
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          child:
-                              state.card.image != null
-                                  ? CachedNetworkImage(
-                                    imageUrl:
-                                        PokemonCardImageHelper.gererateImageUrl(
-                                          state.card.image!,
-                                          quality: PokemonCardQuality.high,
-                                        ),
-                                    height: 240,
-                                    width: 150,
-                                  )
-                                  : Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 8.0,
-                                    ),
-                                    child: PokemonCardUnavailableWidget(
-                                      card: PokemonCardBrief(
-                                        id: state.card.setBrief.id,
-                                        localId: state.card.localId,
-                                        name: state.card.setBrief.name,
-                                      ),
-                                      totalCard:
-                                          state.card.setBrief.cardCount.total,
-                                    ),
-                                  ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  state.card.name,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.titleMedium?.copyWith(
-                                    color:
-                                        Theme.of(context).brightness ==
-                                                Brightness.light
-                                            ? Colors.black
-                                            : Colors.white,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(50),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        '${state.card.localId}/${state.card.setBrief.cardCount.total}',
-                                      ),
-                                    ),
-                                    8.width,
-                                    Text(state.card.rarity ?? 'Inconnu'),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    state.card.setBrief.symbolUrl != null
-                                        ? CachedNetworkImage(
-                                          imageUrl:
-                                              '${state.card.setBrief.symbolUrl!}.png',
-                                          width: 30,
-                                          height: 30,
-                                          fit: BoxFit.cover,
-                                        )
-                                        : Image.asset(
-                                          'assets/images/pokeball.png',
-                                          width: 30,
-                                          height: 30,
-                                          fit: BoxFit.cover,
-                                        ),
-                                    8.width,
-                                    Flexible(
-                                      child: Text(
-                                        state.card.setBrief.name,
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium?.copyWith(
-                                          color:
-                                              Theme.of(context).brightness ==
-                                                      Brightness.light
-                                                  ? Colors.black
-                                                  : Colors.white,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const Icon(Icons.brush, size: 16),
-                                    Text(state.card.illustrator ?? 'Inconnu'),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  16.height,
+                  buildCardHeader(state.card, context),
+                  16.height,
                 ],
               ),
             );
@@ -174,6 +57,108 @@ class CardDetailPage extends StatelessWidget {
 
           return Center(child: Text('Carte indisponible'));
         },
+      ),
+    );
+  }
+
+  Widget buildCardImage(BasePokemonCard card) {
+    return SizedBox(
+      height: 240,
+      width: 150,
+      child:
+          card.image != null
+              ? CachedNetworkImage(
+                imageUrl: PokemonCardImageHelper.gererateImageUrl(
+                  card.image!,
+                  quality: PokemonCardQuality.high,
+                ),
+              )
+              : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: PokemonCardUnavailableWidget(
+                  card: PokemonCardBrief(
+                    id: card.setBrief.id,
+                    localId: card.localId,
+                    name: card.setBrief.name,
+                  ),
+                  totalCard: card.setBrief.cardCount.total,
+                ),
+              ),
+    );
+  }
+
+  Widget buildNumberAndRarity(BasePokemonCard card) {
+    return Row(
+      children: [
+        Text('${card.localId}/${card.setBrief.cardCount.total}'),
+        if (card.rarity != null) ...[8.width, Text(card.rarity!)],
+      ],
+    );
+  }
+
+  Widget buildIllustrator(BasePokemonCard card) {
+    return Row(
+      children: [const Icon(Icons.brush, size: 16), Text(card.illustrator!)],
+    );
+  }
+
+  Widget buildSetInfo(BasePokemonCard card, BuildContext context) {
+    return Row(
+      children: [
+        card.setBrief.symbolUrl != null
+            ? CachedNetworkImage(
+              imageUrl: '${card.setBrief.symbolUrl!}.png',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            )
+            : Image.asset(
+              'assets/images/pokeball.png',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+        8.width,
+        Flexible(
+          child: Text(
+            card.setBrief.name,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildCardHeader(BasePokemonCard card, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.tertiaryContainer,
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+      ),
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            buildCardImage(card),
+            16.width,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    card.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  buildNumberAndRarity(card),
+                  buildSetInfo(card, context),
+                  if (card.illustrator != null) buildIllustrator(card),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
