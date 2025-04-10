@@ -15,18 +15,11 @@ void main() {
 
   setUp(() {
     final getIt = GetIt.instance;
-    getIt.reset();
-
-    final mockAuthenticationRepository = MockAuthenticationRepository();
-    final mockDataSource = MockIProfileDataSource();
-
+    authenticationRepository = MockAuthenticationRepository();
     getIt.registerLazySingleton<AuthenticationRepository>(
-      () => mockAuthenticationRepository,
+      () => authenticationRepository,
     );
-    getIt.registerLazySingleton<IProfileDataSource>(() => mockDataSource);
-
-    authenticationRepository = getIt<AuthenticationRepository>();
-    dataSource = getIt<IProfileDataSource>();
+    dataSource = MockIProfileDataSource();
     profileRepository = ProfileRepository(profileDataSource: dataSource);
   });
 
@@ -45,13 +38,12 @@ void main() {
     test(
       'getProfile returns a profile and calls authenticationRepository if there is a currentUser',
       () async {
+        when(authenticationRepository.userProfile).thenReturn(mockUserProfile);
         when(
           authenticationRepository.getUserProfile(),
         ).thenAnswer((_) async => mockUserProfile);
 
         when(authenticationRepository.userProfile).thenReturn(mockUserProfile);
-
-        when(dataSource.getProfile(id: mockUserProfile.id));
 
         when(
           dataSource.getProfile(id: mockUserProfile.id),
@@ -67,24 +59,23 @@ void main() {
         verify(authenticationRepository.getUserProfile()).called(1);
       },
     );
-
-    test(
-      'getProfile returns a profile and calls dataSource if there is no currentUser',
-      () async {
-        when(
-          dataSource.getProfile(id: mockUserProfile.id),
-        ).thenAnswer((_) async => mockUserProfile); // 🔹 Ajout du stub correct
-
-        authenticationRepository.userProfile = null;
-
-        final result = await profileRepository.getProfile(
-          id: mockUserProfile.id,
-        );
-
-        expect(result, isA<UserProfile>());
-        expect(result, mockUserProfile);
-        verify(dataSource.getProfile(id: mockUserProfile.id)).called(1);
-      },
-    );
   });
+
+  test(
+    'getProfile returns a profile and calls dataSource if there is no currentUser',
+    () async {
+      when(authenticationRepository.userProfile).thenReturn(null);
+
+      when(
+        dataSource.getProfile(id: mockUserProfile.id),
+      ).thenAnswer((_) async => mockUserProfile);
+
+      final result = await profileRepository.getProfile(id: mockUserProfile.id);
+
+      expect(result, isA<UserProfile>());
+      expect(result, mockUserProfile);
+
+      verify(dataSource.getProfile(id: mockUserProfile.id)).called(1);
+    },
+  );
 }
