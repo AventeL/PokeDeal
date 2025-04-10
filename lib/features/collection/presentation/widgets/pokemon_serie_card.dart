@@ -17,7 +17,7 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
   bool isDeployed = false;
   double borderRadius = 8.0;
 
-  Color bgColor = Colors.white;
+  Color get bgColor => Theme.of(context).colorScheme.tertiaryContainer;
 
   BorderRadius get adaptativeBorderRadius =>
       !isDeployed
@@ -45,13 +45,7 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-              decoration: BoxDecoration(
-                borderRadius: adaptativeBorderRadius,
-                color:
-                    Theme.of(context).brightness == Brightness.light
-                        ? bgColor
-                        : Color(0xFF2C2C2C),
-              ),
+              decoration: BoxDecoration(borderRadius: adaptativeBorderRadius),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -91,10 +85,7 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color:
-            Theme.of(context).brightness == Brightness.light
-                ? Colors.white
-                : Color(0xFF2C2C2C),
+        color: bgColor,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(borderRadius),
           bottomRight: Radius.circular(borderRadius),

@@ -75,10 +75,7 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color:
-                            Theme.of(context).brightness == Brightness.light
-                                ? Colors.white
-                                : Color(0xFF2C2C2C),
+                        color: Theme.of(context).colorScheme.tertiaryContainer,
                         borderRadius: const BorderRadius.all(
                           Radius.circular(20),
                         ),
@@ -90,28 +87,12 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                             children: [
                               Text(
                                 'Progression',
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium?.copyWith(
-                                  color:
-                                      Theme.of(context).brightness ==
-                                              Brightness.light
-                                          ? Colors.black
-                                          : Colors.white,
-                                ),
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 '58/100',
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium?.copyWith(
-                                  color:
-                                      Theme.of(context).brightness ==
-                                              Brightness.light
-                                          ? Colors.black
-                                          : Colors.white,
-                                ),
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ],
                           ),
@@ -127,12 +108,7 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                     16.height,
                     Text(
                       "Les cartes",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color:
-                            Theme.of(context).brightness == Brightness.light
-                                ? Colors.black
-                                : Colors.white,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     16.height,
                     GridView.builder(
