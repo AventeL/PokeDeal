@@ -15,6 +15,7 @@ class PokemonSetCardWidget extends StatelessWidget {
             ? set.cardCount.total / set.cardCount.total
             : 0.0;
     return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Container(

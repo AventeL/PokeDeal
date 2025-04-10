@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedeal/features/collection/presentation/pages/series_list_page.dart';
 import 'package:pokedeal/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
+import 'package:pokedeal/features/profile/presentation/pages/profile_page.dart';
 import 'package:pokedeal/features/trade/presentation/pages/trade_base_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,11 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> screens = [
-    TradeBasePage(),
-    SeriesListPage(),
-    Center(child: Text('Profil')),
-  ];
+  List<Widget> screens = [TradeBasePage(), SeriesListPage(), ProfilePage()];
   int index = 1;
 
   @override
