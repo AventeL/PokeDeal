@@ -9,6 +9,7 @@ import 'package:pokedeal/features/collection/domain/repository/collection_pokemo
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 import 'package:pokedeal/features/profile/data/profile_data_source.dart';
 import 'package:pokedeal/features/profile/data/profile_data_source_interface.dart';
 import 'package:pokedeal/features/profile/domain/repository/profile_repository.dart';
@@ -48,6 +49,11 @@ void initBloc() {
   );
   getIt.registerFactory<ProfileBloc>(
     () => ProfileBloc(profileRepository: getIt<ProfileRepository>()),
+  );
+  getIt.registerFactory<UserCollectionBloc>(
+    () => UserCollectionBloc(
+      collectionPokemonRepository: getIt<CollectionPokemonRepository>(),
+    ),
   );
 }
 

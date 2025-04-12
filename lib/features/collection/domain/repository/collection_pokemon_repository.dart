@@ -55,4 +55,29 @@ class CollectionPokemonRepository {
     cardsMap[id] = card;
     return card;
   }
+
+  Future<List<BasePokemonCard>> getUserCollection({
+    required String userId,
+  }) async {
+    List<BasePokemonCard> cards = [];
+    List<String> ids = await collectionPokemonDataSource.getUserCollection(
+      userId: userId,
+    );
+    for (var id in ids) {
+      BasePokemonCard card = await getCard(id: id);
+      cards.add(card);
+    }
+    //@todo
+    return cards;
+  }
+
+  Future<void> addCardToUserCollection({
+    required String id,
+    required int quantity,
+  }) async {
+    await collectionPokemonDataSource.addCardToUserCollection(
+      id: id,
+      quantity: quantity,
+    );
+  }
 }

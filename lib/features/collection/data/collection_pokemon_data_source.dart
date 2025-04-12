@@ -56,4 +56,19 @@ class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
 
     return card;
   }
+
+  @override
+  Future<List<String>> getUserCollection({required String userId}) async {
+    List<String> cardsIds = [];
+    //@todo
+    return cardsIds;
+  }
+
+  @override
+  Future<void> addCardToUserCollection({
+    required String id,
+    required int quantity,
+  }) async {
+    //@todo
+  }
 }

@@ -11,4 +11,11 @@ abstract class ICollectionPokemonDataSource {
   Future<PokemonSet> getSet(String setId);
 
   Future<BasePokemonCard> getCard({required String id});
+
+  Future<List<String>> getUserCollection({required String userId});
+
+  Future<void> addCardToUserCollection({
+    required String id,
+    required int quantity,
+  });
 }
