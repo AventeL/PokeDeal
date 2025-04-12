@@ -186,18 +186,24 @@ class CardDetailPage extends StatelessWidget {
   void onAddToCollection(BuildContext context, BasePokemonCard card) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder:
-          (context) => BottomSheetAddCardToCollection(
-            card: card,
-            onConfirm: (int quantity, VariantValue variant) {
-              context.read<UserCollectionBloc>().add(
-                UserCollectionAddCardEvent(
-                  pokemonCardId: card.id,
-                  quantity: quantity,
-                  variant: variant,
-                ),
-              );
-            },
+          (context) => Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: BottomSheetAddCardToCollection(
+              card: card,
+              onConfirm: (int quantity, VariantValue variant) {
+                context.read<UserCollectionBloc>().add(
+                  UserCollectionAddCardEvent(
+                    pokemonCardId: card.id,
+                    quantity: quantity,
+                    variant: variant,
+                  ),
+                );
+              },
+            ),
           ),
     );
   }
