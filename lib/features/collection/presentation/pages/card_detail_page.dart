@@ -5,7 +5,10 @@ import 'package:pokedeal/core/helper/pokemon_card_image_helper.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/bottom_sheet_add_card_to_collection.dart';
 
 import '../widgets/pokemon_card_unavailable_widget.dart';
 
@@ -23,32 +26,49 @@ class CardDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(cardBrief.name)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onAddToCollection,
-        child: const Icon(Icons.add),
+      floatingActionButton: Builder(
+        builder: (context) {
+          final collectionPokemonCardState =
+              context.watch<CollectionPokemonCardBloc>().state;
+          if (collectionPokemonCardState is CollectionPokemonCardsGet) {
+            return FloatingActionButton(
+              onPressed:
+                  () => onAddToCollection(
+                    context,
+                    collectionPokemonCardState.card,
+                  ),
+              child: const Icon(Icons.add),
+            );
+          }
+          return const SizedBox.shrink();
+        },
       ),
       body: BlocConsumer<CollectionPokemonCardBloc, CollectionPokemonCardState>(
-        listener: (context, state) {
-          if (state is CollectionPokemonCardError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Error: ${state.message}')));
+        listener: (context, collectionPokemonCardState) {
+          if (collectionPokemonCardState is CollectionPokemonCardError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${collectionPokemonCardState.message}'),
+              ),
+            );
           }
         },
-        builder: (context, state) {
-          if (state is CollectionPokemonCardLoading) {
+        builder: (context, collectionPokemonCardState) {
+          if (collectionPokemonCardState is CollectionPokemonCardLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (state is CollectionPokemonCardError) {
-            return Center(child: Text('Error: ${state.message}'));
+          if (collectionPokemonCardState is CollectionPokemonCardError) {
+            return Center(
+              child: Text('Error: ${collectionPokemonCardState.message}'),
+            );
           }
-          if (state is CollectionPokemonCardsGet) {
+          if (collectionPokemonCardState is CollectionPokemonCardsGet) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 children: [
                   16.height,
-                  buildCardHeader(state.card, context),
+                  buildCardHeader(collectionPokemonCardState.card, context),
                   16.height,
                 ],
               ),
@@ -163,7 +183,22 @@ class CardDetailPage extends StatelessWidget {
     );
   }
 
-  void onAddToCollection() {
-    //@todo ouvrir une bottomsheet
+  void onAddToCollection(BuildContext context, BasePokemonCard card) {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (context) => BottomSheetAddCardToCollection(
+            card: card,
+            onConfirm: (int quantity, VariantValue variant) {
+              context.read<UserCollectionBloc>().add(
+                UserCollectionAddCardEvent(
+                  pokemonCardId: card.id,
+                  quantity: quantity,
+                  variant: variant,
+                ),
+              );
+            },
+          ),
+    );
   }
 }

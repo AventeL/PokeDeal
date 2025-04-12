@@ -11,9 +11,11 @@ class UserCollectionLoadEvent extends UserCollectionEvent {
 class UserCollectionAddCardEvent extends UserCollectionEvent {
   String pokemonCardId;
   int quantity;
+  VariantValue variant;
 
   UserCollectionAddCardEvent({
     required this.pokemonCardId,
     required this.quantity,
+    required this.variant,
   });
 }
