@@ -8,6 +8,8 @@ import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collec
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 import 'package:pokedeal/theme/custom_theme.dart';
 
+import '../../features/trade/presentation/bloc/trade_bloc.dart';
+
 class MainMaterialApp extends StatelessWidget {
   const MainMaterialApp({super.key});
 
@@ -30,6 +32,7 @@ class MainMaterialApp extends StatelessWidget {
         BlocProvider<CollectionPokemonCardBloc>(
           create: (context) => getIt<CollectionPokemonCardBloc>(),
         ),
+        BlocProvider<TradeBloc>(create: (context) => getIt<TradeBloc>()),
       ],
       child: MaterialApp.router(
         routerConfig: router,

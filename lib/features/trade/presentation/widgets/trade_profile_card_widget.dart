@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/trade/domain/models/userStats.dart';
 
 class TradeProfileCardWidget extends StatelessWidget {
   final VoidCallback? onTap;
+  final Userstats userProfile;
 
-  const TradeProfileCardWidget({super.key, this.onTap});
+  const TradeProfileCardWidget({
+    super.key,
+    required this.userProfile,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +37,12 @@ class TradeProfileCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Cocorico',
+                    userProfile.user.pseudo,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text('25 cartes, 3 échanges'),
+                  Text(
+                    '${userProfile.nbCards} cartes, ${userProfile.nbExchanges} échanges',
+                  ),
                 ],
               ),
               Spacer(),
