@@ -19,12 +19,12 @@ final class UserCollectionError extends UserCollectionState {
 }
 
 final class UserCollectionLoaded extends UserCollectionState {
-  final List<BasePokemonCard> pokemonCards;
+  final List<UserCardCollection> userCardsCollection;
 
-  UserCollectionLoaded({required this.pokemonCards});
+  UserCollectionLoaded({required this.userCardsCollection});
 
   @override
-  List<Object?> get props => [pokemonCards];
+  List<Object?> get props => [userCardsCollection];
 }
 
 final class UserCollectionStateCardAdded extends UserCollectionState {}

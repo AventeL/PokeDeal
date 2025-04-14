@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/helper/pokemon_card_image_helper.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/bottom_sheet_add_card_to_collection.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/card_collection_list_widget.dart';
 
 import '../widgets/pokemon_card_unavailable_widget.dart';
 
@@ -70,6 +73,10 @@ class CardDetailPage extends StatelessWidget {
                   16.height,
                   buildCardHeader(collectionPokemonCardState.card, context),
                   16.height,
+                  CardCollectionListWidget(
+                    userId: getIt<AuthenticationRepository>().userProfile!.id,
+                    cardId: cardId,
+                  ),
                 ],
               ),
             );
@@ -200,6 +207,7 @@ class CardDetailPage extends StatelessWidget {
                     pokemonCardId: card.id,
                     quantity: quantity,
                     variant: variant,
+                    setId: card.setBrief.id,
                   ),
                 );
               },

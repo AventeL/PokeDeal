@@ -1,5 +1,6 @@
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source_interface.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
+import 'package:pokedeal/features/collection/domain/models/card/user_card_collection.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
@@ -11,6 +12,7 @@ class CollectionPokemonRepository {
   List<PokemonSerie> series = [];
   Map<String, PokemonSet> setsMap = {};
   Map<String, BasePokemonCard> cardsMap = {};
+  List<UserCardCollection> userCardsCollection = [];
 
   CollectionPokemonRepository({required this.collectionPokemonDataSource});
 
@@ -57,30 +59,42 @@ class CollectionPokemonRepository {
     return card;
   }
 
-  Future<List<BasePokemonCard>> getUserCollection({
+  Future<List<UserCardCollection>> getUserCollection({
     required String userId,
+    String? cardId,
+    String? setId,
   }) async {
-    List<BasePokemonCard> cards = [];
-    List<String> ids = await collectionPokemonDataSource.getUserCollection(
-      userId: userId,
-    );
-    for (var id in ids) {
-      BasePokemonCard card = await getCard(id: id);
-      cards.add(card);
-    }
-    //@todo
+    List<UserCardCollection> cards = await collectionPokemonDataSource
+        .getUserCollection(userId: userId, cardId: cardId, setId: setId);
+
     return cards;
   }
 
-  Future<void> addCardToUserCollection({
+  Future<UserCardCollection> addCardToUserCollection({
     required String id,
     required int quantity,
     required VariantValue variant,
+    required String setId,
   }) async {
-    await collectionPokemonDataSource.addCardToUserCollection(
-      id: id,
-      quantity: quantity,
-      variant: variant,
-    );
+    UserCardCollection newUserCardCollection = await collectionPokemonDataSource
+        .addCardToUserCollection(
+          id: id,
+          quantity: quantity,
+          variant: variant,
+          setId: setId,
+        );
+    if (userCardsCollection.isNotEmpty) {
+      for (var card in userCardsCollection) {
+        if (card.cardId == newUserCardCollection.cardId &&
+            card.setId == newUserCardCollection.setId &&
+            card.variant == newUserCardCollection.variant) {
+          userCardsCollection.remove(card);
+          break;
+        }
+      }
+    }
+
+    userCardsCollection.add(newUserCardCollection);
+    return newUserCardCollection;
   }
 }
