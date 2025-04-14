@@ -158,6 +158,7 @@ void main() {
       expect(find.byIcon(Icons.brush), findsOneWidget);
       expect(find.text('Illustrator Name'), findsOneWidget);
       expect(find.byType(CardCollectionListWidget), findsOneWidget);
+      expect(find.byType(FloatingActionButton), findsOneWidget);
     },
   );
 
