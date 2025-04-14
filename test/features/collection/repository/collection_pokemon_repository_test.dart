@@ -4,8 +4,10 @@ import 'package:pokedeal/features/collection/data/collection_pokemon_data_source
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/card_variant.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/card/user_card_collection.dart';
 import 'package:pokedeal/features/collection/domain/models/card_count.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/card_category.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/collection/domain/models/legal.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart';
@@ -35,6 +37,38 @@ void main() {
     PokemonSerie(id: "1", name: 'Serie 1', sets: []),
     PokemonSerie(id: "2", name: 'Serie 2', sets: []),
   ];
+
+  final mockSetWithCards = PokemonSet(
+    name: 'Set 1',
+    id: 'set1',
+    serieBrief: PokemonSerieBrief(id: 'serie1', name: 'Serie 1'),
+    cardCount: CardCount(total: 100, official: 100),
+    cards: [
+      PokemonCardBrief(
+        id: '1',
+        image: 'image1',
+        localId: 'local1',
+        name: 'Card 1',
+      ),
+      PokemonCardBrief(
+        id: '2',
+        image: 'image2',
+        localId: 'local2',
+        name: 'Card 2',
+      ),
+    ],
+    releaseDate: DateTime(2021, 1, 1),
+    legal: Legal(standard: true, expanded: true),
+  );
+
+  final mockUserCardCollection = UserCardCollection(
+    id: '1',
+    userId: 'userId',
+    quantity: 2,
+    cardId: 'cardId',
+    setId: 'setId',
+    variant: VariantValue.holo,
+  );
 
   group('getSeriesBriefs', () {
     test('getSeriesBriefs returns a list of PokemonSerieBriefs', () async {
@@ -82,9 +116,7 @@ void main() {
         expect(result.length, 2);
       },
     );
-  });
 
-  group('getSeriesWithSets', () {
     test('getSeriesWithSets returns [] if no series are found', () async {
       when(dataSource.getSeriesBriefs()).thenAnswer((_) async => []);
 
@@ -96,61 +128,34 @@ void main() {
   });
 
   group('getSetWithCards', () {
-    final mockSetWithCards = PokemonSet(
-      name: 'Set 1',
-      id: 'set1',
-      serieBrief: PokemonSerieBrief(id: 'serie1', name: 'Serie 1'),
-      cardCount: CardCount(total: 100, official: 100),
-      cards: [
-        PokemonCardBrief(
-          id: '1',
-          image: 'image1',
-          localId: 'local1',
-          name: 'Card 1',
-        ),
-        PokemonCardBrief(
-          id: '2',
-          image: 'image2',
-          localId: 'local2',
-          name: 'Card 2',
-        ),
-      ],
-      releaseDate: DateTime(2021, 1, 1),
-      legal: Legal(standard: true, expanded: true),
-    );
+    test('returns PokemonSetWithCards when set is found', () async {
+      when(dataSource.getSet('set1')).thenAnswer((_) async => mockSetWithCards);
 
-    group('getSetWithCards', () {
-      test('returns PokemonSetWithCards when set is found', () async {
-        when(
-          dataSource.getSet('set1'),
-        ).thenAnswer((_) async => mockSetWithCards);
+      final result = await repository.getSetWithCards(setId: 'set1');
+
+      expect(result, isA<PokemonSet>());
+      expect(result.id, 'set1');
+      expect(result.cards.length, 2);
+      verify(dataSource.getSet('set1')).called(1);
+    });
+
+    test(
+      'returns cached PokemonSetWithCards when set is already cached',
+      () async {
+        repository.setsMap['set1'] = mockSetWithCards;
 
         final result = await repository.getSetWithCards(setId: 'set1');
 
         expect(result, isA<PokemonSet>());
         expect(result.id, 'set1');
         expect(result.cards.length, 2);
-        verify(dataSource.getSet('set1')).called(1);
-      });
-
-      test(
-        'returns cached PokemonSetWithCards when set is already cached',
-        () async {
-          repository.setsMap['set1'] = mockSetWithCards;
-
-          final result = await repository.getSetWithCards(setId: 'set1');
-
-          expect(result, isA<PokemonSet>());
-          expect(result.id, 'set1');
-          expect(result.cards.length, 2);
-          verifyNever(dataSource.getSet('set1'));
-        },
-      );
-    });
+        verifyNever(dataSource.getSet('set1'));
+      },
+    );
   });
 
   group('getCard', () {
-    BasePokemonCard mockCard = BasePokemonCard(
+    final mockCard = BasePokemonCard(
       localId: '1',
       category: CardCategory.trainer,
       illustrator: 'Illustrator Name',
@@ -191,5 +196,139 @@ void main() {
       expect(result.id, 'cardId');
       verifyNever(dataSource.getCard(id: 'cardId'));
     });
+  });
+
+  group('getUserCollection', () {
+    test('returns a list of user card collections when successful', () async {
+      when(
+        dataSource.getUserCollection(
+          userId: 'userId',
+          cardId: 'cardId',
+          setId: 'setId',
+        ),
+      ).thenAnswer((_) async => [mockUserCardCollection]);
+
+      final result = await repository.getUserCollection(
+        userId: 'userId',
+        cardId: 'cardId',
+        setId: 'setId',
+      );
+
+      expect(result, isA<List<UserCardCollection>>());
+      expect(result.length, 1);
+      expect(result[0], mockUserCardCollection);
+      verify(
+        dataSource.getUserCollection(
+          userId: 'userId',
+          cardId: 'cardId',
+          setId: 'setId',
+        ),
+      ).called(1);
+    });
+
+    test(
+      'returns an empty list when no user card collections are found',
+      () async {
+        when(
+          dataSource.getUserCollection(
+            userId: 'userId',
+            cardId: 'cardId',
+            setId: 'setId',
+          ),
+        ).thenAnswer((_) async => []);
+
+        final result = await repository.getUserCollection(
+          userId: 'userId',
+          cardId: 'cardId',
+          setId: 'setId',
+        );
+
+        expect(result, isA<List<UserCardCollection>>());
+        expect(result.isEmpty, true);
+        verify(
+          dataSource.getUserCollection(
+            userId: 'userId',
+            cardId: 'cardId',
+            setId: 'setId',
+          ),
+        ).called(1);
+      },
+    );
+  });
+
+  group('addCardToUserCollection', () {
+    test('adds a card to user collection when successful', () async {
+      when(
+        dataSource.addCardToUserCollection(
+          id: 'cardId',
+          quantity: 2,
+          variant: VariantValue.holo,
+          setId: 'setId',
+        ),
+      ).thenAnswer((_) async => mockUserCardCollection);
+
+      final result = await repository.addCardToUserCollection(
+        id: 'cardId',
+        quantity: 2,
+        variant: VariantValue.holo,
+        setId: 'setId',
+      );
+
+      expect(result, isA<UserCardCollection>());
+      expect(result, mockUserCardCollection);
+      verify(
+        dataSource.addCardToUserCollection(
+          id: 'cardId',
+          quantity: 2,
+          variant: VariantValue.holo,
+          setId: 'setId',
+        ),
+      ).called(1);
+    });
+
+    test(
+      'removes existing card if already in the collection and adds the new one',
+      () async {
+        repository.userCardsCollection = [mockUserCardCollection];
+
+        final newCard = UserCardCollection(
+          id: '2',
+          userId: 'userId',
+          quantity: 1,
+          cardId: 'cardId',
+          setId: 'setId',
+          variant: VariantValue.holo,
+        );
+
+        when(
+          dataSource.addCardToUserCollection(
+            id: 'cardId',
+            quantity: 1,
+            variant: VariantValue.reverse,
+            setId: 'setId',
+          ),
+        ).thenAnswer((_) async => newCard);
+
+        final result = await repository.addCardToUserCollection(
+          id: 'cardId',
+          quantity: 1,
+          variant: VariantValue.reverse,
+          setId: 'setId',
+        );
+
+        expect(result, isA<UserCardCollection>());
+        expect(result, newCard);
+        expect(repository.userCardsCollection.length, 1);
+        expect(repository.userCardsCollection[0], newCard);
+        verify(
+          dataSource.addCardToUserCollection(
+            id: 'cardId',
+            quantity: 1,
+            variant: VariantValue.reverse,
+            setId: 'setId',
+          ),
+        ).called(1);
+      },
+    );
   });
 }
