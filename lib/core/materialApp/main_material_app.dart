@@ -9,6 +9,9 @@ import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collecti
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/theme/custom_theme.dart';
+import 'package:pokedeal/theme/theme_notifier.dart';
+
+ThemeNotifier themeModeNotifier = ThemeNotifier();
 
 class MainMaterialApp extends StatelessWidget {
   const MainMaterialApp({super.key});
@@ -35,13 +38,17 @@ class MainMaterialApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ProfileBloc>()),
         BlocProvider(create: (context) => getIt<UserCollectionBloc>()),
       ],
-      child: MaterialApp.router(
-        routerConfig: router,
-        title: 'PokeDeal',
-        debugShowCheckedModeBanner: false,
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: ThemeMode.system,
+      child: ValueListenableBuilder<ThemeMode>(
+        valueListenable: themeModeNotifier,
+        builder:
+            (context, theme, _) => MaterialApp.router(
+              routerConfig: router,
+              title: 'PokeDeal',
+              debugShowCheckedModeBanner: false,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: theme,
+            ),
       ),
     );
   }

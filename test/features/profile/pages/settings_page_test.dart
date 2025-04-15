@@ -26,4 +26,13 @@ void main() {
 
     expect(find.text('Déconnexion'), findsOneWidget);
   });
+
+  testWidgets('Settings page has a dark mode switch', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(createSettingsPage());
+
+    expect(find.text('Mode sombre'), findsOneWidget);
+    expect(find.byType(Switch), findsOneWidget);
+  });
 }
