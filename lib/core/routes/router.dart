@@ -6,6 +6,7 @@ import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_bri
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/presentation/pages/card_detail_page.dart';
 import 'package:pokedeal/features/collection/presentation/pages/set_details_page.dart';
+import 'package:pokedeal/features/profile/presentation/pages/settings_page.dart';
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -14,6 +15,20 @@ final GoRouter router = GoRouter(
       path: '/',
       name: '/',
       builder: (context, state) => const AuthenticationGate(),
+    ),
+    GoRoute(
+      path: '/authentication',
+      name: 'authentication',
+      builder: (context, state) {
+        return const AuthenticationGate();
+      },
+    ),
+    GoRoute(
+      path: '/settings',
+      name: 'settings',
+      builder: (context, state) {
+        return const SettingsPage();
+      },
     ),
     GoRoute(
       path: '/get_info_profile',

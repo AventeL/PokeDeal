@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/card_variant.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
@@ -11,19 +14,26 @@ import 'package:pokedeal/features/collection/domain/models/enum/card_category.da
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/pages/card_detail_page.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/card_collection_list_widget.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
 
 void main() {
   final mockRepository = MockCollectionPokemonRepository();
   final mockBloc = MockCollectionPokemonCardBloc();
+  final mockAuthenticationRepository = MockAuthenticationRepository();
 
   setUp(() {
     getIt.registerLazySingleton<CollectionPokemonRepository>(
       () => mockRepository,
     );
     getIt.registerLazySingleton<CollectionPokemonCardBloc>(() => mockBloc);
+
+    getIt.registerLazySingleton<AuthenticationRepository>(
+      () => mockAuthenticationRepository,
+    );
   });
 
   tearDown(() {
@@ -85,6 +95,14 @@ void main() {
   testWidgets(
     'CardDetailsPage shows card details when state is CollectionPokemonCardsGet',
     (WidgetTester tester) async {
+      when(mockAuthenticationRepository.userProfile).thenReturn(
+        UserProfile(
+          id: 'userId',
+          email: 'email',
+          pseudo: 'username',
+          createdAt: DateTime.now(),
+        ),
+      );
       when(mockBloc.state).thenReturn(
         CollectionPokemonCardsGet(
           card: BasePokemonCard(
@@ -115,8 +133,17 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: BlocProvider<CollectionPokemonCardBloc>(
-              create: (context) => mockBloc,
+            body: MultiBlocProvider(
+              providers: [
+                BlocProvider<CollectionPokemonCardBloc>(
+                  create: (context) => mockBloc,
+                ),
+                BlocProvider<UserCollectionBloc>(
+                  create:
+                      (context) =>
+                          MockUserCollectionBloc(), // Mock du UserCollectionBloc
+                ),
+              ],
               child: mockPage,
             ),
           ),
@@ -124,12 +151,14 @@ void main() {
       );
 
       expect(find.text('Card Name'), findsNWidgets(2));
-      expect(find.byType(Image), findsNWidgets(2));
+      expect(find.byType(CachedNetworkImage), findsNWidgets(2));
       expect(find.text("1/100"), findsOneWidget);
       expect(find.text('Rare'), findsOneWidget);
       expect(find.text('Set Name'), findsOneWidget);
       expect(find.byIcon(Icons.brush), findsOneWidget);
       expect(find.text('Illustrator Name'), findsOneWidget);
+      expect(find.byType(CardCollectionListWidget), findsOneWidget);
+      expect(find.byType(FloatingActionButton), findsOneWidget);
     },
   );
 

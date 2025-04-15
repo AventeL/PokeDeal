@@ -22,4 +22,9 @@ class CardVariant {
       normal: json['normal'],
     );
   }
+
+  @override
+  String toString() {
+    return 'CardVariant{firstEdition: $firstEdition, holo: $holo, reverse: $reverse, promo: $promo, normal: $normal}';
+  }
 }

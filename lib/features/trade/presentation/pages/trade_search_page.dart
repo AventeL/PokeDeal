@@ -84,4 +84,6 @@ class _TradeSearchPageState extends State<TradeSearchPage> {
       ),
     );
   }
+
+  void onProfileTap() {}
 }

@@ -16,7 +16,10 @@ class TradeProfileCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     BorderRadius borderRadius = BorderRadius.circular(8);
 
-    return InkWell(
+    return Material(
+      color: Theme.of(context).colorScheme.tertiaryContainer,
+      borderRadius: borderRadius,
+      child: InkWell(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
@@ -47,7 +50,7 @@ class TradeProfileCardWidget extends StatelessWidget {
               ),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Colors.grey[600]),
-            ],
+            ],),
           ),
         ),
       ),

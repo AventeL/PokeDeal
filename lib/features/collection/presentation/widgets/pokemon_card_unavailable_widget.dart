@@ -5,12 +5,14 @@ class PokemonCardUnavailableWidget extends StatelessWidget {
   final PokemonCardBrief card;
   final int totalCard;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   const PokemonCardUnavailableWidget({
     super.key,
     required this.card,
     required this.totalCard,
     this.onTap,
+    this.onLongPress,
   });
 
   @override
@@ -24,6 +26,7 @@ class PokemonCardUnavailableWidget extends StatelessWidget {
         splashColor: Theme.of(context).primaryColor,
         borderRadius: borderRadius,
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Container(
           height: 224,
           width: 150,

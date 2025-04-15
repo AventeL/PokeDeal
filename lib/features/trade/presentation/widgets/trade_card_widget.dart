@@ -17,9 +17,12 @@ class TradeCardRequestWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BorderRadius borderRadius = BorderRadius.circular(8);
+    BorderRadius borderRadius = BorderRadius.circular(12);
 
-    return InkWell(
+   return Material(
+      color: Theme.of(context).colorScheme.tertiaryContainer,
+      borderRadius: borderRadius,
+  child: InkWell(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
@@ -54,7 +57,7 @@ class TradeCardRequestWidget extends StatelessWidget {
               ),
               Spacer(),
               if (isNew) Icon(Icons.circle, color: Colors.orange, size: 10),
-            ],
+            ],),
           ),
         ),
       ),

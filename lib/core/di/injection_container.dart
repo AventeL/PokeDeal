@@ -12,6 +12,11 @@ import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collecti
 import 'package:pokedeal/features/trade/data/trade_data_source.dart';
 import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart';
 import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
+import 'package:pokedeal/features/profile/data/profile_data_source.dart';
+import 'package:pokedeal/features/profile/data/profile_data_source_interface.dart';
+import 'package:pokedeal/features/profile/domain/repository/profile_repository.dart';
+import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../features/trade/domain/repository/trade_repository.dart';
@@ -49,6 +54,13 @@ void initBloc() {
   );
   getIt.registerFactory<TradeBloc>(
     () => TradeBloc(tradeRepository: getIt<TradeRepository>()),
+  getIt.registerFactory<ProfileBloc>(
+    () => ProfileBloc(profileRepository: getIt<ProfileRepository>()),
+  );
+  getIt.registerFactory<UserCollectionBloc>(
+    () => UserCollectionBloc(
+      collectionPokemonRepository: getIt<CollectionPokemonRepository>(),
+    ),
   );
 }
 
@@ -65,6 +77,8 @@ void initRepository() {
   );
   getIt.registerFactory<TradeRepository>(
     () => TradeRepository(tradeDataSource: getIt<ITradeDataSource>()),
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepository(profileDataSource: getIt<IProfileDataSource>()),
   );
 }
 
@@ -78,6 +92,7 @@ void initDataSource() {
   getIt.registerLazySingleton<ITradeDataSource>(
     () => TradeDataSource(supabaseClient: supabaseClient),
   );
+  getIt.registerLazySingleton<IProfileDataSource>(() => ProfileDataSource());
 }
 
 void initExternal() {}

@@ -10,6 +10,10 @@ import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collecti
 import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart';
 import 'package:pokedeal/features/trade/domain/repository/trade_repository.dart';
 import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
+import 'package:pokedeal/features/profile/data/profile_data_source_interface.dart';
+import 'package:pokedeal/features/profile/domain/repository/profile_repository.dart';
+import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 
 //Bloc
 @GenerateNiceMocks([
@@ -18,17 +22,21 @@ import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
   MockSpec<CollectionPokemonSetBloc>(),
   MockSpec<CollectionPokemonCardBloc>(),
   MockSpec<TradeBloc>(),
+  MockSpec<ProfileBloc>(),
+  MockSpec<UserCollectionBloc>(),
 ])
 //Repository
 @GenerateNiceMocks([
   MockSpec<AuthenticationRepository>(),
   MockSpec<CollectionPokemonRepository>(),
   MockSpec<TradeRepository>(),
+  MockSpec<ProfileRepository>(),
 ])
 //DataSource
 @GenerateNiceMocks([
   MockSpec<IAuthenticationDataSource>(),
   MockSpec<ICollectionPokemonDataSource>(),
   MockSpec<ITradeDataSource>(),
+  MockSpec<IProfileDataSource>(),
 ])
 main() {}

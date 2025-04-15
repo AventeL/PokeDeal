@@ -11,6 +11,7 @@ import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/pages/set_details_page.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_unavailable_widget.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_widget.dart';
@@ -32,27 +33,29 @@ void main() {
     getIt.reset();
   });
 
+  Widget mockWidget = MultiBlocProvider(
+    providers: [
+      BlocProvider<CollectionPokemonSetBloc>(create: (context) => mockBloc),
+      BlocProvider<UserCollectionBloc>(
+        create: (context) => MockUserCollectionBloc(),
+      ),
+    ],
+
+    child: SetDetailsPage(
+      setInfo: PokemonSetBrief(
+        name: 'Set 1',
+        id: 'set1',
+        cardCount: CardCount(total: 100, official: 100),
+      ),
+    ),
+  );
+
   testWidgets(
     'SetDetailsPage shows CircularProgressIndicator when state is CollectionPokemonSetLoading',
     (WidgetTester tester) async {
       when(mockBloc.state).thenReturn(CollectionPokemonSetLoading());
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BlocProvider<CollectionPokemonSetBloc>(
-              create: (context) => mockBloc,
-              child: SetDetailsPage(
-                setInfo: PokemonSetBrief(
-                  name: 'Set 1',
-                  id: 'set1',
-                  cardCount: CardCount(total: 100, official: 100),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
+      await tester.pumpWidget(MaterialApp(home: Scaffold(body: mockWidget)));
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     },
@@ -65,22 +68,7 @@ void main() {
         mockBloc.state,
       ).thenReturn(CollectionPokemonSetError(message: 'An error occurred'));
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BlocProvider<CollectionPokemonSetBloc>(
-              create: (context) => mockBloc,
-              child: SetDetailsPage(
-                setInfo: PokemonSetBrief(
-                  name: 'Set 1',
-                  id: 'set1',
-                  cardCount: CardCount(total: 100, official: 100),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
+      await tester.pumpWidget(MaterialApp(home: Scaffold(body: mockWidget)));
 
       expect(find.text('An error occurred'), findsOneWidget);
     },
@@ -115,22 +103,7 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BlocProvider<CollectionPokemonSetBloc>(
-              create: (context) => mockBloc,
-              child: SetDetailsPage(
-                setInfo: PokemonSetBrief(
-                  name: 'Set 1',
-                  id: 'set1',
-                  cardCount: CardCount(total: 100, official: 100),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
+      await tester.pumpWidget(MaterialApp(home: Scaffold(body: mockWidget)));
 
       expect(find.byType(PokemonCardWidget), findsOneWidget);
       expect(find.byType(PokemonCardUnavailableWidget), findsOneWidget);
@@ -155,22 +128,7 @@ void main() {
       ),
     );
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: BlocProvider<CollectionPokemonSetBloc>(
-            create: (context) => mockBloc,
-            child: SetDetailsPage(
-              setInfo: PokemonSetBrief(
-                name: 'Set 1',
-                id: 'set1',
-                cardCount: CardCount(total: 100, official: 100),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+    await tester.pumpWidget(MaterialApp(home: Scaffold(body: mockWidget)));
     expect(
       find.text('Les cartes pour Set 1 ne sont pas encore disponibles'),
       findsOneWidget,
