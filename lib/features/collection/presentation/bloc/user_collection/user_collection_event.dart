@@ -15,11 +15,13 @@ class UserCollectionAddCardEvent extends UserCollectionEvent {
   int quantity;
   VariantValue variant;
   String setId;
+  bool needRefresh;
 
   UserCollectionAddCardEvent({
     required this.pokemonCardId,
     required this.quantity,
     required this.variant,
     required this.setId,
+    this.needRefresh = true,
   });
 }

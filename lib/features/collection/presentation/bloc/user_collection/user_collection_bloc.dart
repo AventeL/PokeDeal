@@ -51,13 +51,15 @@ class UserCollectionBloc
         setId: event.setId,
       );
       emit(UserCollectionStateCardAdded());
-      add(
-        UserCollectionLoadEvent(
-          userId: getIt<AuthenticationRepository>().userProfile!.id,
-          cardId: event.pokemonCardId,
-          setId: event.setId,
-        ),
-      );
+      if (event.needRefresh) {
+        add(
+          UserCollectionLoadEvent(
+            userId: getIt<AuthenticationRepository>().userProfile!.id,
+            cardId: event.pokemonCardId,
+            setId: event.setId,
+          ),
+        );
+      }
     } catch (e) {
       emit(UserCollectionError(message: e.toString()));
     }

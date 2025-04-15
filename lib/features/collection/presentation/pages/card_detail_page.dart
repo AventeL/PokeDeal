@@ -118,7 +118,10 @@ class CardDetailPage extends StatelessWidget {
     return Row(
       children: [
         Text('${card.localId}/${card.setBrief.cardCount.total}'),
-        if (card.rarity != null) ...[8.width, Text(card.rarity!)],
+        if (card.rarity != null) ...[
+          8.width,
+          Flexible(child: Text(card.rarity!, textAlign: TextAlign.center)),
+        ],
       ],
     );
   }
