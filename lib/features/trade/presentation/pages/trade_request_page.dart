@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/trade_list_widget.dart';
+
+import '../bloc/trade_bloc.dart';
 
 class TradeRequestPage extends StatefulWidget {
   const TradeRequestPage({super.key});
@@ -15,6 +18,7 @@ class _TradeRequestPageState extends State<TradeRequestPage>
   @override
   void initState() {
     super.initState();
+    context.read<TradeBloc>().add(TradeEventGetReceivedTrade());
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -34,7 +38,10 @@ class _TradeRequestPageState extends State<TradeRequestPage>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [TradeListWidget(), TradeListWidget()],
+              children: [
+                TradeListWidget(tabIndex: 0),
+                TradeListWidget(tabIndex: 1),
+              ],
             ),
           ),
         ],

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:pokedeal/features/trade/domain/models/trade.dart';
 
 class TradeCardRequestWidget extends StatelessWidget {
   final bool isNew;
-  final bool isTradeSent;
   final VoidCallback? onTap;
+  final Trade trade;
+  final isTradeReceived;
 
   const TradeCardRequestWidget({
     super.key,
     this.isNew = false,
-    this.isTradeSent = false,
     this.onTap,
+    required this.trade,
+    required this.isTradeReceived,
   });
 
   @override
@@ -37,13 +40,15 @@ class TradeCardRequestWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Cocorico',
+                    isTradeReceived
+                        ? trade.sender_id.pseudo
+                        : trade.receive_id.pseudo,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    isTradeSent
-                        ? 'Propose d’échanger une carte'
-                        : 'Vous propose un échange',
+                    isTradeReceived
+                        ? 'Vous propose un échange'
+                        : "A reçu votre demande d'échange",
                   ),
                 ],
               ),

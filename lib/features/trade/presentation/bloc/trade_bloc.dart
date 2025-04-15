@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../domain/models/trade.dart';
 import '../../domain/models/userStats.dart';
 import '../../domain/repository/trade_repository.dart';
 
@@ -12,6 +13,8 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
 
   TradeBloc({required this.tradeRepository}) : super(TradeStateInitial()) {
     on<TradeEventGetAllUsers>(_onTradeEventGetAllUsers);
+    on<TradeEventGetSendTrade>(_onTradeEventGetSendTrade);
+    on<TradeEventGetReceivedTrade>(_onTradeEventGetReceivedTrade);
   }
 
   Future<void> _onTradeEventGetAllUsers(
@@ -22,6 +25,30 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
       emit(TradeStateSuccessGetAllUsers());
       final users = tradeRepository.getAllUser();
       emit(TradeStateUsersLoaded(users: await users));
+    } catch (e) {
+      emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
+    }
+  }
+
+  Future<void> _onTradeEventGetSendTrade(
+    TradeEventGetSendTrade event,
+    Emitter<TradeState> emit,
+  ) async {
+    try {
+      final trades = tradeRepository.getSendTrade();
+      emit(TradeStateSendTradesLoaded(trades: await trades));
+    } catch (e) {
+      emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
+    }
+  }
+
+  Future<void> _onTradeEventGetReceivedTrade(
+    TradeEventGetReceivedTrade event,
+    Emitter<TradeState> emit,
+  ) async {
+    try {
+      final trades = tradeRepository.getReceivedTrade();
+      emit(TradeStateReceivedTradesLoaded(trades: await trades));
     } catch (e) {
       emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
     }

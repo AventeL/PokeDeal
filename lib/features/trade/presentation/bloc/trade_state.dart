@@ -27,3 +27,21 @@ final class TradeStateError extends TradeState {
   @override
   List<Object> get props => [message, timestamp];
 }
+
+final class TradeStateSendTradesLoaded extends TradeState {
+  final List<Trade> trades;
+
+  TradeStateSendTradesLoaded({required this.trades});
+
+  @override
+  List<Object> get props => [trades];
+}
+
+final class TradeStateReceivedTradesLoaded extends TradeState {
+  final List<Trade> trades;
+
+  TradeStateReceivedTradesLoaded({required this.trades});
+
+  @override
+  List<Object> get props => [trades];
+}

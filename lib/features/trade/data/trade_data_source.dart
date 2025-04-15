@@ -1,4 +1,5 @@
 import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart';
+import 'package:pokedeal/features/trade/domain/models/trade.dart';
 import 'package:pokedeal/features/trade/domain/models/userStats.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -44,5 +45,41 @@ class TradeDataSource implements ITradeDataSource {
       );
     }
     return usersWithStats;
+  }
+
+  @override
+  Future<List<Trade>> getSendTrade() async {
+    final response = await supabaseClient
+        .from('exchanges')
+        .select('*, sender:sender_id(*), receiver:receiver_id(*)')
+        .eq('sender_id', supabaseClient.auth.currentUser!.id);
+    final List<dynamic> data = response;
+    return data.map((trade) {
+      return Trade(
+        id: trade['id'] as String,
+        sender_id: UserProfile.fromJson(trade['sender']),
+        receive_id: UserProfile.fromJson(trade['receiver']),
+        status: trade['status'] as String,
+        timestamp: DateTime.parse(trade['created_at'] as String),
+      );
+    }).toList();
+  }
+
+  @override
+  Future<List<Trade>> getReceivedTrade() async {
+    final response = await supabaseClient
+        .from('exchanges')
+        .select('*, sender:sender_id(*), receiver:receiver_id(*)')
+        .eq('receiver_id', supabaseClient.auth.currentUser!.id);
+    final List<dynamic> data = response;
+    return data.map((trade) {
+      return Trade(
+        id: trade['id'] as String,
+        sender_id: UserProfile.fromJson(trade['sender']),
+        receive_id: UserProfile.fromJson(trade['receiver']),
+        status: trade['status'] as String,
+        timestamp: DateTime.parse(trade['created_at'] as String),
+      );
+    }).toList();
   }
 }
