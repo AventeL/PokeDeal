@@ -1,0 +1,148 @@
+import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/trade/domain/models/trade.dart';
+import 'package:pokedeal/features/trade/domain/models/userStats.dart';
+import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
+
+import '../../../mocks/generated_mocks.mocks.dart';
+
+void main() {
+  late MockTradeRepository mockTradeRepository;
+  late TradeBloc tradeBloc;
+
+  setUp(() {
+    mockTradeRepository = MockTradeRepository();
+    tradeBloc = TradeBloc(tradeRepository: mockTradeRepository);
+  });
+
+  tearDown(() {
+    tradeBloc.close();
+  });
+
+  group('TradeBloc Test', () {
+    final mockFetchAllUsers = [
+      Userstats(
+        user: UserProfile(
+          id: 'user1',
+          email: 'user1@test.com',
+          pseudo: 'User1',
+          createdAt: DateTime.now(),
+        ),
+        nbCards: 10,
+        nbExchanges: 150,
+      ),
+      Userstats(
+        user: UserProfile(
+          id: 'user2',
+          email: 'user2@test.com',
+          pseudo: 'User2',
+          createdAt: DateTime.now(),
+        ),
+        nbCards: 10,
+        nbExchanges: 150,
+      ),
+    ];
+    final mockTradesReceive = [
+      Trade(
+        id: '1',
+        sender_id: UserProfile(
+          id: 'user1',
+          email: 'user1@test.com',
+          pseudo: 'User1',
+          createdAt: DateTime.now(),
+        ),
+        receive_id: UserProfile(
+          id: 'user2',
+          email: 'user2@test.com',
+          pseudo: 'User2',
+          createdAt: DateTime.now(),
+        ),
+        status: 'En attente',
+        timestamp: DateTime.now(),
+      ),
+    ];
+
+    final mockTradesSend = [
+      Trade(
+        id: '1',
+        sender_id: UserProfile(
+          id: 'user3',
+          email: 'user3@test.com',
+          pseudo: 'User3',
+          createdAt: DateTime.now(),
+        ),
+        receive_id: UserProfile(
+          id: 'user4',
+          email: 'user4@test.com',
+          pseudo: 'User4',
+          createdAt: DateTime.now(),
+        ),
+        status: 'En attente',
+        timestamp: DateTime.now(),
+      ),
+    ];
+
+    void mockFetchTradesSuccess() {
+      when(
+        mockTradeRepository.getAllUser(),
+      ).thenAnswer((_) async => mockFetchAllUsers);
+    }
+
+    blocTest<TradeBloc, TradeState>(
+      'emits [TradeStateSuccessGetAllUsers, TradeStateUsersLoaded] when getAllUser is successful',
+      build: () {
+        mockFetchTradesSuccess();
+        return tradeBloc;
+      },
+      act: (bloc) => bloc.add(TradeEventGetAllUsers()),
+      expect:
+          () => [
+            TradeStateSuccessGetAllUsers(),
+            TradeStateUsersLoaded(users: mockFetchAllUsers),
+          ],
+      verify: (_) {
+        verify(mockTradeRepository.getAllUser()).called(1);
+      },
+    );
+
+    void mockFetchReceiveTradesSuccess() {
+      when(
+        mockTradeRepository.getReceivedTrade(),
+      ).thenAnswer((_) async => mockTradesReceive);
+    }
+
+    void mockFetchSendTradesSuccess() {
+      when(
+        mockTradeRepository.getSendTrade(),
+      ).thenAnswer((_) async => mockTradesSend);
+    }
+
+    blocTest<TradeBloc, TradeState>(
+      'emits [TradeStateReceivedTradesLoaded] when getReceiveTrade is successful',
+      build: () {
+        mockFetchReceiveTradesSuccess();
+        return tradeBloc;
+      },
+      act: (bloc) => bloc.add(TradeEventGetReceivedTrade()),
+      expect: () => [TradeStateReceivedTradesLoaded(trades: mockTradesReceive)],
+      verify: (_) {
+        verify(mockTradeRepository.getReceivedTrade()).called(1);
+      },
+    );
+
+    blocTest<TradeBloc, TradeState>(
+      'emits [TradeStateSendTradesLoaded] when getSendTrade is successful',
+      build: () {
+        mockFetchSendTradesSuccess();
+        return tradeBloc;
+      },
+      act: (bloc) => bloc.add(TradeEventGetSendTrade()),
+      expect: () => [TradeStateSendTradesLoaded(trades: mockTradesSend)],
+      verify: (_) {
+        verify(mockTradeRepository.getSendTrade()).called(1);
+      },
+    );
+  });
+}

@@ -18,8 +18,12 @@ class Trade {
   factory Trade.fromJson(Map<String, dynamic> json) {
     return Trade(
       id: json['id'] as String,
-      receive_id: json['receive_id'] as UserProfile,
-      sender_id: json['sender_id'] as UserProfile,
+      sender_id: UserProfile.fromJson(
+        json['sender_id'] as Map<String, dynamic>,
+      ),
+      receive_id: UserProfile.fromJson(
+        json['receive_id'] as Map<String, dynamic>,
+      ),
       status: json['status'] as String,
       timestamp: DateTime.parse(json['timestamp'] as String),
     );
