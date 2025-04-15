@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/trade/domain/models/userStats.dart';
 
 class TradeProfileCardWidget extends StatelessWidget {
   final VoidCallback? onTap;
+  final Userstats userProfile;
 
-  const TradeProfileCardWidget({super.key, this.onTap});
+  const TradeProfileCardWidget({
+    super.key,
+    required this.userProfile,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,33 +20,37 @@ class TradeProfileCardWidget extends StatelessWidget {
       color: Theme.of(context).colorScheme.tertiaryContainer,
       borderRadius: borderRadius,
       child: InkWell(
-        onTap: onTap,
-        borderRadius: borderRadius,
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  child: Icon(Icons.person),
-                ),
-                12.width,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Cocorico',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text('25 cartes, 3 échanges'),
-                  ],
-                ),
-                Spacer(),
-                Icon(Icons.arrow_forward_ios, color: Colors.grey[600]),
-              ],
-            ),
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.tertiaryContainer,
+          borderRadius: borderRadius,
+        ),
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.grey,
+                child: Icon(Icons.person),
+              ),
+              12.width,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userProfile.user.pseudo,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '${userProfile.nbCards} cartes, ${userProfile.nbExchanges} échanges',
+                  ),
+                ],
+              ),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, color: Colors.grey[600]),
+            ],),
           ),
         ),
       ),

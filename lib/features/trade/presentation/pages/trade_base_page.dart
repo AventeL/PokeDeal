@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/trade/presentation/pages/trade_request_page.dart';
 import 'package:pokedeal/features/trade/presentation/pages/trade_search_page.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/base_trade_menu_button.dart';
+
+import '../bloc/trade_bloc.dart';
 
 class TradeBasePage extends StatefulWidget {
   const TradeBasePage({super.key});
@@ -14,6 +17,12 @@ class TradeBasePage extends StatefulWidget {
 class _TradeBasePageState extends State<TradeBasePage>
     with SingleTickerProviderStateMixin {
   TradeMenu selectedMenu = TradeMenu.search;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<TradeBloc>().add(TradeEventGetAllUsers());
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -13,6 +13,8 @@ import 'package:pokedeal/theme/theme_notifier.dart';
 
 ThemeNotifier themeModeNotifier = ThemeNotifier();
 
+import '../../features/trade/presentation/bloc/trade_bloc.dart';
+
 class MainMaterialApp extends StatelessWidget {
   const MainMaterialApp({super.key});
 
@@ -35,6 +37,7 @@ class MainMaterialApp extends StatelessWidget {
         BlocProvider<CollectionPokemonCardBloc>(
           create: (context) => getIt<CollectionPokemonCardBloc>(),
         ),
+        BlocProvider<TradeBloc>(create: (context) => getIt<TradeBloc>()),
         BlocProvider(create: (context) => getIt<ProfileBloc>()),
         BlocProvider(create: (context) => getIt<UserCollectionBloc>()),
       ],
