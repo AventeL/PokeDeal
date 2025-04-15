@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/models/trade.dart';
-import '../../domain/models/userStats.dart';
+import '../../domain/models/user_stats.dart';
 import '../../domain/repository/trade_repository.dart';
 
 part 'trade_event.dart';

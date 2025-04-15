@@ -1,6 +1,6 @@
 import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
-import 'package:pokedeal/features/trade/domain/models/userStats.dart';
+import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../authentication/domain/models/user_profile.dart';
@@ -11,14 +11,14 @@ class TradeDataSource implements ITradeDataSource {
   TradeDataSource({required this.supabaseClient});
 
   @override
-  Future<List<Userstats>> getAllUser() async {
+  Future<List<UserStats>> getAllUser() async {
     final response = await supabaseClient
         .from('user_profiles')
         .select()
         .neq('id', supabaseClient.auth.currentUser!.id);
 
     final List<dynamic> data = response;
-    final List<Userstats> usersWithStats = [];
+    final List<UserStats> usersWithStats = [];
     for (final user in data) {
       final userId = user['id'];
 
@@ -37,7 +37,7 @@ class TradeDataSource implements ITradeDataSource {
 
       final successfulExchanges = exchangesResponse.length;
       usersWithStats.add(
-        Userstats(
+        UserStats(
           user: UserProfile.fromJson(user),
           nbCards: cardCount,
           nbExchanges: successfulExchanges,
@@ -57,8 +57,8 @@ class TradeDataSource implements ITradeDataSource {
     return data.map((trade) {
       return Trade(
         id: trade['id'] as String,
-        sender_id: UserProfile.fromJson(trade['sender']),
-        receive_id: UserProfile.fromJson(trade['receiver']),
+        senderId: UserProfile.fromJson(trade['sender']),
+        receiveId: UserProfile.fromJson(trade['receiver']),
         status: trade['status'] as String,
         timestamp: DateTime.parse(trade['created_at'] as String),
       );
@@ -75,8 +75,8 @@ class TradeDataSource implements ITradeDataSource {
     return data.map((trade) {
       return Trade(
         id: trade['id'] as String,
-        sender_id: UserProfile.fromJson(trade['sender']),
-        receive_id: UserProfile.fromJson(trade['receiver']),
+        senderId: UserProfile.fromJson(trade['sender']),
+        receiveId: UserProfile.fromJson(trade['receiver']),
         status: trade['status'] as String,
         timestamp: DateTime.parse(trade['created_at'] as String),
       );

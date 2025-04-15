@@ -10,7 +10,7 @@ final class TradeStateInitial extends TradeState {}
 final class TradeStateSuccessGetAllUsers extends TradeState {}
 
 final class TradeStateUsersLoaded extends TradeState {
-  final List<Userstats> users;
+  final List<UserStats> users;
 
   TradeStateUsersLoaded({required this.users});
 

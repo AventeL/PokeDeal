@@ -48,7 +48,7 @@ import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart'
 import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart'
     as _i19;
 import 'package:pokedeal/features/trade/domain/models/trade.dart' as _i27;
-import 'package:pokedeal/features/trade/domain/models/userStats.dart' as _i26;
+import 'package:pokedeal/features/trade/domain/models/user_stats.dart' as _i26;
 import 'package:pokedeal/features/trade/domain/repository/trade_repository.dart'
     as _i8;
 import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart'

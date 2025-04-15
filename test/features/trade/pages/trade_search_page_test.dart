@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
-import 'package:pokedeal/features/trade/domain/models/userStats.dart';
+import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
 import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
 import 'package:pokedeal/features/trade/presentation/pages/trade_search_page.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/trade_profile_card_widget.dart';
@@ -26,7 +26,7 @@ void main() {
     WidgetTester tester,
   ) async {
     final mockUsers = [
-      Userstats(
+      UserStats(
         user: UserProfile(
           id: '1',
           pseudo: 'Alice',
@@ -36,7 +36,7 @@ void main() {
         nbCards: 10,
         nbExchanges: 100,
       ),
-      Userstats(
+      UserStats(
         user: UserProfile(
           id: '2',
           pseudo: 'Bob',
@@ -75,7 +75,7 @@ void main() {
     WidgetTester tester,
   ) async {
     final mockUsers = [
-      Userstats(
+      UserStats(
         user: UserProfile(
           id: '1',
           pseudo: 'Alice',
@@ -85,7 +85,7 @@ void main() {
         nbCards: 10,
         nbExchanges: 100,
       ),
-      Userstats(
+      UserStats(
         user: UserProfile(
           id: '2',
           pseudo: 'Bob',

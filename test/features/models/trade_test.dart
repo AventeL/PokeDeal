@@ -20,15 +20,15 @@ void main() {
 
     Trade trade = Trade(
       id: 'tradeId',
-      sender_id: sender,
-      receive_id: receiver,
+      senderId: sender,
+      receiveId: receiver,
       status: 'En cours',
       timestamp: now,
     );
 
     expect(trade.id, 'tradeId');
-    expect(trade.sender_id, sender);
-    expect(trade.receive_id, receiver);
+    expect(trade.senderId, sender);
+    expect(trade.receiveId, receiver);
     expect(trade.status, 'En cours');
     expect(trade.timestamp, now);
   });
@@ -54,8 +54,8 @@ void main() {
     });
 
     expect(trade.id, 'tradeId');
-    expect(trade.sender_id.id, 'senderId');
-    expect(trade.receive_id.id, 'receiverId');
+    expect(trade.senderId.id, 'senderId');
+    expect(trade.receiveId.id, 'receiverId');
     expect(trade.status, 'En cours');
     expect(trade.timestamp, now);
   });

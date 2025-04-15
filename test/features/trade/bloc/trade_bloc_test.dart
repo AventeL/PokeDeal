@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
-import 'package:pokedeal/features/trade/domain/models/userStats.dart';
+import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
 import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
@@ -23,7 +23,7 @@ void main() {
 
   group('TradeBloc Test', () {
     final mockFetchAllUsers = [
-      Userstats(
+      UserStats(
         user: UserProfile(
           id: 'user1',
           email: 'user1@test.com',
@@ -33,7 +33,7 @@ void main() {
         nbCards: 10,
         nbExchanges: 150,
       ),
-      Userstats(
+      UserStats(
         user: UserProfile(
           id: 'user2',
           email: 'user2@test.com',
@@ -47,13 +47,13 @@ void main() {
     final mockTradesReceive = [
       Trade(
         id: '1',
-        sender_id: UserProfile(
+        senderId: UserProfile(
           id: 'user1',
           email: 'user1@test.com',
           pseudo: 'User1',
           createdAt: DateTime.now(),
         ),
-        receive_id: UserProfile(
+        receiveId: UserProfile(
           id: 'user2',
           email: 'user2@test.com',
           pseudo: 'User2',
@@ -67,13 +67,13 @@ void main() {
     final mockTradesSend = [
       Trade(
         id: '1',
-        sender_id: UserProfile(
+        senderId: UserProfile(
           id: 'user3',
           email: 'user3@test.com',
           pseudo: 'User3',
           createdAt: DateTime.now(),
         ),
-        receive_id: UserProfile(
+        receiveId: UserProfile(
           id: 'user4',
           email: 'user4@test.com',
           pseudo: 'User4',

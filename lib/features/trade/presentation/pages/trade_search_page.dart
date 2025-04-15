@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/trade_profile_card_widget.dart';
 
-import '../../domain/models/userStats.dart';
+import '../../domain/models/user_stats.dart';
 import '../bloc/trade_bloc.dart';
 
 class TradeSearchPage extends StatefulWidget {
@@ -15,8 +15,8 @@ class TradeSearchPage extends StatefulWidget {
 
 class _TradeSearchPageState extends State<TradeSearchPage> {
   final TextEditingController _searchController = TextEditingController();
-  List<Userstats> _filteredUsers = [];
-  List<Userstats> _allUsers = [];
+  List<UserStats> _filteredUsers = [];
+  List<UserStats> _allUsers = [];
 
   @override
   void initState() {

@@ -10,13 +10,13 @@ void main() {
     (WidgetTester tester) async {
       final mockTrade = Trade(
         id: 'tradeId',
-        sender_id: UserProfile(
+        senderId: UserProfile(
           id: 'senderId',
           email: 'sender@test.com',
           pseudo: 'Sender',
           createdAt: DateTime.now(),
         ),
-        receive_id: UserProfile(
+        receiveId: UserProfile(
           id: 'receiverId',
           email: 'receiver@test.com',
           pseudo: 'Receiver',
@@ -48,13 +48,13 @@ void main() {
   ) async {
     final mockTrade = Trade(
       id: 'tradeId',
-      sender_id: UserProfile(
+      senderId: UserProfile(
         id: 'senderId',
         email: 'sender@test.com',
         pseudo: 'Sender',
         createdAt: DateTime.now(),
       ),
-      receive_id: UserProfile(
+      receiveId: UserProfile(
         id: 'receiverId',
         email: 'receiver@test.com',
         pseudo: 'Receiver',

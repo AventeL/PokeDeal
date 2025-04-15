@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
-import 'package:pokedeal/features/trade/domain/models/userStats.dart';
+import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/trade_profile_card_widget.dart';
 
 void main() {
   testWidgets('TradeProfileCardWidget displays user information', (
     WidgetTester tester,
   ) async {
-    final mockUserStats = Userstats(
+    final mockUserStats = UserStats(
       user: UserProfile(
         id: '1',
         pseudo: 'TestUser',
