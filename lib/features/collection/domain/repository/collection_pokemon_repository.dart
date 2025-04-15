@@ -67,6 +67,8 @@ class CollectionPokemonRepository {
     List<UserCardCollection> cards = await collectionPokemonDataSource
         .getUserCollection(userId: userId, cardId: cardId, setId: setId);
 
+    cards.sort((a, b) => b.quantity.compareTo(a.quantity));
+
     return cards;
   }
 
