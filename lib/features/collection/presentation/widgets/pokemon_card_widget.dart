@@ -5,8 +5,14 @@ import 'package:pokedeal/core/helper/pokemon_card_image_helper.dart';
 class PokemonCardWidget extends StatelessWidget {
   final String cardUrl;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
-  const PokemonCardWidget({super.key, required this.cardUrl, this.onTap});
+  const PokemonCardWidget({
+    super.key,
+    required this.cardUrl,
+    this.onTap,
+    this.onLongPress,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +20,7 @@ class PokemonCardWidget extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
+        onLongPress: onLongPress,
         child: CachedNetworkImage(
           imageUrl: PokemonCardImageHelper.gererateImageUrl(
             cardUrl,

@@ -1,11 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/helper/pokemon_card_image_helper.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/bottom_sheet_add_card_to_collection.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/card_collection_list_widget.dart';
 
 import '../widgets/pokemon_card_unavailable_widget.dart';
 
@@ -23,33 +29,54 @@ class CardDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(cardBrief.name)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onAddToCollection,
-        child: const Icon(Icons.add),
+      floatingActionButton: Builder(
+        builder: (context) {
+          final collectionPokemonCardState =
+              context.watch<CollectionPokemonCardBloc>().state;
+          if (collectionPokemonCardState is CollectionPokemonCardsGet) {
+            return FloatingActionButton(
+              onPressed:
+                  () => onAddToCollection(
+                    context,
+                    collectionPokemonCardState.card,
+                  ),
+              child: const Icon(Icons.add),
+            );
+          }
+          return const SizedBox.shrink();
+        },
       ),
       body: BlocConsumer<CollectionPokemonCardBloc, CollectionPokemonCardState>(
-        listener: (context, state) {
-          if (state is CollectionPokemonCardError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Error: ${state.message}')));
+        listener: (context, collectionPokemonCardState) {
+          if (collectionPokemonCardState is CollectionPokemonCardError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${collectionPokemonCardState.message}'),
+              ),
+            );
           }
         },
-        builder: (context, state) {
-          if (state is CollectionPokemonCardLoading) {
+        builder: (context, collectionPokemonCardState) {
+          if (collectionPokemonCardState is CollectionPokemonCardLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (state is CollectionPokemonCardError) {
-            return Center(child: Text('Error: ${state.message}'));
+          if (collectionPokemonCardState is CollectionPokemonCardError) {
+            return Center(
+              child: Text('Error: ${collectionPokemonCardState.message}'),
+            );
           }
-          if (state is CollectionPokemonCardsGet) {
+          if (collectionPokemonCardState is CollectionPokemonCardsGet) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 children: [
                   16.height,
-                  buildCardHeader(state.card, context),
+                  buildCardHeader(collectionPokemonCardState.card, context),
                   16.height,
+                  CardCollectionListWidget(
+                    userId: getIt<AuthenticationRepository>().userProfile!.id,
+                    cardId: cardId,
+                  ),
                 ],
               ),
             );
@@ -91,7 +118,10 @@ class CardDetailPage extends StatelessWidget {
     return Row(
       children: [
         Text('${card.localId}/${card.setBrief.cardCount.total}'),
-        if (card.rarity != null) ...[8.width, Text(card.rarity!)],
+        if (card.rarity != null) ...[
+          8.width,
+          Flexible(child: Text(card.rarity!, textAlign: TextAlign.center)),
+        ],
       ],
     );
   }
@@ -163,7 +193,29 @@ class CardDetailPage extends StatelessWidget {
     );
   }
 
-  void onAddToCollection() {
-    //@todo ouvrir une bottomsheet
+  void onAddToCollection(BuildContext context, BasePokemonCard card) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder:
+          (context) => Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: BottomSheetAddCardToCollection(
+              card: card,
+              onConfirm: (int quantity, VariantValue variant) {
+                context.read<UserCollectionBloc>().add(
+                  UserCollectionAddCardEvent(
+                    pokemonCardId: card.id,
+                    quantity: quantity,
+                    variant: variant,
+                    setId: card.setBrief.id,
+                  ),
+                );
+              },
+            ),
+          ),
+    );
   }
 }

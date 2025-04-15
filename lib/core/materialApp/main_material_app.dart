@@ -6,6 +6,7 @@ import 'package:pokedeal/features/authentication/presentation/bloc/authenticatio
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/theme/custom_theme.dart';
 
@@ -32,6 +33,7 @@ class MainMaterialApp extends StatelessWidget {
           create: (context) => getIt<CollectionPokemonCardBloc>(),
         ),
         BlocProvider(create: (context) => getIt<ProfileBloc>()),
+        BlocProvider(create: (context) => getIt<UserCollectionBloc>()),
       ],
       child: MaterialApp.router(
         routerConfig: router,
