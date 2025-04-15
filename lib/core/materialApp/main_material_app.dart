@@ -11,9 +11,9 @@ import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/theme/custom_theme.dart';
 import 'package:pokedeal/theme/theme_notifier.dart';
 
-ThemeNotifier themeModeNotifier = ThemeNotifier();
-
 import '../../features/trade/presentation/bloc/trade_bloc.dart';
+
+ThemeNotifier themeModeNotifier = ThemeNotifier();
 
 class MainMaterialApp extends StatelessWidget {
   const MainMaterialApp({super.key});
