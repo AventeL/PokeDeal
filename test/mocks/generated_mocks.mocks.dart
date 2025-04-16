@@ -1387,17 +1387,17 @@ class MockTradeRepository extends _i1.Mock implements _i8.TradeRepository {
           as _i19.ITradeDataSource);
 
   @override
-  _i22.Future<List<_i26.Userstats>> getAllUser() =>
+  _i22.Future<List<_i26.UserStats>> getAllUser() =>
       (super.noSuchMethod(
             Invocation.method(#getAllUser, []),
-            returnValue: _i22.Future<List<_i26.Userstats>>.value(
-              <_i26.Userstats>[],
+            returnValue: _i22.Future<List<_i26.UserStats>>.value(
+              <_i26.UserStats>[],
             ),
-            returnValueForMissingStub: _i22.Future<List<_i26.Userstats>>.value(
-              <_i26.Userstats>[],
+            returnValueForMissingStub: _i22.Future<List<_i26.UserStats>>.value(
+              <_i26.UserStats>[],
             ),
           )
-          as _i22.Future<List<_i26.Userstats>>);
+          as _i22.Future<List<_i26.UserStats>>);
 
   @override
   _i22.Future<List<_i27.Trade>> getSendTrade() =>
@@ -1658,17 +1658,17 @@ class MockICollectionPokemonDataSource extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockITradeDataSource extends _i1.Mock implements _i19.ITradeDataSource {
   @override
-  _i22.Future<List<_i26.Userstats>> getAllUser() =>
+  _i22.Future<List<_i26.UserStats>> getAllUser() =>
       (super.noSuchMethod(
             Invocation.method(#getAllUser, []),
-            returnValue: _i22.Future<List<_i26.Userstats>>.value(
-              <_i26.Userstats>[],
+            returnValue: _i22.Future<List<_i26.UserStats>>.value(
+              <_i26.UserStats>[],
             ),
-            returnValueForMissingStub: _i22.Future<List<_i26.Userstats>>.value(
-              <_i26.Userstats>[],
+            returnValueForMissingStub: _i22.Future<List<_i26.UserStats>>.value(
+              <_i26.UserStats>[],
             ),
           )
-          as _i22.Future<List<_i26.Userstats>>);
+          as _i22.Future<List<_i26.UserStats>>);
 
   @override
   _i22.Future<List<_i27.Trade>> getSendTrade() =>
