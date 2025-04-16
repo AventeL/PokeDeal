@@ -18,10 +18,19 @@ final class UserCollectionError extends UserCollectionState {
   List<Object?> get props => [message];
 }
 
-final class UserCollectionLoaded extends UserCollectionState {
+final class UserCollectionSetLoaded extends UserCollectionState {
   final List<UserCardCollection> userCardsCollection;
 
-  UserCollectionLoaded({required this.userCardsCollection});
+  UserCollectionSetLoaded({required this.userCardsCollection});
+
+  @override
+  List<Object?> get props => [userCardsCollection];
+}
+
+final class UserCollectionCardLoaded extends UserCollectionState {
+  final List<UserCardCollection> userCardsCollection;
+
+  UserCollectionCardLoaded({required this.userCardsCollection});
 
   @override
   List<Object?> get props => [userCardsCollection];

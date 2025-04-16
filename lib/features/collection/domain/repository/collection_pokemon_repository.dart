@@ -12,7 +12,6 @@ class CollectionPokemonRepository {
   List<PokemonSerie> series = [];
   Map<String, PokemonSet> setsMap = {};
   Map<String, BasePokemonCard> cardsMap = {};
-  List<UserCardCollection> userCardsCollection = [];
 
   CollectionPokemonRepository({required this.collectionPokemonDataSource});
 
@@ -85,18 +84,7 @@ class CollectionPokemonRepository {
           variant: variant,
           setId: setId,
         );
-    if (userCardsCollection.isNotEmpty) {
-      for (var card in userCardsCollection) {
-        if (card.cardId == newUserCardCollection.cardId &&
-            card.setId == newUserCardCollection.setId &&
-            card.variant == newUserCardCollection.variant) {
-          userCardsCollection.remove(card);
-          break;
-        }
-      }
-    }
 
-    userCardsCollection.add(newUserCardCollection);
     return newUserCardCollection;
   }
 }

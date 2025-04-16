@@ -15,24 +15,36 @@ class UserCollectionBloc
 
   UserCollectionBloc({required this.collectionPokemonRepository})
     : super(UserCollectionInitial()) {
-    on<UserCollectionLoadEvent>(onUserCollectionLoadEvent);
+    on<UserCollectionLoadSetEvent>(onUserCollectionLoadSetEvent);
+    on<UserCollectionLoadCardEvent>(onUserCollectionLoadCardEvent);
     on<UserCollectionAddCardEvent>(onUserCollectionAddCardEvent);
   }
 
-  Future<void> onUserCollectionLoadEvent(
-    UserCollectionLoadEvent event,
+  Future<void> onUserCollectionLoadSetEvent(
+    UserCollectionLoadSetEvent event,
     Emitter<UserCollectionState> emit,
   ) async {
     emit(UserCollectionLoading());
     try {
       List<UserCardCollection> cards = await collectionPokemonRepository
-          .getUserCollection(
-            userId: event.userId,
-            cardId: event.cardId,
-            setId: event.setId,
-          );
+          .getUserCollection(userId: event.userId, setId: event.setId);
 
-      emit(UserCollectionLoaded(userCardsCollection: cards));
+      emit(UserCollectionSetLoaded(userCardsCollection: cards));
+    } catch (e) {
+      emit(UserCollectionError(message: e.toString()));
+    }
+  }
+
+  Future<void> onUserCollectionLoadCardEvent(
+    UserCollectionLoadCardEvent event,
+    Emitter<UserCollectionState> emit,
+  ) async {
+    emit(UserCollectionLoading());
+    try {
+      List<UserCardCollection> cards = await collectionPokemonRepository
+          .getUserCollection(userId: event.userId, cardId: event.cardId);
+
+      emit(UserCollectionCardLoaded(userCardsCollection: cards));
     } catch (e) {
       emit(UserCollectionError(message: e.toString()));
     }
@@ -53,10 +65,9 @@ class UserCollectionBloc
       emit(UserCollectionStateCardAdded());
       if (event.needRefresh) {
         add(
-          UserCollectionLoadEvent(
+          UserCollectionLoadCardEvent(
             userId: getIt<AuthenticationRepository>().userProfile!.id,
             cardId: event.pokemonCardId,
-            setId: event.setId,
           ),
         );
       }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,7 +27,7 @@ void main() {
         MaterialApp(
           home: BlocProvider<UserCollectionBloc>(
             create: (context) => mockBloc,
-            child: CardCollectionListWidget(userId: 'user1', cardId: null),
+            child: CardCollectionListWidget(userId: 'user1', cardId: 'card1'),
           ),
         ),
       );
@@ -45,7 +47,7 @@ void main() {
         MaterialApp(
           home: BlocProvider<UserCollectionBloc>(
             create: (context) => mockBloc,
-            child: CardCollectionListWidget(userId: 'user1', cardId: null),
+            child: CardCollectionListWidget(userId: 'user1', cardId: 'card1'),
           ),
         ),
       );
@@ -59,13 +61,13 @@ void main() {
     (WidgetTester tester) async {
       when(
         mockBloc.state,
-      ).thenReturn(UserCollectionLoaded(userCardsCollection: []));
+      ).thenReturn(UserCollectionCardLoaded(userCardsCollection: []));
 
       await tester.pumpWidget(
         MaterialApp(
           home: BlocProvider<UserCollectionBloc>(
             create: (context) => mockBloc,
-            child: CardCollectionListWidget(userId: 'user1', cardId: null),
+            child: CardCollectionListWidget(userId: 'user1', cardId: 'card1'),
           ),
         ),
       );
@@ -77,6 +79,7 @@ void main() {
   testWidgets('CardCollectionListWidget displays cards when available', (
     WidgetTester tester,
   ) async {
+    final streamController = StreamController<UserCollectionState>.broadcast();
     final userCardsCollection = [
       UserCardCollection(
         id: '1',
@@ -89,25 +92,24 @@ void main() {
       UserCardCollection(
         id: '2',
         userId: '1',
-        cardId: 'card2',
+        cardId: 'card1',
         quantity: 3,
         variant: VariantValue.holo,
         setId: 'set2',
       ),
     ];
 
-    when(mockBloc.state).thenReturn(
-      UserCollectionLoaded(userCardsCollection: userCardsCollection),
-    );
+    when(mockBloc.stream).thenAnswer((_) => streamController.stream);
+    when(mockBloc.state).thenReturn(UserCollectionLoading());
 
     await tester.pumpWidget(
       MaterialApp(
         home: BlocProvider<UserCollectionBloc>(
-          create: (context) => mockBloc,
+          create: (_) => mockBloc,
           child: Scaffold(
             body: Column(
               children: [
-                CardCollectionListWidget(userId: 'user1', cardId: null),
+                CardCollectionListWidget(userId: '1', cardId: 'card1'),
               ],
             ),
           ),
@@ -115,10 +117,17 @@ void main() {
       ),
     );
 
+    streamController.add(
+      UserCollectionCardLoaded(userCardsCollection: userCardsCollection),
+    );
+    await tester.pumpAndSettle();
+
     expect(find.text('Normal'), findsOneWidget);
     expect(find.text('Holo'), findsOneWidget);
     expect(find.text('5'), findsOneWidget);
     expect(find.text('3'), findsOneWidget);
+
+    await streamController.close();
   });
 
   testWidgets(
@@ -126,13 +135,13 @@ void main() {
     (WidgetTester tester) async {
       when(
         mockBloc.state,
-      ).thenReturn(UserCollectionLoaded(userCardsCollection: []));
+      ).thenReturn(UserCollectionCardLoaded(userCardsCollection: []));
 
       await tester.pumpWidget(
         MaterialApp(
           home: BlocProvider<UserCollectionBloc>(
             create: (context) => mockBloc,
-            child: CardCollectionListWidget(userId: 'user1', cardId: null),
+            child: CardCollectionListWidget(userId: 'user1', cardId: 'card1'),
           ),
         ),
       );

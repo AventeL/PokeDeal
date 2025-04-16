@@ -289,8 +289,6 @@ void main() {
     test(
       'removes existing card if already in the collection and adds the new one',
       () async {
-        repository.userCardsCollection = [mockUserCardCollection];
-
         final newCard = UserCardCollection(
           id: '2',
           userId: 'userId',
@@ -318,8 +316,6 @@ void main() {
 
         expect(result, isA<UserCardCollection>());
         expect(result, newCard);
-        expect(repository.userCardsCollection.length, 1);
-        expect(repository.userCardsCollection[0], newCard);
         verify(
           dataSource.addCardToUserCollection(
             id: 'cardId',
