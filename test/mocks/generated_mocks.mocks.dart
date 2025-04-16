@@ -961,12 +961,24 @@ class MockUserCollectionBloc extends _i1.Mock
           as bool);
 
   @override
-  _i22.Future<void> onUserCollectionLoadEvent(
-    _i12.UserCollectionLoadEvent? event,
+  _i22.Future<void> onUserCollectionLoadSetEvent(
+    _i12.UserCollectionLoadSetEvent? event,
     _i23.Emitter<_i12.UserCollectionState>? emit,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#onUserCollectionLoadEvent, [event, emit]),
+            Invocation.method(#onUserCollectionLoadSetEvent, [event, emit]),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
+
+  @override
+  _i22.Future<void> onUserCollectionLoadCardEvent(
+    _i12.UserCollectionLoadCardEvent? event,
+    _i23.Emitter<_i12.UserCollectionState>? emit,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#onUserCollectionLoadCardEvent, [event, emit]),
             returnValue: _i22.Future<void>.value(),
             returnValueForMissingStub: _i22.Future<void>.value(),
           )
@@ -1220,23 +1232,6 @@ class MockCollectionPokemonRepository extends _i1.Mock
         Invocation.setter(#cardsMap, _cardsMap),
         returnValueForMissingStub: null,
       );
-
-  @override
-  List<_i18.UserCardCollection> get userCardsCollection =>
-      (super.noSuchMethod(
-            Invocation.getter(#userCardsCollection),
-            returnValue: <_i18.UserCardCollection>[],
-            returnValueForMissingStub: <_i18.UserCardCollection>[],
-          )
-          as List<_i18.UserCardCollection>);
-
-  @override
-  set userCardsCollection(
-    List<_i18.UserCardCollection>? _userCardsCollection,
-  ) => super.noSuchMethod(
-    Invocation.setter(#userCardsCollection, _userCardsCollection),
-    returnValueForMissingStub: null,
-  );
 
   @override
   _i22.Future<List<_i24.PokemonSerieBrief>> getSeriesBriefs() =>

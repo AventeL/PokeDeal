@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/card/user_card_collection.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
@@ -24,13 +27,23 @@ class SetDetailsPage extends StatefulWidget {
 
 class _SetDetailsPageState extends State<SetDetailsPage> {
   late PokemonSet setWithCards;
-  bool isLoading = false;
+  List<UserCardCollection> userCardsCollection = [];
 
   @override
   void initState() {
     super.initState();
     context.read<CollectionPokemonSetBloc>().add(
       CollectionPokemonGetSetWithCardsEvent(setId: widget.setInfo.id),
+    );
+    loadUserCardsCollection();
+  }
+
+  void loadUserCardsCollection() {
+    context.read<UserCollectionBloc>().add(
+      UserCollectionLoadSetEvent(
+        userId: getIt<AuthenticationRepository>().userProfile!.id,
+        setId: widget.setInfo.id,
+      ),
     );
   }
 
@@ -39,40 +52,45 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.setInfo.name)),
       body: BlocConsumer<UserCollectionBloc, UserCollectionState>(
-        listener: (context, state) {
-          if (state is UserCollectionError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Error: ${state.message}')));
-          }
-          if (state is UserCollectionStateCardAdded) {
+        listener: (context, userCollectionState) {
+          if (userCollectionState is UserCollectionError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Carte ajoutée à la collection')),
+              SnackBar(content: Text('Error: ${userCollectionState.message}')),
             );
           }
+          if (userCollectionState is UserCollectionStateCardAdded) {
+            loadUserCardsCollection();
+          }
+          if (userCollectionState is UserCollectionSetLoaded) {
+            userCardsCollection = userCollectionState.userCardsCollection;
+          }
         },
-        builder: (context, state) {
+        builder: (context, userCollectionState) {
           return BlocConsumer<
             CollectionPokemonSetBloc,
             CollectionPokemonSetState
           >(
-            listener: (context, state) {
-              if (state is CollectionPokemonSetWithCardsGet) {
-                setWithCards = state.setWithCards;
-              } else if (state is CollectionPokemonSetError) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.message)));
+            listener: (context, collectionPokemonSetState) {
+              if (collectionPokemonSetState
+                  is CollectionPokemonSetWithCardsGet) {
+                setWithCards = collectionPokemonSetState.setWithCards;
+              } else if (collectionPokemonSetState
+                  is CollectionPokemonSetError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(collectionPokemonSetState.message)),
+                );
               }
             },
-            builder: (context, state) {
-              if (state is CollectionPokemonSetLoading) {
+            builder: (context, collectionPokemonSetState) {
+              if (collectionPokemonSetState is CollectionPokemonSetLoading) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (state is CollectionPokemonSetError) {
-                return Center(child: Text(state.message));
+              } else if (collectionPokemonSetState
+                  is CollectionPokemonSetError) {
+                return Center(child: Text(collectionPokemonSetState.message));
               }
-              if (state is CollectionPokemonSetWithCardsGet) {
-                setWithCards = state.setWithCards;
+              if (collectionPokemonSetState
+                  is CollectionPokemonSetWithCardsGet) {
+                setWithCards = collectionPokemonSetState.setWithCards;
                 if (setWithCards.cards.isEmpty) {
                   return Center(
                     child: Padding(
@@ -153,6 +171,9 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                               return PokemonCardUnavailableWidget(
                                 card: card,
                                 totalCard: setWithCards.cards.length,
+                                isOwned: userCardsCollection.any(
+                                  (userCard) => userCard.cardId == card.id,
+                                ),
                                 onLongPress:
                                     () => onAddToCollection(context, card.id),
                                 onTap:
@@ -172,6 +193,9 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                                     cardId: card.id,
                                     cardBrief: card,
                                   ),
+                              isOwned: userCardsCollection.any(
+                                (userCard) => userCard.cardId == card.id,
+                              ),
                             );
                           },
                         ),
