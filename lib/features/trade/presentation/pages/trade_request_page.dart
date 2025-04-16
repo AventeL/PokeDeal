@@ -29,9 +29,8 @@ class _TradeRequestPageState extends State<TradeRequestPage>
         children: [
           TabBar(
             controller: _tabController,
-            labelColor: Theme.of(context).primaryColor,
-            unselectedLabelColor: Colors.black,
-            indicatorColor: Theme.of(context).primaryColor,
+            labelColor: Theme.of(context).colorScheme.primary,
+            indicatorColor: Theme.of(context).colorScheme.primary,
             indicatorSize: TabBarIndicatorSize.tab,
             tabs: [Tab(text: 'Reçues'), Tab(text: 'Envoyées')],
           ),

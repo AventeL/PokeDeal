@@ -46,6 +46,7 @@ class _TradeBasePageState extends State<TradeBasePage>
                 text: 'Rechercher',
                 isSelected: selectedMenu == TradeMenu.search,
                 onTap: () {
+                  context.read<TradeBloc>().add(TradeEventGetAllUsers());
                   setState(() {
                     selectedMenu = TradeMenu.search;
                   });
