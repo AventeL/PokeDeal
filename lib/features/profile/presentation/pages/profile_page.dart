@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:pokedeal/shared/widgets/custom_large_button.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -78,9 +80,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     32.height,
-                    Text(
-                      "Collection",
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    CustomLargeButton(
+                      onPressed: () => {context.push("/modify_profil")},
+                      label: "Modifier",
                     ),
                   ],
                 ),
