@@ -1,5 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:pokedeal/core/di/injection_container.dart';
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source_interface.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/card_variant.dart';
@@ -20,12 +23,28 @@ import '../../../mocks/generated_mocks.mocks.dart';
 void main() {
   late ICollectionPokemonDataSource dataSource;
   late CollectionPokemonRepository repository;
+  late AuthenticationRepository authenticationRepository;
 
   setUp(() {
     dataSource = MockICollectionPokemonDataSource();
     repository = CollectionPokemonRepository(
       collectionPokemonDataSource: dataSource,
     );
+    authenticationRepository = MockAuthenticationRepository();
+    getIt.registerSingleton<AuthenticationRepository>(authenticationRepository);
+
+    when(authenticationRepository.userProfile).thenReturn(
+      UserProfile(
+        id: 'userId',
+        email: 'mail',
+        pseudo: 'pseudo',
+        createdAt: DateTime.now(),
+      ),
+    );
+  });
+
+  tearDown(() {
+    getIt.reset();
   });
 
   final mockSeriesBriefs = [
@@ -254,6 +273,21 @@ void main() {
         ).called(1);
       },
     );
+
+    test('returns cached user card collection when already in map', () async {
+      repository.userCardsBySetIdMap.addEntries([
+        MapEntry('setId', [mockUserCardCollection]),
+      ]);
+
+      final result = await repository.getUserCollection(
+        userId: 'userId',
+        setId: 'setId',
+      );
+
+      expect(result, [mockUserCardCollection]);
+
+      verifyZeroInteractions(dataSource);
+    });
   });
 
   group('addCardToUserCollection', () {
