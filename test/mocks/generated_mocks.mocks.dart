@@ -1234,6 +1234,24 @@ class MockCollectionPokemonRepository extends _i1.Mock
       );
 
   @override
+  Map<String, List<_i18.UserCardCollection>> get userCardsBySetIdMap =>
+      (super.noSuchMethod(
+            Invocation.getter(#userCardsBySetIdMap),
+            returnValue: <String, List<_i18.UserCardCollection>>{},
+            returnValueForMissingStub:
+                <String, List<_i18.UserCardCollection>>{},
+          )
+          as Map<String, List<_i18.UserCardCollection>>);
+
+  @override
+  set userCardsBySetIdMap(
+    Map<String, List<_i18.UserCardCollection>>? _userCardsBySetIdMap,
+  ) => super.noSuchMethod(
+    Invocation.setter(#userCardsBySetIdMap, _userCardsBySetIdMap),
+    returnValueForMissingStub: null,
+  );
+
+  @override
   _i22.Future<List<_i24.PokemonSerieBrief>> getSeriesBriefs() =>
       (super.noSuchMethod(
             Invocation.method(#getSeriesBriefs, []),

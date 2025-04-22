@@ -66,17 +66,20 @@ class CollectionPokemonRepository {
     String? cardId,
     String? setId,
   }) async {
-    List<UserCardCollection> cards = await collectionPokemonDataSource
-        .getUserCollection(userId: userId, cardId: cardId, setId: setId);
-
     if (setId != null &&
+        cardId == null &&
         userId == getIt<AuthenticationRepository>().userProfile!.id) {
       if (userCardsBySetIdMap.containsKey(setId)) {
         return userCardsBySetIdMap[setId]!;
       }
-      userCardsBySetIdMap[setId] = cards;
     }
 
+    List<UserCardCollection> cards = await collectionPokemonDataSource
+        .getUserCollection(userId: userId, cardId: cardId, setId: setId);
+
+    if (setId != null && cardId == null) {
+      userCardsBySetIdMap[setId] = cards;
+    }
     cards.sort((a, b) => b.quantity.compareTo(a.quantity));
 
     return cards;
