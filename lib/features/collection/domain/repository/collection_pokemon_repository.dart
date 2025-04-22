@@ -1,3 +1,5 @@
+import 'package:pokedeal/core/di/injection_container.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source_interface.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/user_card_collection.dart';
@@ -12,6 +14,7 @@ class CollectionPokemonRepository {
   List<PokemonSerie> series = [];
   Map<String, PokemonSet> setsMap = {};
   Map<String, BasePokemonCard> cardsMap = {};
+  Map<String, List<UserCardCollection>> userCardsBySetIdMap = {};
 
   CollectionPokemonRepository({required this.collectionPokemonDataSource});
 
@@ -66,6 +69,14 @@ class CollectionPokemonRepository {
     List<UserCardCollection> cards = await collectionPokemonDataSource
         .getUserCollection(userId: userId, cardId: cardId, setId: setId);
 
+    if (setId != null &&
+        userId == getIt<AuthenticationRepository>().userProfile!.id) {
+      if (userCardsBySetIdMap.containsKey(setId)) {
+        return userCardsBySetIdMap[setId]!;
+      }
+      userCardsBySetIdMap[setId] = cards;
+    }
+
     cards.sort((a, b) => b.quantity.compareTo(a.quantity));
 
     return cards;
@@ -85,6 +96,18 @@ class CollectionPokemonRepository {
           setId: setId,
         );
 
+    if (userCardsBySetIdMap.containsKey(setId)) {
+      List<UserCardCollection> userCards = userCardsBySetIdMap[setId]!;
+      int index = userCards.indexWhere(
+        (card) => card.id == newUserCardCollection.id,
+      );
+
+      if (index != -1) {
+        userCards[index] = newUserCardCollection;
+      } else {
+        userCards.add(newUserCardCollection);
+      }
+    }
     return newUserCardCollection;
   }
 }
