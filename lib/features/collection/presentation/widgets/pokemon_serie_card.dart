@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/pokemon_set_card.dart';
 
 class PokemonSerieCard extends StatefulWidget {
   final PokemonSerie pokemonSerie;
+  final List<PokemonSetBrief>? sets;
+  final Function(PokemonSetBrief)? onSetTap;
 
-  const PokemonSerieCard({super.key, required this.pokemonSerie});
+  const PokemonSerieCard({
+    super.key,
+    required this.pokemonSerie,
+    this.sets,
+    this.onSetTap,
+  });
 
   @override
   State<PokemonSerieCard> createState() => _PokemonSerieCardState();
@@ -93,17 +99,20 @@ class _PokemonSerieCardState extends State<PokemonSerieCard> {
       ),
       child: Column(
         children:
-            widget.pokemonSerie.sets.map((set) {
-              return PokemonSetCardWidget(
-                set: set,
-                onTap: () => navigateToSetDetailsPage(set),
-              );
-            }).toList(),
+            widget.sets != null && widget.sets!.isNotEmpty
+                ? widget.sets!.map((set) {
+                  return PokemonSetCardWidget(
+                    set: set,
+                    onTap: () => widget.onSetTap!(set),
+                  );
+                }).toList()
+                : widget.pokemonSerie.sets.map((set) {
+                  return PokemonSetCardWidget(
+                    set: set,
+                    onTap: () => widget.onSetTap!(set),
+                  );
+                }).toList(),
       ),
     );
-  }
-
-  void navigateToSetDetailsPage(PokemonSetBrief set) {
-    context.push('/set_details', extra: set);
   }
 }

@@ -36,4 +36,25 @@ final class UserCollectionCardLoaded extends UserCollectionState {
   List<Object?> get props => [userCardsCollection];
 }
 
+final class UserCollectionAllLoaded extends UserCollectionState {
+  final List<UserCardCollection> userCardsCollection;
+  final List<PokemonSet> setsCollection;
+  final List<PokemonSerie> seriesCollection;
+  final List<BasePokemonCard> listOfCards;
+
+  UserCollectionAllLoaded({
+    required this.userCardsCollection,
+    required this.setsCollection,
+    required this.seriesCollection,
+    required this.listOfCards,
+  });
+
+  @override
+  List<Object?> get props => [
+    userCardsCollection,
+    setsCollection,
+    seriesCollection,
+  ];
+}
+
 final class UserCollectionStateCardAdded extends UserCollectionState {}

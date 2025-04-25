@@ -5,12 +5,19 @@ import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:pokedeal/features/profile/presentation/widgets/user_collection_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? userId;
   final bool showBackButton;
+  final bool showCollection;
 
-  const ProfilePage({super.key, this.userId, this.showBackButton = true});
+  const ProfilePage({
+    super.key,
+    this.userId,
+    this.showBackButton = true,
+    this.showCollection = true,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -54,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
           } else if (state is ProfileLoaded) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Center(
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -87,11 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         _buildStatWidget(label: "Séries", number: "3"),
                       ],
                     ),
-                    32.height,
-                    Text(
-                      "Collection",
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
+                    if (widget.showCollection) _buildCollectionPart(),
                   ],
                 ),
               ),
@@ -105,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  _buildStatWidget({required String label, required String number}) {
+  Widget _buildStatWidget({required String label, required String number}) {
     return Column(
       children: [
         Text(number, style: Theme.of(context).textTheme.titleLarge),
@@ -116,6 +119,17 @@ class _ProfilePageState extends State<ProfilePage> {
             context,
           ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w300),
         ),
+      ],
+    );
+  }
+
+  Widget _buildCollectionPart() {
+    return Column(
+      children: [
+        32.height,
+        Text("Collection", style: Theme.of(context).textTheme.headlineMedium),
+        8.height,
+        UserCollectionWidget(userId: widget.userId),
       ],
     );
   }
