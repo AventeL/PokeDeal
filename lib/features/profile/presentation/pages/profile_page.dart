@@ -7,7 +7,10 @@ import 'package:pokedeal/features/authentication/domain/repository/authenticatio
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String? userId;
+  final bool showBackButton;
+
+  const ProfilePage({super.key, this.userId, this.showBackButton = true});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -17,16 +20,23 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ProfileBloc>(context).add(
-      ProfileLoadEvent(
-        userId: getIt<AuthenticationRepository>().userProfile!.id,
-      ),
-    );
+    if (widget.userId != null) {
+      BlocProvider.of<ProfileBloc>(
+        context,
+      ).add(ProfileLoadEvent(userId: widget.userId!));
+    } else {
+      BlocProvider.of<ProfileBloc>(context).add(
+        ProfileLoadEvent(
+          userId: getIt<AuthenticationRepository>().userProfile!.id,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: widget.showBackButton ? AppBar() : null,
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is ProfileError) {

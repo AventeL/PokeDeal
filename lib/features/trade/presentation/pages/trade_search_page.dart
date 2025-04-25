@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/trade_profile_card_widget.dart';
 
@@ -68,7 +69,10 @@ class _TradeSearchPageState extends State<TradeSearchPage> {
                       final user = _filteredUsers[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: TradeProfileCardWidget(userProfile: user),
+                        child: TradeProfileCardWidget(
+                          userProfile: user,
+                          onTap: () => onProfileTap(user.user.id),
+                        ),
                       );
                     },
                   );
@@ -85,5 +89,7 @@ class _TradeSearchPageState extends State<TradeSearchPage> {
     );
   }
 
-  void onProfileTap() {}
+  void onProfileTap(String id) {
+    context.push('/profile', extra: {'userId': id});
+  }
 }
