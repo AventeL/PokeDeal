@@ -1,10 +1,12 @@
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 
+import 'enum/trade_status.dart';
+
 class Trade {
   final String id;
   final UserProfile senderId;
   final UserProfile receiveId;
-  final String status;
+  final TradeStatus status;
   final DateTime timestamp;
 
   Trade({
@@ -22,7 +24,7 @@ class Trade {
       receiveId: UserProfile.fromJson(
         json['receive_id'] as Map<String, dynamic>,
       ),
-      status: json['status'] as String,
+      status: json['status'] as TradeStatus,
       timestamp: DateTime.parse(json['timestamp'] as String),
     );
   }
