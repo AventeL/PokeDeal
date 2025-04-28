@@ -45,6 +45,8 @@ class _CardDetailPageState extends State<CardDetailPage> {
     return widget.userId == currentUserId;
   }
 
+  BasePokemonCard? card;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +71,10 @@ class _CardDetailPageState extends State<CardDetailPage> {
       ),
       body: BlocConsumer<CollectionPokemonCardBloc, CollectionPokemonCardState>(
         listener: (context, collectionPokemonCardState) {
+          print(collectionPokemonCardState);
+          if (collectionPokemonCardState is CollectionPokemonCardsGet) {
+            card = collectionPokemonCardState.card;
+          }
           if (collectionPokemonCardState is CollectionPokemonCardError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -86,13 +92,14 @@ class _CardDetailPageState extends State<CardDetailPage> {
               child: Text('Error: ${collectionPokemonCardState.message}'),
             );
           }
-          if (collectionPokemonCardState is CollectionPokemonCardsGet) {
+
+          if (card != null) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 children: [
                   16.height,
-                  buildCardHeader(collectionPokemonCardState.card, context),
+                  buildCardHeader(card!, context),
                   16.height,
                   CardCollectionListWidget(
                     userId: widget.userId,
@@ -103,7 +110,12 @@ class _CardDetailPageState extends State<CardDetailPage> {
             );
           }
 
-          return Center(child: Text('Carte indisponible'));
+          return Center(
+            child: Text(
+              'Aucune carte trouvée',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          );
         },
       ),
     );

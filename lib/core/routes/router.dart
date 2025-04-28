@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedeal/core/di/injection_container.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/authentication/presentation/pages/authentication_gate.dart';
 import 'package:pokedeal/features/authentication/presentation/pages/get_info_profile_page.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
@@ -10,6 +12,8 @@ import 'package:pokedeal/features/collection/presentation/pages/card_list_page.d
 import 'package:pokedeal/features/collection/presentation/pages/set_details_page.dart';
 import 'package:pokedeal/features/profile/presentation/pages/profile_page.dart';
 import 'package:pokedeal/features/profile/presentation/pages/settings_page.dart';
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
+import 'package:pokedeal/features/trade/presentation/pages/trade_request_page.dart';
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -103,6 +107,29 @@ final GoRouter router = GoRouter(
           cards: cards,
           userCardsCollection: userCardsCollection,
           setName: setName,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/trade_request',
+      name: 'trade_request',
+      pageBuilder: (context, state) {
+        final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
+        final TradeRequestData otherUserTradeRequest =
+            extra['otherUserTradeRequest'] as TradeRequestData;
+
+        final TradeRequestData myTradeRequest =
+            extra['myTradeRequest'] == null
+                ? TradeRequestData(
+                  userId: getIt<AuthenticationRepository>().userProfile!.id,
+                )
+                : extra['myTradeRequest'] as TradeRequestData;
+
+        return MaterialPage(
+          child: TradeRequestPage(
+            otherUserTradeRequest: otherUserTradeRequest,
+            myTradeRequest: myTradeRequest,
+          ),
         );
       },
     ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
-import 'package:pokedeal/features/trade/presentation/pages/trade_request_page.dart';
+import 'package:pokedeal/features/trade/presentation/pages/trade_request_list_page.dart';
 import 'package:pokedeal/features/trade/presentation/pages/trade_search_page.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/base_trade_menu_button.dart';
 
@@ -74,7 +74,7 @@ class _TradeBasePageState extends State<TradeBasePage>
   Widget _buildPageFromMenuValue() {
     return selectedMenu == TradeMenu.search
         ? const TradeSearchPage()
-        : const TradeRequestPage();
+        : const TradeRequestListPage();
   }
 }
 

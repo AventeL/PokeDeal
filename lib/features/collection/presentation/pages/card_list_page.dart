@@ -9,6 +9,7 @@ import 'package:pokedeal/features/collection/domain/models/enum/variant_value.da
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/bottom_sheet_ask_trade.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/card_list_widget.dart';
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 
 class CardListPage extends StatelessWidget {
   final List<PokemonCardBrief> cards;
@@ -88,7 +89,18 @@ class CardListPage extends StatelessWidget {
                     return BottomSheetAskTrade(
                       availableVariants: getAvailableVariants(cardId),
                       card: state.card,
-                      onConfirm: (variant) {},
+                      onConfirm: (variant) {
+                        context.push(
+                          '/trade_request',
+                          extra: {
+                            'otherUserTradeRequest': TradeRequestData(
+                              cardId: cardId,
+                              userId: userId,
+                              variantValue: variant,
+                            ),
+                          },
+                        );
+                      },
                     );
                   }
 

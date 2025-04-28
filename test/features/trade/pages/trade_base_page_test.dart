@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
 import 'package:pokedeal/features/trade/presentation/pages/trade_base_page.dart';
-import 'package:pokedeal/features/trade/presentation/pages/trade_request_page.dart';
+import 'package:pokedeal/features/trade/presentation/pages/trade_request_list_page.dart';
 import 'package:pokedeal/features/trade/presentation/pages/trade_search_page.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
@@ -57,7 +57,7 @@ void main() {
       await tester.tap(find.text('Demandes'));
       await tester.pump();
 
-      expect(find.byType(TradeRequestPage), findsOneWidget);
+      expect(find.byType(TradeRequestListPage), findsOneWidget);
 
       await tester.tap(find.text('Rechercher'));
       await tester.pump();
