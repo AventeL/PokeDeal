@@ -44,7 +44,7 @@ class ProfileDataSource implements IProfileDataSource {
     );
 
     if (authResponse.session == null) {
-      throw Exception('Mot de passe actuel incorrect.');
+      throw Exception('Identifiant incorrect.');
     }
 
     await Supabase.instance.client.auth.updateUser(

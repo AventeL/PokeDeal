@@ -844,6 +844,30 @@ class MockProfileBloc extends _i1.Mock implements _i11.ProfileBloc {
           as _i22.Future<void>);
 
   @override
+  _i22.Future<void> onProfileUpdateEvent(
+    _i11.ProfileUpdateEvent? event,
+    _i23.Emitter<_i11.ProfileState>? emit,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#onProfileUpdateEvent, [event, emit]),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
+
+  @override
+  _i22.Future<void> onChangePasswordEvent(
+    _i11.ChangePasswordEvent? event,
+    _i23.Emitter<_i11.ProfileState>? emit,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#onChangePasswordEvent, [event, emit]),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
+
+  @override
   void add(_i11.ProfileEvent? event) => super.noSuchMethod(
     Invocation.method(#add, [event]),
     returnValueForMissingStub: null,
@@ -1449,6 +1473,40 @@ class MockProfileRepository extends _i1.Mock implements _i10.ProfileRepository {
             returnValueForMissingStub: _i22.Future<_i14.UserProfile?>.value(),
           )
           as _i22.Future<_i14.UserProfile?>);
+
+  @override
+  _i22.Future<void> updateProfile({
+    required _i14.UserProfile? user,
+    required String? password,
+    required _i14.UserProfile? currentUser,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateProfile, [], {
+              #user: user,
+              #password: password,
+              #currentUser: currentUser,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
+
+  @override
+  _i22.Future<void> changePassword({
+    required String? currentPassword,
+    required String? newPassword,
+    required String? email,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#changePassword, [], {
+              #currentPassword: currentPassword,
+              #newPassword: newPassword,
+              #email: email,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [IAuthenticationDataSource].
@@ -1716,4 +1774,38 @@ class MockIProfileDataSource extends _i1.Mock
             ),
           )
           as _i22.Future<_i14.UserProfile>);
+
+  @override
+  _i22.Future<void> updateProfile({
+    required _i14.UserProfile? user,
+    required _i14.UserProfile? currentUser,
+    required String? password,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateProfile, [], {
+              #user: user,
+              #currentUser: currentUser,
+              #password: password,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
+
+  @override
+  _i22.Future<void> changePassword({
+    required String? currentPassword,
+    required String? newPassword,
+    required String? email,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#changePassword, [], {
+              #currentPassword: currentPassword,
+              #newPassword: newPassword,
+              #email: email,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
 }
