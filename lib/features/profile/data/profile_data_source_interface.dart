@@ -8,4 +8,10 @@ abstract class IProfileDataSource {
     required UserProfile currentUser,
     required String password,
   });
+
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String email,
+  });
 }

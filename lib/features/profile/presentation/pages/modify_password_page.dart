@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/validator/password_validator.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/shared/widgets/custom_large_button.dart';
+
+import '../../../../core/di/injection_container.dart';
+import '../../../authentication/domain/repository/authentication_repository.dart';
+import '../bloc/profile_bloc.dart';
 
 class ModifyPasswordPage extends StatefulWidget {
   const ModifyPasswordPage({super.key});
@@ -26,8 +31,12 @@ class _ModifyPasswordPageState extends State<ModifyPasswordPage> {
 
   void _savePassword() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Mot de passe mis à jour avec succès')),
+      context.read<ProfileBloc>().add(
+        ChangePasswordEvent(
+          currentPassword: _oldPasswordController.text,
+          newPassword: _newPasswordController.text,
+          email: getIt<AuthenticationRepository>().userProfile!.email,
+        ),
       );
     }
   }

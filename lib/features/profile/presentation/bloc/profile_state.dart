@@ -37,3 +37,5 @@ final class ProfileUpdated extends ProfileState {
   @override
   List<Object> get props => [userProfile];
 }
+
+final class ChangePasswordSuccess extends ProfileState {}

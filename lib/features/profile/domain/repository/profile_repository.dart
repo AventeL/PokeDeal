@@ -28,4 +28,16 @@ class ProfileRepository {
       currentUser: currentUser,
     );
   }
+
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String email,
+  }) async {
+    await profileDataSource.changePassword(
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+      email: email,
+    );
+  }
 }
