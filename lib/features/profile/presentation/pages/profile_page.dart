@@ -7,9 +7,19 @@ import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/shared/widgets/custom_large_button.dart';
+import 'package:pokedeal/features/profile/presentation/widgets/user_collection_widget.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String? userId;
+  final bool showBackButton;
+  final bool showCollection;
+
+  const ProfilePage({
+    super.key,
+    this.userId,
+    this.showBackButton = true,
+    this.showCollection = true,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -19,16 +29,23 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ProfileBloc>(context).add(
-      ProfileLoadEvent(
-        userId: getIt<AuthenticationRepository>().userProfile!.id,
-      ),
-    );
+    if (widget.userId != null) {
+      BlocProvider.of<ProfileBloc>(
+        context,
+      ).add(ProfileLoadEvent(userId: widget.userId!));
+    } else {
+      BlocProvider.of<ProfileBloc>(context).add(
+        ProfileLoadEvent(
+          userId: getIt<AuthenticationRepository>().userProfile!.id,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: widget.showBackButton ? AppBar() : null,
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is ProfileError) {
@@ -46,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
           } else if (state is ProfileLoaded) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Center(
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -79,6 +96,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         _buildStatWidget(label: "Séries", number: "3"),
                       ],
                     ),
+                    24.height,
+                    if (widget.showCollection) _buildCollectionPart(),
                     32.height,
                     CustomLargeButton(
                       onPressed: () => {context.push("/modify_profil")},
@@ -97,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  _buildStatWidget({required String label, required String number}) {
+  Widget _buildStatWidget({required String label, required String number}) {
     return Column(
       children: [
         Text(number, style: Theme.of(context).textTheme.titleLarge),
@@ -108,6 +127,17 @@ class _ProfilePageState extends State<ProfilePage> {
             context,
           ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w300),
         ),
+      ],
+    );
+  }
+
+  Widget _buildCollectionPart() {
+    return Column(
+      children: [
+        32.height,
+        Text("Collection", style: Theme.of(context).textTheme.headlineMedium),
+        8.height,
+        UserCollectionWidget(userId: widget.userId),
       ],
     );
   }

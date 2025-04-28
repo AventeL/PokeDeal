@@ -2,12 +2,24 @@ part of 'user_collection_bloc.dart';
 
 class UserCollectionEvent {}
 
-class UserCollectionLoadEvent extends UserCollectionEvent {
+class UserCollectionLoadSetEvent extends UserCollectionEvent {
   String userId;
-  String? cardId;
-  String? setId;
+  String setId;
 
-  UserCollectionLoadEvent({required this.userId, this.cardId, this.setId});
+  UserCollectionLoadSetEvent({required this.userId, required this.setId});
+}
+
+class UserCollectionLoadAllEvent extends UserCollectionEvent {
+  String userId;
+
+  UserCollectionLoadAllEvent({required this.userId});
+}
+
+class UserCollectionLoadCardEvent extends UserCollectionEvent {
+  String userId;
+  String cardId;
+
+  UserCollectionLoadCardEvent({required this.userId, required this.cardId});
 }
 
 class UserCollectionAddCardEvent extends UserCollectionEvent {

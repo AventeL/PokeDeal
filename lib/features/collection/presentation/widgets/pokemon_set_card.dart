@@ -47,9 +47,12 @@ class PokemonSetCardWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          set.name,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                        Flexible(
+                          child: Text(
+                            set.name,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(overflow: TextOverflow.ellipsis),
+                          ),
                         ),
                         Text(
                           set.cardCount.total.toString(),

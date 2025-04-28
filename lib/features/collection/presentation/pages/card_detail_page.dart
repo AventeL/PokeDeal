@@ -15,25 +15,46 @@ import 'package:pokedeal/features/collection/presentation/widgets/card_collectio
 
 import '../widgets/pokemon_card_unavailable_widget.dart';
 
-class CardDetailPage extends StatelessWidget {
+class CardDetailPage extends StatefulWidget {
   final String cardId;
   final PokemonCardBrief cardBrief;
+  final String userId;
 
   const CardDetailPage({
     super.key,
     required this.cardId,
     required this.cardBrief,
+    required this.userId,
   });
+
+  @override
+  State<CardDetailPage> createState() => _CardDetailPageState();
+}
+
+class _CardDetailPageState extends State<CardDetailPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<CollectionPokemonCardBloc>().add(
+      CollectionPokemonGetCardEvent(cardId: widget.cardId),
+    );
+  }
+
+  bool get isCurrentUser {
+    final currentUserId = getIt<AuthenticationRepository>().userProfile!.id;
+    return widget.userId == currentUserId;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(cardBrief.name)),
+      appBar: AppBar(title: Text(widget.cardBrief.name)),
       floatingActionButton: Builder(
         builder: (context) {
           final collectionPokemonCardState =
               context.watch<CollectionPokemonCardBloc>().state;
-          if (collectionPokemonCardState is CollectionPokemonCardsGet) {
+          if (collectionPokemonCardState is CollectionPokemonCardsGet &&
+              isCurrentUser) {
             return FloatingActionButton(
               onPressed:
                   () => onAddToCollection(
@@ -74,8 +95,8 @@ class CardDetailPage extends StatelessWidget {
                   buildCardHeader(collectionPokemonCardState.card, context),
                   16.height,
                   CardCollectionListWidget(
-                    userId: getIt<AuthenticationRepository>().userProfile!.id,
-                    cardId: cardId,
+                    userId: widget.userId,
+                    cardId: widget.cardId,
                   ),
                 ],
               ),

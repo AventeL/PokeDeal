@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/pokemon_serie_card.dart';
@@ -52,6 +54,9 @@ class SeriesListPage extends StatelessWidget {
                       child: PokemonSerieCard(
                         pokemonSerie:
                             getIt<CollectionPokemonRepository>().series[index],
+                        onSetTap: (PokemonSetBrief set) {
+                          navigateToSet(context, set);
+                        },
                       ),
                     );
                   },
@@ -62,5 +67,9 @@ class SeriesListPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  void navigateToSet(BuildContext context, PokemonSetBrief set) {
+    context.push('/set_details', extra: {'setInfo': set});
   }
 }

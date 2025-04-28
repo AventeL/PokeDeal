@@ -2,8 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
+import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/user_card_collection.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart';
+import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart';
 
 part 'user_collection_event.dart';
@@ -15,24 +18,37 @@ class UserCollectionBloc
 
   UserCollectionBloc({required this.collectionPokemonRepository})
     : super(UserCollectionInitial()) {
-    on<UserCollectionLoadEvent>(onUserCollectionLoadEvent);
+    on<UserCollectionLoadSetEvent>(onUserCollectionLoadSetEvent);
+    on<UserCollectionLoadCardEvent>(onUserCollectionLoadCardEvent);
     on<UserCollectionAddCardEvent>(onUserCollectionAddCardEvent);
+    on<UserCollectionLoadAllEvent>(onUserCollectionLoadAllEvent);
   }
 
-  Future<void> onUserCollectionLoadEvent(
-    UserCollectionLoadEvent event,
+  Future<void> onUserCollectionLoadSetEvent(
+    UserCollectionLoadSetEvent event,
     Emitter<UserCollectionState> emit,
   ) async {
     emit(UserCollectionLoading());
     try {
       List<UserCardCollection> cards = await collectionPokemonRepository
-          .getUserCollection(
-            userId: event.userId,
-            cardId: event.cardId,
-            setId: event.setId,
-          );
+          .getUserCollection(userId: event.userId, setId: event.setId);
 
-      emit(UserCollectionLoaded(userCardsCollection: cards));
+      emit(UserCollectionSetLoaded(userCardsCollection: cards));
+    } catch (e) {
+      emit(UserCollectionError(message: e.toString()));
+    }
+  }
+
+  Future<void> onUserCollectionLoadCardEvent(
+    UserCollectionLoadCardEvent event,
+    Emitter<UserCollectionState> emit,
+  ) async {
+    emit(UserCollectionLoading());
+    try {
+      List<UserCardCollection> cards = await collectionPokemonRepository
+          .getUserCollection(userId: event.userId, cardId: event.cardId);
+
+      emit(UserCollectionCardLoaded(userCardsCollection: cards));
     } catch (e) {
       emit(UserCollectionError(message: e.toString()));
     }
@@ -53,13 +69,43 @@ class UserCollectionBloc
       emit(UserCollectionStateCardAdded());
       if (event.needRefresh) {
         add(
-          UserCollectionLoadEvent(
+          UserCollectionLoadCardEvent(
             userId: getIt<AuthenticationRepository>().userProfile!.id,
             cardId: event.pokemonCardId,
-            setId: event.setId,
           ),
         );
       }
+    } catch (e) {
+      emit(UserCollectionError(message: e.toString()));
+    }
+  }
+
+  Future<void> onUserCollectionLoadAllEvent(
+    UserCollectionLoadAllEvent event,
+    Emitter<UserCollectionState> emit,
+  ) async {
+    emit(UserCollectionLoading());
+    try {
+      List<UserCardCollection> cards = await collectionPokemonRepository
+          .getUserCollection(userId: event.userId);
+
+      List<PokemonSet> sets = await collectionPokemonRepository
+          .getSetsFromUserCards(userCards: cards);
+
+      List<PokemonSerie> series = await collectionPokemonRepository
+          .getSeriesFromSets(sets: sets);
+
+      List<BasePokemonCard> listOfCards = await collectionPokemonRepository
+          .getCardsDetailsFromUserCards(userCards: cards);
+
+      emit(
+        UserCollectionAllLoaded(
+          userCardsCollection: cards,
+          setsCollection: sets,
+          seriesCollection: series,
+          listOfCards: listOfCards,
+        ),
+      );
     } catch (e) {
       emit(UserCollectionError(message: e.toString()));
     }

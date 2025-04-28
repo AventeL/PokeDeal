@@ -14,7 +14,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> screens = [TradeBasePage(), SeriesListPage(), ProfilePage()];
+  List<Widget> screens = [
+    TradeBasePage(),
+    SeriesListPage(),
+    ProfilePage(showBackButton: false, showCollection: false),
+  ];
   int index = 1;
 
   @override

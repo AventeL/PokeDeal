@@ -41,6 +41,7 @@ void main() {
   });
 
   Widget mockPage = CardDetailPage(
+    userId: 'userId',
     cardId: 'cardId',
     cardBrief: PokemonCardBrief(
       id: 'cardId',

@@ -1,5 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:pokedeal/core/di/injection_container.dart';
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/data/collection_pokemon_data_source_interface.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/card_variant.dart';
@@ -20,12 +23,28 @@ import '../../../mocks/generated_mocks.mocks.dart';
 void main() {
   late ICollectionPokemonDataSource dataSource;
   late CollectionPokemonRepository repository;
+  late AuthenticationRepository authenticationRepository;
 
   setUp(() {
     dataSource = MockICollectionPokemonDataSource();
     repository = CollectionPokemonRepository(
       collectionPokemonDataSource: dataSource,
     );
+    authenticationRepository = MockAuthenticationRepository();
+    getIt.registerSingleton<AuthenticationRepository>(authenticationRepository);
+
+    when(authenticationRepository.userProfile).thenReturn(
+      UserProfile(
+        id: 'userId',
+        email: 'mail',
+        pseudo: 'pseudo',
+        createdAt: DateTime.now(),
+      ),
+    );
+  });
+
+  tearDown(() {
+    getIt.reset();
   });
 
   final mockSeriesBriefs = [
@@ -254,6 +273,21 @@ void main() {
         ).called(1);
       },
     );
+
+    test('returns cached user card collection when already in map', () async {
+      repository.userCardsBySetIdMap.addEntries([
+        MapEntry('setId', [mockUserCardCollection]),
+      ]);
+
+      final result = await repository.getUserCollection(
+        userId: 'userId',
+        setId: 'setId',
+      );
+
+      expect(result, [mockUserCardCollection]);
+
+      verifyZeroInteractions(dataSource);
+    });
   });
 
   group('addCardToUserCollection', () {
@@ -289,8 +323,6 @@ void main() {
     test(
       'removes existing card if already in the collection and adds the new one',
       () async {
-        repository.userCardsCollection = [mockUserCardCollection];
-
         final newCard = UserCardCollection(
           id: '2',
           userId: 'userId',
@@ -318,8 +350,6 @@ void main() {
 
         expect(result, isA<UserCardCollection>());
         expect(result, newCard);
-        expect(repository.userCardsCollection.length, 1);
-        expect(repository.userCardsCollection[0], newCard);
         verify(
           dataSource.addCardToUserCollection(
             id: 'cardId',
@@ -330,5 +360,158 @@ void main() {
         ).called(1);
       },
     );
+  });
+
+  group('getSetsFromUserCards', () {
+    final mockUserCards = [
+      UserCardCollection(
+        id: '1',
+        userId: 'userId',
+        quantity: 1,
+        cardId: 'card1',
+        setId: 'set1',
+        variant: VariantValue.normal,
+      ),
+      UserCardCollection(
+        id: '2',
+        userId: 'userId',
+        quantity: 1,
+        cardId: 'card2',
+        setId: 'set2',
+        variant: VariantValue.normal,
+      ),
+    ];
+
+    final mockSet1 = PokemonSet(
+      name: 'Set 1',
+      id: 'set1',
+      serieBrief: PokemonSerieBrief(id: 'serie1', name: 'Serie 1'),
+      cardCount: CardCount(total: 100, official: 100),
+      cards: [],
+      releaseDate: DateTime(2021, 1, 1),
+      legal: Legal(standard: true, expanded: true),
+    );
+
+    final mockSet2 = PokemonSet(
+      name: 'Set 2',
+      id: 'set2',
+      serieBrief: PokemonSerieBrief(id: 'serie2', name: 'Serie 2'),
+      cardCount: CardCount(total: 150, official: 150),
+      cards: [],
+      releaseDate: DateTime(2022, 1, 1),
+      legal: Legal(standard: false, expanded: true),
+    );
+
+    test('returns list of PokemonSet when successful', () async {
+      when(dataSource.getSet('set1')).thenAnswer((_) async => mockSet1);
+      when(dataSource.getSet('set2')).thenAnswer((_) async => mockSet2);
+
+      final result = await repository.getSetsFromUserCards(
+        userCards: mockUserCards,
+      );
+
+      expect(result, isA<List<PokemonSet>>());
+      expect(result.length, 2);
+      expect(result, containsAll([mockSet1, mockSet2]));
+      verify(dataSource.getSet('set1')).called(1);
+      verify(dataSource.getSet('set2')).called(1);
+    });
+
+    test('returns cached sets if already present', () async {
+      repository.setsMap['set1'] = mockSet1;
+      repository.setsMap['set2'] = mockSet2;
+
+      final result = await repository.getSetsFromUserCards(
+        userCards: mockUserCards,
+      );
+
+      expect(result, containsAll([mockSet1, mockSet2]));
+      verifyNever(dataSource.getSet('set1'));
+      verifyNever(dataSource.getSet('set2'));
+    });
+  });
+
+  group('getSeriesFromSets', () {
+    final mockSets = [
+      PokemonSet(
+        name: 'Set 1',
+        id: 'set1',
+        serieBrief: PokemonSerieBrief(id: 'serie1', name: 'Serie 1'),
+        cardCount: CardCount(total: 100, official: 100),
+        cards: [],
+        releaseDate: DateTime(2021, 1, 1),
+        legal: Legal(standard: true, expanded: true),
+      ),
+      PokemonSet(
+        name: 'Set 2',
+        id: 'set2',
+        serieBrief: PokemonSerieBrief(id: 'serie2', name: 'Serie 2'),
+        cardCount: CardCount(total: 150, official: 150),
+        cards: [],
+        releaseDate: DateTime(2022, 1, 1),
+        legal: Legal(standard: false, expanded: true),
+      ),
+    ];
+
+    final serie1 = PokemonSerie(id: 'serie1', name: 'Serie 1', sets: []);
+    final serie2 = PokemonSerie(id: 'serie2', name: 'Serie 2', sets: []);
+
+    setUp(() {
+      repository.series.addAll([serie1, serie2]);
+    });
+
+    tearDown(() {
+      repository.series.clear();
+    });
+
+    test('returns list of PokemonSerie matching the sets', () async {
+      final result = await repository.getSeriesFromSets(sets: mockSets);
+
+      expect(result, isA<List<PokemonSerie>>());
+      expect(result.length, 2);
+      expect(result, containsAll([serie1, serie2]));
+    });
+  });
+
+  group('getSeriesFromSets', () {
+    final mockSets = [
+      PokemonSet(
+        name: 'Set 1',
+        id: 'set1',
+        serieBrief: PokemonSerieBrief(id: 'serie1', name: 'Serie 1'),
+        cardCount: CardCount(total: 100, official: 100),
+        cards: [],
+        releaseDate: DateTime(2021, 1, 1),
+        legal: Legal(standard: true, expanded: true),
+      ),
+      PokemonSet(
+        name: 'Set 2',
+        id: 'set2',
+        serieBrief: PokemonSerieBrief(id: 'serie2', name: 'Serie 2'),
+        cardCount: CardCount(total: 150, official: 150),
+        cards: [],
+        releaseDate: DateTime(2022, 1, 1),
+        legal: Legal(standard: false, expanded: true),
+      ),
+    ];
+
+    final serie1 = PokemonSerie(id: 'serie1', name: 'Serie 1', sets: []);
+    final serie2 = PokemonSerie(id: 'serie2', name: 'Serie 2', sets: []);
+
+    setUp(() {
+      repository.series.addAll([serie1, serie2]);
+    });
+
+    tearDown(() {
+      repository.series.clear();
+    });
+
+    test('returns list of PokemonSerie matching the sets', () async {
+      final result = await repository.getSeriesFromSets(sets: mockSets);
+
+      expect(result, isA<List<PokemonSerie>>());
+      expect(result.length, 2);
+      expect(result, containsAll([serie1, serie2]));
+    });
   });
 }

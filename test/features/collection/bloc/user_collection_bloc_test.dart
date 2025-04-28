@@ -40,12 +40,31 @@ void main() {
   });
 
   group('UserCollectionBloc tests', () {
-    void mockLoadCollection() {
+    void mockLoadSetCollection() {
+      when(
+        collectionPokemonRepository.getUserCollection(
+          userId: 'userId',
+          setId: 'setId',
+        ),
+      ).thenAnswer(
+        (_) async => [
+          UserCardCollection(
+            id: '1',
+            userId: 'userId',
+            quantity: 2,
+            cardId: 'cardId',
+            setId: 'setId',
+            variant: VariantValue.holo,
+          ),
+        ],
+      );
+    }
+
+    void mockLoadCardCollection() {
       when(
         collectionPokemonRepository.getUserCollection(
           userId: 'userId',
           cardId: 'cardId',
-          setId: 'setId',
         ),
       ).thenAnswer(
         (_) async => [
@@ -82,24 +101,55 @@ void main() {
     }
 
     blocTest<UserCollectionBloc, UserCollectionState>(
-      'emits [UserCollectionLoading, UserCollectionLoaded] when UserCollectionLoadEvent is added and successful',
+      'emits [UserCollectionLoading, UserCollectionSetLoaded] when UserCollectionLoadSetEvent is added and successful',
       build: () {
-        mockLoadCollection();
+        mockLoadSetCollection();
+        return userCollectionBloc;
+      },
+      act: (bloc) {
+        bloc.add(UserCollectionLoadSetEvent(userId: 'userId', setId: 'setId'));
+      },
+      expect:
+          () => [
+            UserCollectionLoading(),
+            UserCollectionSetLoaded(
+              userCardsCollection: [
+                UserCardCollection(
+                  id: '1',
+                  userId: 'userId',
+                  quantity: 2,
+                  cardId: 'cardId',
+                  setId: 'setId',
+                  variant: VariantValue.holo,
+                ),
+              ],
+            ),
+          ],
+      verify: (bloc) {
+        verify(
+          collectionPokemonRepository.getUserCollection(
+            userId: 'userId',
+            setId: 'setId',
+          ),
+        ).called(1);
+      },
+    );
+
+    blocTest<UserCollectionBloc, UserCollectionState>(
+      'emits [UserCollectionLoading, UserCollectionCardLoaded] when UserCollectionLoadCardEvent is added and successful',
+      build: () {
+        mockLoadCardCollection();
         return userCollectionBloc;
       },
       act: (bloc) {
         bloc.add(
-          UserCollectionLoadEvent(
-            userId: 'userId',
-            cardId: 'cardId',
-            setId: 'setId',
-          ),
+          UserCollectionLoadCardEvent(userId: 'userId', cardId: 'cardId'),
         );
       },
       expect:
           () => [
             UserCollectionLoading(),
-            UserCollectionLoaded(
+            UserCollectionCardLoaded(
               userCardsCollection: [
                 UserCardCollection(
                   id: '1',
@@ -117,6 +167,36 @@ void main() {
           collectionPokemonRepository.getUserCollection(
             userId: 'userId',
             cardId: 'cardId',
+          ),
+        ).called(1);
+      },
+    );
+
+    blocTest<UserCollectionBloc, UserCollectionState>(
+      'emits [UserCollectionLoading, UserCollectionError] when UserCollectionLoadSetEvent fails',
+      build: () {
+        when(
+          collectionPokemonRepository.getUserCollection(
+            userId: 'userId',
+            setId: 'setId',
+          ),
+        ).thenThrow(Exception('Failed to load collection'));
+        return userCollectionBloc;
+      },
+      act: (bloc) {
+        bloc.add(UserCollectionLoadSetEvent(userId: 'userId', setId: 'setId'));
+      },
+      expect:
+          () => [
+            UserCollectionLoading(),
+            UserCollectionError(
+              message: 'Exception: Failed to load collection',
+            ),
+          ],
+      verify: (bloc) {
+        verify(
+          collectionPokemonRepository.getUserCollection(
+            userId: 'userId',
             setId: 'setId',
           ),
         ).called(1);
@@ -124,24 +204,19 @@ void main() {
     );
 
     blocTest<UserCollectionBloc, UserCollectionState>(
-      'emits [UserCollectionLoading, UserCollectionError] when UserCollectionLoadEvent fails',
+      'emits [UserCollectionLoading, UserCollectionError] when UserCollectionLoadCardEvent fails',
       build: () {
         when(
           collectionPokemonRepository.getUserCollection(
             userId: 'userId',
             cardId: 'cardId',
-            setId: 'setId',
           ),
         ).thenThrow(Exception('Failed to load collection'));
         return userCollectionBloc;
       },
       act: (bloc) {
         bloc.add(
-          UserCollectionLoadEvent(
-            userId: 'userId',
-            cardId: 'cardId',
-            setId: 'setId',
-          ),
+          UserCollectionLoadCardEvent(userId: 'userId', cardId: 'cardId'),
         );
       },
       expect:
@@ -156,7 +231,6 @@ void main() {
           collectionPokemonRepository.getUserCollection(
             userId: 'userId',
             cardId: 'cardId',
-            setId: 'setId',
           ),
         ).called(1);
       },
@@ -183,7 +257,7 @@ void main() {
             UserCollectionLoading(),
             UserCollectionStateCardAdded(),
             UserCollectionLoading(),
-            UserCollectionLoaded(userCardsCollection: []),
+            UserCollectionCardLoaded(userCardsCollection: []),
           ],
       verify: (bloc) {
         verify(

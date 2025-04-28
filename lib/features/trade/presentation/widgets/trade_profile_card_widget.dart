@@ -20,12 +20,10 @@ class TradeProfileCardWidget extends StatelessWidget {
       color: Theme.of(context).colorScheme.tertiaryContainer,
       borderRadius: borderRadius,
       child: InkWell(
+        borderRadius: borderRadius,
         onTap: onTap,
         child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-            borderRadius: borderRadius,
-          ),
+          decoration: BoxDecoration(borderRadius: borderRadius),
           padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

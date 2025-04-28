@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedeal/features/collection/domain/models/card/user_card_collection.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 
 class CardCollectionListWidget extends StatefulWidget {
   final String userId;
-  final String? cardId;
+  final String cardId;
 
   const CardCollectionListWidget({
     super.key,
@@ -23,9 +24,11 @@ class _CardCollectionListWidgetState extends State<CardCollectionListWidget> {
   void initState() {
     super.initState();
     context.read<UserCollectionBloc>().add(
-      UserCollectionLoadEvent(userId: widget.userId, cardId: widget.cardId),
+      UserCollectionLoadCardEvent(userId: widget.userId, cardId: widget.cardId),
     );
   }
+
+  List<UserCardCollection> userCardsCollection = [];
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +44,9 @@ class _CardCollectionListWidgetState extends State<CardCollectionListWidget> {
             const SnackBar(content: Text('Carte ajoutée à la collection')),
           );
         }
+        if (state is UserCollectionCardLoaded) {
+          userCardsCollection = state.userCardsCollection;
+        }
       },
       builder: (context, state) {
         if (state is UserCollectionLoading) {
@@ -51,39 +57,37 @@ class _CardCollectionListWidgetState extends State<CardCollectionListWidget> {
           return Center(child: Text('Error: ${state.message}'));
         }
 
-        if (state is UserCollectionLoaded) {
-          if (state.userCardsCollection.isEmpty) {
-            return const Center(
-              child: Text('Aucune carte dans votre collection'),
-            );
-          }
-          return Expanded(
-            child: ListView.builder(
-              itemCount: state.userCardsCollection.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final card = state.userCardsCollection[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: ListTile(
-                    tileColor: Theme.of(context).colorScheme.tertiaryContainer,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(card.variant.getFullName),
-                        Text(card.quantity.toString()),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+        if (userCardsCollection.isEmpty) {
+          return const Center(
+            child: Text('Aucune carte dans votre collection'),
           );
         }
-        return const Center(child: Text('Aucune carte dans votre collection'));
+
+        return Expanded(
+          child: ListView.builder(
+            itemCount: userCardsCollection.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              final card = userCardsCollection[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: ListTile(
+                  tileColor: Theme.of(context).colorScheme.tertiaryContainer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(card.variant.getFullName),
+                      Text(card.quantity.toString()),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
       },
     );
   }

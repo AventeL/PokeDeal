@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/pages/profile_page.dart';
 import 'package:pokedeal/shared/widgets/custom_large_button.dart';
@@ -15,6 +16,7 @@ void main() {
   MockProfileBloc mockProfileBloc = MockProfileBloc();
   MockAuthenticationRepository mockAuthenticationRepository =
       MockAuthenticationRepository();
+  MockUserCollectionBloc mockUserCollectionBloc = MockUserCollectionBloc();
 
   setUp(() {
     getIt.registerLazySingleton<AuthenticationRepository>(
@@ -42,8 +44,13 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: BlocProvider<ProfileBloc>.value(
-          value: mockProfileBloc,
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<ProfileBloc>.value(value: mockProfileBloc),
+            BlocProvider<UserCollectionBloc>.value(
+              value: mockUserCollectionBloc,
+            ),
+          ],
           child: const ProfilePage(),
         ),
       ),
@@ -68,8 +75,13 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: BlocProvider<ProfileBloc>.value(
-          value: mockProfileBloc,
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<ProfileBloc>.value(value: mockProfileBloc),
+            BlocProvider<UserCollectionBloc>.value(
+              value: mockUserCollectionBloc,
+            ),
+          ],
           child: const ProfilePage(),
         ),
       ),
@@ -93,8 +105,13 @@ void main() {
     ).thenReturn(ProfileError(message: 'Erreur de chargement'));
     await tester.pumpWidget(
       MaterialApp(
-        home: BlocProvider<ProfileBloc>.value(
-          value: mockProfileBloc,
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<ProfileBloc>.value(value: mockProfileBloc),
+            BlocProvider<UserCollectionBloc>.value(
+              value: mockUserCollectionBloc,
+            ),
+          ],
           child: const ProfilePage(),
         ),
       ),
@@ -107,8 +124,13 @@ void main() {
     when(mockProfileBloc.state).thenReturn(ProfileInitial());
     await tester.pumpWidget(
       MaterialApp(
-        home: BlocProvider<ProfileBloc>.value(
-          value: mockProfileBloc,
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<ProfileBloc>.value(value: mockProfileBloc),
+            BlocProvider<UserCollectionBloc>.value(
+              value: mockUserCollectionBloc,
+            ),
+          ],
           child: const ProfilePage(),
         ),
       ),

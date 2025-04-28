@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
+import 'package:pokedeal/features/collection/domain/models/card/user_card_collection.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
@@ -10,8 +13,7 @@ import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collect
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/bottom_sheet_add_card_to_collection.dart';
-import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_unavailable_widget.dart';
-import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_widget.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/card_list_widget.dart';
 
 class SetDetailsPage extends StatefulWidget {
   final PokemonSetBrief setInfo;
@@ -24,13 +26,23 @@ class SetDetailsPage extends StatefulWidget {
 
 class _SetDetailsPageState extends State<SetDetailsPage> {
   late PokemonSet setWithCards;
-  bool isLoading = false;
+  List<UserCardCollection> userCardsCollection = [];
 
   @override
   void initState() {
     super.initState();
     context.read<CollectionPokemonSetBloc>().add(
       CollectionPokemonGetSetWithCardsEvent(setId: widget.setInfo.id),
+    );
+    loadUserCardsCollection();
+  }
+
+  void loadUserCardsCollection() {
+    context.read<UserCollectionBloc>().add(
+      UserCollectionLoadSetEvent(
+        userId: getIt<AuthenticationRepository>().userProfile!.id,
+        setId: widget.setInfo.id,
+      ),
     );
   }
 
@@ -39,40 +51,45 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.setInfo.name)),
       body: BlocConsumer<UserCollectionBloc, UserCollectionState>(
-        listener: (context, state) {
-          if (state is UserCollectionError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Error: ${state.message}')));
-          }
-          if (state is UserCollectionStateCardAdded) {
+        listener: (context, userCollectionState) {
+          if (userCollectionState is UserCollectionError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Carte ajoutée à la collection')),
+              SnackBar(content: Text('Error: ${userCollectionState.message}')),
             );
           }
+          if (userCollectionState is UserCollectionStateCardAdded) {
+            loadUserCardsCollection();
+          }
+          if (userCollectionState is UserCollectionSetLoaded) {
+            userCardsCollection = userCollectionState.userCardsCollection;
+          }
         },
-        builder: (context, state) {
+        builder: (context, userCollectionState) {
           return BlocConsumer<
             CollectionPokemonSetBloc,
             CollectionPokemonSetState
           >(
-            listener: (context, state) {
-              if (state is CollectionPokemonSetWithCardsGet) {
-                setWithCards = state.setWithCards;
-              } else if (state is CollectionPokemonSetError) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.message)));
+            listener: (context, collectionPokemonSetState) {
+              if (collectionPokemonSetState
+                  is CollectionPokemonSetWithCardsGet) {
+                setWithCards = collectionPokemonSetState.setWithCards;
+              } else if (collectionPokemonSetState
+                  is CollectionPokemonSetError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(collectionPokemonSetState.message)),
+                );
               }
             },
-            builder: (context, state) {
-              if (state is CollectionPokemonSetLoading) {
+            builder: (context, collectionPokemonSetState) {
+              if (collectionPokemonSetState is CollectionPokemonSetLoading) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (state is CollectionPokemonSetError) {
-                return Center(child: Text(state.message));
+              } else if (collectionPokemonSetState
+                  is CollectionPokemonSetError) {
+                return Center(child: Text(collectionPokemonSetState.message));
               }
-              if (state is CollectionPokemonSetWithCardsGet) {
-                setWithCards = state.setWithCards;
+              if (collectionPokemonSetState
+                  is CollectionPokemonSetWithCardsGet) {
+                setWithCards = collectionPokemonSetState.setWithCards;
                 if (setWithCards.cards.isEmpty) {
                   return Center(
                     child: Padding(
@@ -135,43 +152,19 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         16.height,
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 2 / 3,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 8,
+                        CardListWidget(
+                          showOwnIndicator: true,
+                          cards: setWithCards.cards,
+                          userCardsCollection: userCardsCollection,
+                          onLongPressCard: (String cardId) {
+                            onAddToCollection(context, cardId);
+                          },
+                          onTapCard: (String cardId) {
+                            navigateToCardPage(
+                              cardId: cardId,
+                              cardBrief: setWithCards.cards.firstWhere(
+                                (card) => card.id == cardId,
                               ),
-                          itemCount: setWithCards.cards.length,
-                          itemBuilder: (context, index) {
-                            PokemonCardBrief card = setWithCards.cards[index];
-
-                            if (card.image == null) {
-                              return PokemonCardUnavailableWidget(
-                                card: card,
-                                totalCard: setWithCards.cards.length,
-                                onLongPress:
-                                    () => onAddToCollection(context, card.id),
-                                onTap:
-                                    () => navigateToCardPage(
-                                      cardId: card.id,
-                                      cardBrief: card,
-                                    ),
-                              );
-                            }
-
-                            return PokemonCardWidget(
-                              cardUrl: card.image!,
-                              onLongPress:
-                                  () => onAddToCollection(context, card.id),
-                              onTap:
-                                  () => navigateToCardPage(
-                                    cardId: card.id,
-                                    cardBrief: card,
-                                  ),
                             );
                           },
                         ),
@@ -192,12 +185,13 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
     required String cardId,
     required PokemonCardBrief cardBrief,
   }) {
-    context.read<CollectionPokemonCardBloc>().add(
-      CollectionPokemonGetCardEvent(cardId: cardId),
-    );
     context.push(
       '/card_details',
-      extra: {'cardId': cardId, 'cardBrief': cardBrief},
+      extra: {
+        'cardId': cardId,
+        'cardBrief': cardBrief,
+        'userId': getIt<AuthenticationRepository>().userProfile!.id,
+      },
     );
   }
 
