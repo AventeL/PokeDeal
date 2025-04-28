@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:pokedeal/features/collection/domain/models/card/card_variant.dart';
 import 'package:pokedeal/features/collection/domain/models/card/energy_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/pokemon_card.dart';
+import 'package:pokedeal/features/collection/domain/models/card/pokemon_card_brief.dart';
 import 'package:pokedeal/features/collection/domain/models/card/trainer_card.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/card_category.dart';
 import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dart';
@@ -39,6 +40,10 @@ class BasePokemonCard extends Equatable {
       case CardCategory.energy:
         return EnergyCard.fromJson(json);
     }
+  }
+
+  PokemonCardBrief toBrief() {
+    return PokemonCardBrief(id: id, localId: localId, name: name, image: image);
   }
 
   @override

@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> screens = [
     TradeBasePage(),
     SeriesListPage(),
-    ProfilePage(showBackButton: false),
+    ProfilePage(showBackButton: false, showCollection: false),
   ];
   int index = 1;
 

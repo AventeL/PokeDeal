@@ -9,6 +9,12 @@ class UserCollectionLoadSetEvent extends UserCollectionEvent {
   UserCollectionLoadSetEvent({required this.userId, required this.setId});
 }
 
+class UserCollectionLoadAllEvent extends UserCollectionEvent {
+  String userId;
+
+  UserCollectionLoadAllEvent({required this.userId});
+}
+
 class UserCollectionLoadCardEvent extends UserCollectionEvent {
   String userId;
   String cardId;

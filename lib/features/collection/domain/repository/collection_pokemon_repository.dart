@@ -77,7 +77,9 @@ class CollectionPokemonRepository {
     List<UserCardCollection> cards = await collectionPokemonDataSource
         .getUserCollection(userId: userId, cardId: cardId, setId: setId);
 
-    if (setId != null && cardId == null) {
+    if (setId != null &&
+        cardId == null &&
+        userId == getIt<AuthenticationRepository>().userProfile!.id) {
       userCardsBySetIdMap[setId] = cards;
     }
     cards.sort((a, b) => b.quantity.compareTo(a.quantity));
@@ -112,5 +114,55 @@ class CollectionPokemonRepository {
       }
     }
     return newUserCardCollection;
+  }
+
+  Future<List<PokemonSet>> getSetsFromUserCards({
+    required List<UserCardCollection> userCards,
+  }) async {
+    List<PokemonSet> setsToReturn = [];
+    for (var userCard in userCards) {
+      if (!setsMap.containsKey(userCard.setId)) {
+        PokemonSet set = await collectionPokemonDataSource.getSet(
+          userCard.setId,
+        );
+        setsMap[userCard.setId] = set;
+      }
+      if (!setsToReturn.contains(setsMap[userCard.setId]!)) {
+        setsToReturn.add(setsMap[userCard.setId]!);
+      }
+    }
+    return setsToReturn;
+  }
+
+  Future<List<PokemonSerie>> getSeriesFromSets({
+    required List<PokemonSet> sets,
+  }) async {
+    List<PokemonSerie> seriesToReturn = [];
+    for (var set in sets) {
+      PokemonSerie serieToAdd = series.firstWhere(
+        (PokemonSerie serie) => serie.id == set.serieBrief.id,
+      );
+
+      if (!seriesToReturn.contains(serieToAdd)) {
+        seriesToReturn.add(serieToAdd);
+      }
+    }
+    return seriesToReturn;
+  }
+
+  Future<List<BasePokemonCard>> getCardsDetailsFromUserCards({
+    required List<UserCardCollection> userCards,
+  }) async {
+    List<BasePokemonCard> cards = [];
+    for (var userCard in userCards) {
+      if (!cardsMap.containsKey(userCard.cardId)) {
+        BasePokemonCard card = await collectionPokemonDataSource.getCard(
+          id: userCard.cardId,
+        );
+        cardsMap[userCard.cardId] = card;
+      }
+      cards.add(cardsMap[userCard.cardId]!);
+    }
+    return cards;
   }
 }
