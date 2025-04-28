@@ -11,6 +11,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileBloc({required this.profileRepository}) : super(ProfileInitial()) {
     on<ProfileLoadEvent>(onProfileLoadEvent);
+    on<ProfileUpdateEvent>(onProfileUpdateEvent);
+    on<ChangePasswordEvent>(onChangePasswordEvent);
   }
 
   Future<void> onProfileLoadEvent(
@@ -27,6 +29,40 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         return;
       }
       emit(ProfileLoaded(userProfile: userProfile));
+    } catch (e) {
+      emit(ProfileError(message: e.toString()));
+    }
+  }
+
+  Future<void> onProfileUpdateEvent(
+    ProfileUpdateEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      emit(ProfileLoading());
+      await profileRepository.updateProfile(
+        user: event.user,
+        password: event.password,
+        currentUser: event.currentUser,
+      );
+      emit(ProfileUpdated(userProfile: event.user));
+    } catch (e) {
+      emit(ProfileError(message: e.toString()));
+    }
+  }
+
+  Future<void> onChangePasswordEvent(
+    ChangePasswordEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      emit(ProfileLoading());
+      await profileRepository.changePassword(
+        currentPassword: event.currentPassword,
+        newPassword: event.newPassword,
+        email: event.email,
+      );
+      emit(ChangePasswordSuccess());
     } catch (e) {
       emit(ProfileError(message: e.toString()));
     }

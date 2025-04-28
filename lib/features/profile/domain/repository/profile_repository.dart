@@ -16,4 +16,28 @@ class ProfileRepository {
       return await profileDataSource.getProfile(id: id);
     }
   }
+
+  Future<void> updateProfile({
+    required UserProfile user,
+    required String password,
+    required UserProfile currentUser,
+  }) async {
+    await profileDataSource.updateProfile(
+      user: user,
+      password: password,
+      currentUser: currentUser,
+    );
+  }
+
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String email,
+  }) async {
+    await profileDataSource.changePassword(
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+      email: email,
+    );
+  }
 }

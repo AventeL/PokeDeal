@@ -1,10 +1,12 @@
-class UserProfile {
+import 'package:equatable/equatable.dart';
+
+class UserProfile extends Equatable {
   final String id;
   final String email;
   final String pseudo;
   final DateTime createdAt;
 
-  UserProfile({
+  const UserProfile({
     required this.id,
     required this.email,
     required this.pseudo,
@@ -19,4 +21,7 @@ class UserProfile {
       createdAt: DateTime.parse(json['created_at']),
     );
   }
+
+  @override
+  List<Object?> get props => [id, email, pseudo, createdAt];
 }

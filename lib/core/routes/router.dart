@@ -8,8 +8,11 @@ import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dar
 import 'package:pokedeal/features/collection/presentation/pages/card_detail_page.dart';
 import 'package:pokedeal/features/collection/presentation/pages/card_list_page.dart';
 import 'package:pokedeal/features/collection/presentation/pages/set_details_page.dart';
+import 'package:pokedeal/features/profile/presentation/pages/modify_profile_page.dart';
 import 'package:pokedeal/features/profile/presentation/pages/profile_page.dart';
 import 'package:pokedeal/features/profile/presentation/pages/settings_page.dart';
+
+import '../../features/profile/presentation/pages/modify_password_page.dart';
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -104,6 +107,20 @@ final GoRouter router = GoRouter(
           userCardsCollection: userCardsCollection,
           setName: setName,
         );
+      },
+    ),
+    GoRoute(
+      path: '/modify_profil',
+      name: 'modify_profil',
+      builder: (context, state) {
+        return const ModifyProfilePage();
+      },
+    ),
+    GoRoute(
+      path: '/modify_password',
+      name: 'modify_password',
+      builder: (context, state) {
+        return const ModifyPasswordPage();
       },
     ),
   ],
