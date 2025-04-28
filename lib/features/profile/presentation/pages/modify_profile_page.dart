@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/shared/widgets/custom_large_button.dart';
 
 import '../../../../core/validator/email_validator.dart';
@@ -42,8 +45,17 @@ class _ModifyProfilePageState extends State<ModifyProfilePage> {
 
   void saveProfile() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profil mis à jour avec succès')),
+      context.read<ProfileBloc>().add(
+        ProfileUpdateEvent(
+          user: UserProfile(
+            id: getIt<AuthenticationRepository>().userProfile!.id,
+            email: _emailController.text,
+            pseudo: _pseudoController.text,
+            createdAt: DateTime.now(),
+          ),
+          currentUser: getIt<AuthenticationRepository>().userProfile!,
+          password: _passwordController.text,
+        ),
       );
     }
   }
@@ -139,6 +151,7 @@ class _ModifyProfilePageState extends State<ModifyProfilePage> {
                   ),
                 ),
               ),
+              16.height,
               Center(
                 child: CustomLargeButton(
                   onPressed: saveProfile,
