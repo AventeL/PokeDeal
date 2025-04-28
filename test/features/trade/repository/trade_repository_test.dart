@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/trade/domain/models/enum/trade_status.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
 import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
 import 'package:pokedeal/features/trade/domain/repository/trade_repository.dart';
@@ -54,7 +55,7 @@ void main() {
           pseudo: 'User2',
           createdAt: DateTime.now(),
         ),
-        status: 'En cours',
+        status: TradeStatus.waiting,
         timestamp: DateTime.now(),
       ),
     ];
@@ -73,7 +74,7 @@ void main() {
           pseudo: 'User4',
           createdAt: DateTime.now(),
         ),
-        status: 'En cours',
+        status: TradeStatus.waiting,
         timestamp: DateTime.now(),
       ),
     ];
