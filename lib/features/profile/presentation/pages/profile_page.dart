@@ -6,8 +6,8 @@ import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
-import 'package:pokedeal/shared/widgets/custom_large_button.dart';
 import 'package:pokedeal/features/profile/presentation/widgets/user_collection_widget.dart';
+import 'package:pokedeal/shared/widgets/custom_large_button.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? userId;
@@ -99,10 +99,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     24.height,
                     if (widget.showCollection) _buildCollectionPart(),
                     32.height,
-                    CustomLargeButton(
-                      onPressed: () => {context.push("/modify_profil")},
-                      label: "Modifier",
-                    ),
+                    if (state.userProfile.id ==
+                        getIt<AuthenticationRepository>().userProfile!.id)
+                      CustomLargeButton(
+                        onPressed: () => {context.push("/modify_profil")},
+                        label: "Modifier",
+                      ),
                   ],
                 ),
               ),
