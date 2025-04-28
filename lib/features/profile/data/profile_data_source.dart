@@ -32,4 +32,23 @@ class ProfileDataSource implements IProfileDataSource {
         .update({'pseudo': user.pseudo, 'email': user.email})
         .eq('id', user.id);
   }
+
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String email,
+  }) async {
+    final authResponse = await Supabase.instance.client.auth.signInWithPassword(
+      email: email,
+      password: currentPassword,
+    );
+
+    if (authResponse.session == null) {
+      throw Exception('Mot de passe actuel incorrect.');
+    }
+
+    await Supabase.instance.client.auth.updateUser(
+      UserAttributes(password: newPassword),
+    );
+  }
 }
