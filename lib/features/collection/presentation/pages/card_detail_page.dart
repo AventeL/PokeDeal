@@ -71,7 +71,6 @@ class _CardDetailPageState extends State<CardDetailPage> {
       ),
       body: BlocConsumer<CollectionPokemonCardBloc, CollectionPokemonCardState>(
         listener: (context, collectionPokemonCardState) {
-          print(collectionPokemonCardState);
           if (collectionPokemonCardState is CollectionPokemonCardsGet) {
             card = collectionPokemonCardState.card;
           }
