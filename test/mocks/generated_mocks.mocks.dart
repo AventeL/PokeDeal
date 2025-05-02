@@ -48,6 +48,8 @@ import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart'
 import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart'
     as _i19;
 import 'package:pokedeal/features/trade/domain/models/trade.dart' as _i27;
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart'
+    as _i28;
 import 'package:pokedeal/features/trade/domain/models/user_stats.dart' as _i26;
 import 'package:pokedeal/features/trade/domain/repository/trade_repository.dart'
     as _i8;
@@ -997,6 +999,18 @@ class MockUserCollectionBloc extends _i1.Mock
           as _i22.Future<void>);
 
   @override
+  _i22.Future<void> onUserCollectionLoadAllEvent(
+    _i12.UserCollectionLoadAllEvent? event,
+    _i23.Emitter<_i12.UserCollectionState>? emit,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#onUserCollectionLoadAllEvent, [event, emit]),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
+
+  @override
   void add(_i12.UserCollectionEvent? event) => super.noSuchMethod(
     Invocation.method(#add, [event]),
     returnValueForMissingStub: null,
@@ -1378,6 +1392,57 @@ class MockCollectionPokemonRepository extends _i1.Mock
                 ),
           )
           as _i22.Future<_i18.UserCardCollection>);
+
+  @override
+  _i22.Future<List<_i16.PokemonSet>> getSetsFromUserCards({
+    required List<_i18.UserCardCollection>? userCards,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#getSetsFromUserCards, [], {
+              #userCards: userCards,
+            }),
+            returnValue: _i22.Future<List<_i16.PokemonSet>>.value(
+              <_i16.PokemonSet>[],
+            ),
+            returnValueForMissingStub: _i22.Future<List<_i16.PokemonSet>>.value(
+              <_i16.PokemonSet>[],
+            ),
+          )
+          as _i22.Future<List<_i16.PokemonSet>>);
+
+  @override
+  _i22.Future<List<_i21.PokemonSerie>> getSeriesFromSets({
+    required List<_i16.PokemonSet>? sets,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#getSeriesFromSets, [], {#sets: sets}),
+            returnValue: _i22.Future<List<_i21.PokemonSerie>>.value(
+              <_i21.PokemonSerie>[],
+            ),
+            returnValueForMissingStub:
+                _i22.Future<List<_i21.PokemonSerie>>.value(
+                  <_i21.PokemonSerie>[],
+                ),
+          )
+          as _i22.Future<List<_i21.PokemonSerie>>);
+
+  @override
+  _i22.Future<List<_i17.BasePokemonCard>> getCardsDetailsFromUserCards({
+    required List<_i18.UserCardCollection>? userCards,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#getCardsDetailsFromUserCards, [], {
+              #userCards: userCards,
+            }),
+            returnValue: _i22.Future<List<_i17.BasePokemonCard>>.value(
+              <_i17.BasePokemonCard>[],
+            ),
+            returnValueForMissingStub:
+                _i22.Future<List<_i17.BasePokemonCard>>.value(
+                  <_i17.BasePokemonCard>[],
+                ),
+          )
+          as _i22.Future<List<_i17.BasePokemonCard>>);
 }
 
 /// A class which mocks [TradeRepository].
@@ -1433,6 +1498,21 @@ class MockTradeRepository extends _i1.Mock implements _i8.TradeRepository {
             ),
           )
           as _i22.Future<List<_i27.Trade>>);
+
+  @override
+  _i22.Future<void> askTrade({
+    required _i28.TradeRequestData? myTradeRequestData,
+    required _i28.TradeRequestData? otherTradeRequestData,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#askTrade, [], {
+              #myTradeRequestData: myTradeRequestData,
+              #otherTradeRequestData: otherTradeRequestData,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [ProfileRepository].
@@ -1704,6 +1784,21 @@ class MockITradeDataSource extends _i1.Mock implements _i19.ITradeDataSource {
             ),
           )
           as _i22.Future<List<_i27.Trade>>);
+
+  @override
+  _i22.Future<void> askTrade({
+    required _i28.TradeRequestData? myTradeRequestData,
+    required _i28.TradeRequestData? otherTradeRequestData,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#askTrade, [], {
+              #myTradeRequestData: myTradeRequestData,
+              #otherTradeRequestData: otherTradeRequestData,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [IProfileDataSource].

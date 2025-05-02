@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
 import 'package:pokedeal/features/trade/domain/repository/trade_repository.dart';
 
@@ -78,6 +80,12 @@ void main() {
       ),
     ];
 
+    final mockTradeRequestData = TradeRequestData(
+      cardId: 'cardId',
+      userId: 'userId',
+      variantValue: VariantValue.normal,
+    );
+
     test('fetchAllUsers returns a list of all users on success', () async {
       when(
         mockTradeDataSource.getAllUser(),
@@ -136,6 +144,27 @@ void main() {
 
       expect(() => tradeRepository.getReceivedTrade(), throwsException);
       verify(mockTradeDataSource.getReceivedTrade()).called(1);
+    });
+
+    test('askTrade successfully calls data source', () async {
+      when(
+        mockTradeDataSource.askTrade(
+          myTradeRequestData: mockTradeRequestData,
+          otherTradeRequestData: mockTradeRequestData,
+        ),
+      ).thenAnswer((_) async => {});
+
+      await tradeRepository.askTrade(
+        myTradeRequestData: mockTradeRequestData,
+        otherTradeRequestData: mockTradeRequestData,
+      );
+
+      verify(
+        mockTradeDataSource.askTrade(
+          myTradeRequestData: mockTradeRequestData,
+          otherTradeRequestData: mockTradeRequestData,
+        ),
+      ).called(1);
     });
   });
 }

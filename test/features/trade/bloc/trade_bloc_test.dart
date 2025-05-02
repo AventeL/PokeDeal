@@ -2,7 +2,9 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
 import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
 
@@ -120,7 +122,7 @@ void main() {
     }
 
     blocTest<TradeBloc, TradeState>(
-      'emits [TradeStateReceivedTradesLoaded] when getReceiveTrade is successful',
+      'emits [TradeStateReceivedTradesLoaded] when getReceivedTrade is successful',
       build: () {
         mockFetchReceiveTradesSuccess();
         return tradeBloc;
@@ -142,6 +144,80 @@ void main() {
       expect: () => [TradeStateSendTradesLoaded(trades: mockTradesSend)],
       verify: (_) {
         verify(mockTradeRepository.getSendTrade()).called(1);
+      },
+    );
+
+    blocTest<TradeBloc, TradeState>(
+      'emits [TradeStateLoading, TradeStateAskTradeSuccess] when askTrade is successful',
+      build: () {
+        when(
+          mockTradeRepository.askTrade(
+            myTradeRequestData: anyNamed('myTradeRequestData'),
+            otherTradeRequestData: anyNamed('otherTradeRequestData'),
+          ),
+        ).thenAnswer((_) async => {});
+        return tradeBloc;
+      },
+      act:
+          (bloc) => bloc.add(
+            TradeEventAskTrade(
+              myTradeRequestData: TradeRequestData(
+                userId: 'userId',
+                cardId: 'cardId',
+                variantValue: VariantValue.normal,
+              ),
+              otherTradeRequestData: TradeRequestData(
+                userId: 'otherUserId',
+                cardId: 'otherCardId',
+                variantValue: VariantValue.holo,
+              ),
+            ),
+          ),
+      expect: () => [TradeStateLoading(), TradeStateAskTradeSuccess()],
+      verify: (_) {
+        verify(
+          mockTradeRepository.askTrade(
+            myTradeRequestData: anyNamed('myTradeRequestData'),
+            otherTradeRequestData: anyNamed('otherTradeRequestData'),
+          ),
+        ).called(1);
+      },
+    );
+
+    blocTest<TradeBloc, TradeState>(
+      'emits [TradeStateError] when askTrade fails',
+      build: () {
+        when(
+          mockTradeRepository.askTrade(
+            myTradeRequestData: anyNamed('myTradeRequestData'),
+            otherTradeRequestData: anyNamed('otherTradeRequestData'),
+          ),
+        ).thenThrow(Exception('Trade failed'));
+        return tradeBloc;
+      },
+      act:
+          (bloc) => bloc.add(
+            TradeEventAskTrade(
+              myTradeRequestData: TradeRequestData(
+                userId: 'userId',
+                cardId: 'cardId',
+                variantValue: VariantValue.normal,
+              ),
+              otherTradeRequestData: TradeRequestData(
+                userId: 'otherUserId',
+                cardId: 'otherCardId',
+                variantValue: VariantValue.holo,
+              ),
+            ),
+          ),
+      expect: () => [isA<TradeStateLoading>(), isA<TradeStateError>()],
+      verify: (_) {
+        verify(
+          mockTradeRepository.askTrade(
+            myTradeRequestData: anyNamed('myTradeRequestData'),
+            otherTradeRequestData: anyNamed('otherTradeRequestData'),
+          ),
+        ).called(1);
       },
     );
   });

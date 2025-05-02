@@ -1,8 +1,7 @@
+import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart';
+import 'package:pokedeal/features/trade/domain/models/trade.dart';
 import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
-
-import '../../data/trade_data_source_interface.dart';
-import '../models/trade.dart';
 
 class TradeRepository {
   final ITradeDataSource tradeDataSource;
