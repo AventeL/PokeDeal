@@ -134,8 +134,11 @@ final GoRouter router = GoRouter(
             myTradeRequest: myTradeRequest,
           ),
         );
-      path: '/modify_profil',
-      name: 'modify_profil',
+      },
+    ),
+    GoRoute(
+      path: '/modify_profile',
+      name: 'modify_profile',
       builder: (context, state) {
         return const ModifyProfilePage();
       },

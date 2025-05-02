@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (state.userProfile.id ==
                         getIt<AuthenticationRepository>().userProfile!.id)
                       CustomLargeButton(
-                        onPressed: () => {context.push("/modify_profil")},
+                        onPressed: () => {context.push("/modify_profile")},
                         label: "Modifier",
                       ),
                   ],
