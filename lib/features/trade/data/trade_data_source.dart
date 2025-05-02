@@ -6,6 +6,7 @@ import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../authentication/domain/models/user_profile.dart';
+import '../domain/models/enum/trade_status.dart';
 
 class TradeDataSource implements ITradeDataSource {
   final SupabaseClient supabaseClient;
@@ -61,7 +62,7 @@ class TradeDataSource implements ITradeDataSource {
         id: trade['id'] as String,
         senderId: UserProfile.fromJson(trade['sender']),
         receiveId: UserProfile.fromJson(trade['receiver']),
-        status: trade['status'] as String,
+        status: trade['status'] as TradeStatus,
         timestamp: DateTime.parse(trade['created_at'] as String),
       );
     }).toList();
@@ -79,7 +80,7 @@ class TradeDataSource implements ITradeDataSource {
         id: trade['id'] as String,
         senderId: UserProfile.fromJson(trade['sender']),
         receiveId: UserProfile.fromJson(trade['receiver']),
-        status: trade['status'] as String,
+        status: trade['status'] as TradeStatus,
         timestamp: DateTime.parse(trade['created_at'] as String),
       );
     }).toList();

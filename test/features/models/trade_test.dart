@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/trade/domain/models/enum/trade_status.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
 
 void main() {
@@ -22,14 +23,14 @@ void main() {
       id: 'tradeId',
       senderId: sender,
       receiveId: receiver,
-      status: 'En cours',
+      status: TradeStatus.waiting,
       timestamp: now,
     );
 
     expect(trade.id, 'tradeId');
     expect(trade.senderId, sender);
     expect(trade.receiveId, receiver);
-    expect(trade.status, 'En cours');
+    expect(trade.status, TradeStatus.waiting);
     expect(trade.timestamp, now);
   });
 
@@ -49,14 +50,14 @@ void main() {
         'pseudo': 'Receiver',
         'created_at': now.toIso8601String(),
       },
-      'status': 'En cours',
+      'status': TradeStatus.waiting,
       'timestamp': now.toIso8601String(),
     });
 
     expect(trade.id, 'tradeId');
     expect(trade.senderId.id, 'senderId');
     expect(trade.receiveId.id, 'receiverId');
-    expect(trade.status, 'En cours');
+    expect(trade.status, TradeStatus.waiting);
     expect(trade.timestamp, now);
   });
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/trade/domain/models/enum/trade_status.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/trade_card_widget.dart';
 
@@ -22,7 +23,7 @@ void main() {
           pseudo: 'Receiver',
           createdAt: DateTime.now(),
         ),
-        status: 'En cours',
+        status: TradeStatus.waiting,
         timestamp: DateTime.now(),
       );
 
@@ -60,7 +61,7 @@ void main() {
         pseudo: 'Receiver',
         createdAt: DateTime.now(),
       ),
-      status: 'En cours',
+      status: TradeStatus.waiting,
       timestamp: DateTime.now(),
     );
 

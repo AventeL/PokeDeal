@@ -75,4 +75,94 @@ void main() {
       },
     );
   });
+  group('onProfileUpdateEvent', () {
+    void mockUpdateProfile() {
+      when(
+        profileRepository.updateProfile(
+          user: mockUserProfile,
+          password: 'password',
+          currentUser: mockUserProfile,
+        ),
+      ).thenAnswer((_) async => Future.value());
+    }
+
+    blocTest<ProfileBloc, ProfileState>(
+      'emits [ProfileLoading, ProfileUpdated] when profile update is successful',
+      build: () {
+        mockUpdateProfile();
+        return profileBloc;
+      },
+      act: (bloc) {
+        bloc.add(
+          ProfileUpdateEvent(
+            user: mockUserProfile,
+            password: 'password',
+            currentUser: UserProfile(
+              id: mockUserProfile.id,
+              email: 'test987465@gmail.com',
+              pseudo: 'test',
+              createdAt: mockUserProfile.createdAt,
+            ),
+          ),
+        );
+      },
+      expect:
+          () => [
+            ProfileLoading(),
+            ProfileUpdated(userProfile: mockUserProfile),
+          ],
+      verify: (_) {
+        verify(
+          profileRepository.updateProfile(
+            user: mockUserProfile,
+            password: 'password',
+            currentUser: UserProfile(
+              id: mockUserProfile.id,
+              email: 'test987465@gmail.com',
+              pseudo: 'test',
+              createdAt: mockUserProfile.createdAt,
+            ),
+          ),
+        ).called(1);
+      },
+    );
+  });
+  group('onProfileChangePasswordEvent', () {
+    void mockChangePassword() {
+      when(
+        profileRepository.changePassword(
+          currentPassword: 'currentPassword',
+          newPassword: 'newPassword',
+          email: 'email',
+        ),
+      ).thenAnswer((_) async => Future.value());
+    }
+
+    blocTest<ProfileBloc, ProfileState>(
+      'emits [ProfileLoading, ProfileUpdated] when password change is successful',
+      build: () {
+        mockChangePassword();
+        return profileBloc;
+      },
+      act: (bloc) {
+        bloc.add(
+          ChangePasswordEvent(
+            currentPassword: 'currentPassword',
+            newPassword: 'newPassword',
+            email: 'email',
+          ),
+        );
+      },
+      expect: () => [ProfileLoading(), ChangePasswordSuccess()],
+      verify: (_) {
+        verify(
+          profileRepository.changePassword(
+            currentPassword: 'currentPassword',
+            newPassword: 'newPassword',
+            email: 'email',
+          ),
+        ).called(1);
+      },
+    );
+  });
 }

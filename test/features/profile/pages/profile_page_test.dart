@@ -8,6 +8,7 @@ import 'package:pokedeal/features/authentication/domain/repository/authenticatio
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/pages/profile_page.dart';
+import 'package:pokedeal/shared/widgets/custom_large_button.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
 
@@ -90,7 +91,7 @@ void main() {
     expect(find.text('Cartes'), findsOneWidget);
     expect(find.text('Echanges'), findsOneWidget);
     expect(find.text('Séries'), findsOneWidget);
-    expect(find.text('Collection'), findsOneWidget);
+    expect(find.byType(CustomLargeButton), findsOneWidget);
     expect(find.text('Membre depuis le 09/10/2023'), findsOneWidget);
     expect(find.byType(CircleAvatar), findsOneWidget);
     expect(find.byType(Row), findsOneWidget);
