@@ -5,8 +5,14 @@ import 'package:pokedeal/features/collection/domain/models/pokemon_set_brief.dar
 class PokemonSetCardWidget extends StatelessWidget {
   final PokemonSetBrief set;
   final VoidCallback? onTap;
+  final bool displayStats;
 
-  const PokemonSetCardWidget({super.key, required this.set, this.onTap});
+  const PokemonSetCardWidget({
+    super.key,
+    required this.set,
+    this.onTap,
+    this.displayStats = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,29 +60,31 @@ class PokemonSetCardWidget extends StatelessWidget {
                                 ?.copyWith(overflow: TextOverflow.ellipsis),
                           ),
                         ),
-                        Text(
-                          set.cardCount.total.toString(),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: LinearProgressIndicator(
-                            value: percentage,
-                            backgroundColor: Colors.grey,
-                            color: Theme.of(context).colorScheme.primary,
+                        if (displayStats)
+                          Text(
+                            set.cardCount.total.toString(),
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                        ),
-                        8.width,
-                        Text(
-                          '${(percentage * 100).toStringAsFixed(1)}%',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
                       ],
                     ),
+                    if (displayStats)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: LinearProgressIndicator(
+                              value: percentage,
+                              backgroundColor: Colors.grey,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          8.width,
+                          Text(
+                            '${(percentage * 100).toStringAsFixed(1)}%',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 
 import '../../domain/models/trade.dart';
 import '../../domain/models/user_stats.dart';
@@ -15,6 +16,7 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     on<TradeEventGetAllUsers>(_onTradeEventGetAllUsers);
     on<TradeEventGetSendTrade>(_onTradeEventGetSendTrade);
     on<TradeEventGetReceivedTrade>(_onTradeEventGetReceivedTrade);
+    on<TradeEventAskTrade>(_onTradeEventAskTrade);
   }
 
   Future<void> _onTradeEventGetAllUsers(
@@ -49,6 +51,22 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     try {
       final trades = tradeRepository.getReceivedTrade();
       emit(TradeStateReceivedTradesLoaded(trades: await trades));
+    } catch (e) {
+      emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
+    }
+  }
+
+  Future<void> _onTradeEventAskTrade(
+    TradeEventAskTrade event,
+    Emitter<TradeState> emit,
+  ) async {
+    try {
+      emit(TradeStateLoading());
+      await tradeRepository.askTrade(
+        myTradeRequestData: event.myTradeRequestData,
+        otherTradeRequestData: event.otherTradeRequestData,
+      );
+      emit(TradeStateAskTradeSuccess());
     } catch (e) {
       emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
     }

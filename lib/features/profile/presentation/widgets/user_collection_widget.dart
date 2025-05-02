@@ -29,6 +29,16 @@ class _UserCollectionWidgetState extends State<UserCollectionWidget> {
   @override
   void initState() {
     super.initState();
+    loadCollection();
+  }
+
+  @override
+  void didUpdateWidget(covariant UserCollectionWidget oldWidget) {
+    loadCollection();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void loadCollection() {
     BlocProvider.of<UserCollectionBloc>(context).add(
       UserCollectionLoadAllEvent(
         userId:
@@ -76,29 +86,32 @@ class _UserCollectionWidgetState extends State<UserCollectionWidget> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return PokemonSerieCard(
-              pokemonSerie: series[index],
-              sets:
-                  sets
-                      .where((set) => set.serieBrief.id == series[index].id)
-                      .map((set) => set.toBrief())
-                      .toList(),
-              onSetTap: (PokemonSetBrief set) {
-                context.push(
-                  '/card_list',
-                  extra: {
-                    'setName': set.name,
-                    'userId': widget.userId,
-                    'cards':
-                        listOfCards
-                            .where((card) => card.setBrief.id == set.id)
-                            .toList()
-                            .map((card) => card.toBrief())
-                            .toList(),
-                    'userCardsCollection': cards,
-                  },
-                );
-              },
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: PokemonSerieCard(
+                pokemonSerie: series[index],
+                sets:
+                    sets
+                        .where((set) => set.serieBrief.id == series[index].id)
+                        .map((set) => set.toBrief())
+                        .toList(),
+                onSetTap: (PokemonSetBrief set) {
+                  context.push(
+                    '/card_list',
+                    extra: {
+                      'setName': set.name,
+                      'userId': widget.userId,
+                      'cards':
+                          listOfCards
+                              .where((card) => card.setBrief.id == set.id)
+                              .toList()
+                              .map((card) => card.toBrief())
+                              .toList(),
+                      'userCardsCollection': cards,
+                    },
+                  );
+                },
+              ),
             );
           },
           itemCount: series.length,

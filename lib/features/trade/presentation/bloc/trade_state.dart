@@ -7,6 +7,8 @@ class TradeState extends Equatable {
 
 final class TradeStateInitial extends TradeState {}
 
+final class TradeStateLoading extends TradeState {}
+
 final class TradeStateSuccessGetAllUsers extends TradeState {}
 
 final class TradeStateUsersLoaded extends TradeState {
@@ -45,3 +47,5 @@ final class TradeStateReceivedTradesLoaded extends TradeState {
   @override
   List<Object> get props => [trades];
 }
+
+final class TradeStateAskTradeSuccess extends TradeState {}

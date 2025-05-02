@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
-import 'package:pokedeal/features/trade/presentation/pages/trade_request_page.dart';
+import 'package:pokedeal/features/trade/presentation/pages/trade_request_list_page.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/trade_list_widget.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
@@ -28,7 +28,7 @@ void main() {
         home: Scaffold(
           body: BlocProvider<TradeBloc>(
             create: (_) => mockTradeBloc,
-            child: Column(children: [TradeRequestPage()]),
+            child: Column(children: [TradeRequestListPage()]),
           ),
         ),
       ),
@@ -46,7 +46,7 @@ void main() {
         home: Scaffold(
           body: BlocProvider<TradeBloc>(
             create: (_) => mockTradeBloc,
-            child: Column(children: [TradeRequestPage()]),
+            child: Column(children: [TradeRequestListPage()]),
           ),
         ),
       ),
