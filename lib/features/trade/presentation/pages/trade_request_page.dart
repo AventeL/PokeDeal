@@ -8,7 +8,9 @@ import 'package:pokedeal/features/collection/presentation/bloc/user_collection/u
 import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_unavailable_widget.dart';
 import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_widget.dart';
 import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
+import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/bottom_sheet_card_selector.dart';
+import 'package:pokedeal/shared/widgets/custom_large_button.dart';
 
 class TradeRequestPage extends StatefulWidget {
   final TradeRequestData otherUserTradeRequest;
@@ -52,38 +54,83 @@ class _TradeRequestPageState extends State<TradeRequestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              16.height,
-              Card(
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Vous proposez : ',
-                        style: Theme.of(context).textTheme.headlineMedium,
+      body: BlocConsumer<TradeBloc, TradeState>(
+        listener: (context, tradeState) {
+          if (tradeState is TradeStateError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(tradeState.message),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+          if (tradeState is TradeStateAskTradeSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Votre demande d'échange a été envoyée"),
+                duration: Duration(seconds: 2),
+              ),
+            );
+          }
+        },
+        builder: (context, tradeState) {
+          if (tradeState is TradeStateLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    16.height,
+                    Card(
+                      elevation: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Vous proposez : ',
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                            4.height,
+                            buildCardSelector(myTrade, myCard),
+                            16.height,
+                            Text(
+                              "Vous recevez : ",
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                            4.height,
+                            buildCardSelector(otherUserTrade, otherUserCard),
+                          ],
+                        ),
                       ),
-                      4.height,
-                      buildCardSelector(myTrade, myCard),
-                      16.height,
-                      Text(
-                        "Vous recevez : ",
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      4.height,
-                      buildCardSelector(otherUserTrade, otherUserCard),
-                    ],
-                  ),
+                    ),
+                    16.height,
+                    CustomLargeButton(
+                      label: "Demander",
+                      onPressed: () {
+                        if (canSendTrade()) {
+                          context.read<TradeBloc>().add(
+                            TradeEventAskTrade(
+                              myTradeRequestData: myTrade,
+                              otherTradeRequestData: otherUserTrade,
+                            ),
+                          );
+                        }
+                      },
+                      isActive: canSendTrade(),
+                    ),
+                    16.height,
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -172,16 +219,19 @@ class _TradeRequestPageState extends State<TradeRequestPage> {
                     children: [
                       Text(
                         card.name,
+                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       8.height,
                       Text(
                         card.setBrief.name,
+                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       8.height,
                       Text(
                         tradeRequestData.variantValue?.getFullName ?? '',
+                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
@@ -243,7 +293,7 @@ class _TradeRequestPageState extends State<TradeRequestPage> {
       UserCollectionLoadAllEvent(userId: tradeRequestData.userId),
     );
 
-    final selectedCard = await showModalBottomSheet<BasePokemonCard>(
+    final selectedResult = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
       builder: (context) {
         return SafeArea(
@@ -255,14 +305,27 @@ class _TradeRequestPageState extends State<TradeRequestPage> {
       },
     );
 
-    if (selectedCard != null) {
-      selectCard(tradeRequestData, selectedCard);
+    final BasePokemonCard selectedCard = selectedResult?['card'];
+    final VariantValue selectedVariantValue =
+        selectedResult?['variantValue'] ?? VariantValue.normal;
+
+    if (selectedResult != null) {
+      selectCard(tradeRequestData, selectedCard, selectedVariantValue);
     }
+  }
+
+  bool canSendTrade() {
+    return myTrade.cardId != null &&
+        otherUserTrade.cardId != null &&
+        myTrade.userId != otherUserTrade.userId &&
+        myTrade.variantValue != null &&
+        otherUserTrade.variantValue != null;
   }
 
   void selectCard(
     TradeRequestData tradeRequestData,
     BasePokemonCard selectedCard,
+    VariantValue selectedVariantValue,
   ) {
     setState(() {
       if (tradeRequestData.userId == otherUserTrade.userId) {
@@ -270,7 +333,7 @@ class _TradeRequestPageState extends State<TradeRequestPage> {
         otherUserTrade = TradeRequestData(
           userId: otherUserTrade.userId,
           cardId: selectedCard.id,
-          variantValue: VariantValue.normal,
+          variantValue: selectedVariantValue,
         );
       }
       if (tradeRequestData.userId == myTrade.userId) {
@@ -278,7 +341,7 @@ class _TradeRequestPageState extends State<TradeRequestPage> {
         myTrade = TradeRequestData(
           userId: myTrade.userId,
           cardId: selectedCard.id,
-          variantValue: VariantValue.normal,
+          variantValue: selectedVariantValue,
         );
       }
     });

@@ -1,3 +1,4 @@
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 import 'package:pokedeal/features/trade/domain/models/user_stats.dart';
 
 import '../../data/trade_data_source_interface.dart';
@@ -23,5 +24,15 @@ class TradeRepository {
     List<Trade> listTradeFromSupabase =
         await tradeDataSource.getReceivedTrade();
     return listTradeFromSupabase;
+  }
+
+  Future<void> askTrade({
+    required TradeRequestData myTradeRequestData,
+    required TradeRequestData otherTradeRequestData,
+  }) async {
+    await tradeDataSource.askTrade(
+      myTradeRequestData: myTradeRequestData,
+      otherTradeRequestData: otherTradeRequestData,
+    );
   }
 }
