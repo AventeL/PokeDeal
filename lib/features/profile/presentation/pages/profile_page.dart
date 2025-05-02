@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/widgets/user_collection_widget.dart';
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? userId;
@@ -85,6 +87,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     24.height,
+                    if (state.userProfile.id !=
+                        getIt<AuthenticationRepository>().userProfile!.id)
+                      _buildAskTradeButton(),
+                    8.height,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -120,6 +126,20 @@ class _ProfilePageState extends State<ProfilePage> {
           ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w300),
         ),
       ],
+    );
+  }
+
+  Widget _buildAskTradeButton() {
+    return ElevatedButton(
+      child: Text("Proposer un échange"),
+      onPressed: () {
+        context.push(
+          "/trade_request",
+          extra: {
+            "otherUserTradeRequest": TradeRequestData(userId: widget.userId!),
+          },
+        );
+      },
     );
   }
 

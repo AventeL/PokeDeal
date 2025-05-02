@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
@@ -72,6 +73,7 @@ class _TradeRequestPageState extends State<TradeRequestPage> {
                 duration: Duration(seconds: 2),
               ),
             );
+            context.pop();
           }
         },
         builder: (context, tradeState) {

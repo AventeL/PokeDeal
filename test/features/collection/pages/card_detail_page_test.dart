@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
-import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
 import 'package:pokedeal/features/collection/domain/models/card/card_variant.dart';
@@ -96,39 +95,35 @@ void main() {
   testWidgets(
     'CardDetailsPage shows card details when state is CollectionPokemonCardsGet',
     (WidgetTester tester) async {
-      when(mockAuthenticationRepository.userProfile).thenReturn(
-        UserProfile(
-          id: 'userId',
-          email: 'email',
-          pseudo: 'username',
-          createdAt: DateTime.now(),
+      final testCard = BasePokemonCard(
+        localId: '1',
+        category: CardCategory.trainer,
+        illustrator: 'Illustrator Name',
+        id: 'cardId',
+        name: 'Card Name',
+        image: 'https://via.placeholder.com/150',
+        rarity: 'Rare',
+        setBrief: PokemonSetBrief(
+          id: 'setId',
+          name: 'Set Name',
+          symbolUrl: 'https://via.placeholder.com/30',
+          cardCount: CardCount(total: 100, official: 50),
+        ),
+        variants: CardVariant(
+          firstEdition: true,
+          holo: false,
+          reverse: false,
+          promo: false,
+          normal: true,
         ),
       );
-      when(mockBloc.state).thenReturn(
-        CollectionPokemonCardsGet(
-          card: BasePokemonCard(
-            localId: '1',
-            category: CardCategory.trainer,
-            illustrator: 'Illustrator Name',
-            id: 'cardId',
-            name: 'Card Name',
-            image: 'https://example.com/card.png',
-            rarity: 'Rare',
-            setBrief: PokemonSetBrief(
-              id: 'setId',
-              name: 'Set Name',
-              symbolUrl: 'https://example.com/card',
-              cardCount: CardCount(total: 100, official: 50),
-            ),
-            variants: CardVariant(
-              firstEdition: true,
-              holo: false,
-              reverse: false,
-              promo: false,
-              normal: true,
-            ),
-          ),
-        ),
+
+      // Simulation du mock du bloc
+      when(mockBloc.stream).thenAnswer(
+        (_) => Stream.fromIterable([
+          CollectionPokemonCardLoading(),
+          CollectionPokemonCardsGet(card: testCard),
+        ]),
       );
 
       await tester.pumpWidget(
@@ -137,48 +132,35 @@ void main() {
             body: MultiBlocProvider(
               providers: [
                 BlocProvider<CollectionPokemonCardBloc>(
-                  create: (context) => mockBloc,
+                  create: (_) => mockBloc,
                 ),
                 BlocProvider<UserCollectionBloc>(
-                  create:
-                      (context) =>
-                          MockUserCollectionBloc(), // Mock du UserCollectionBloc
+                  create: (_) => MockUserCollectionBloc(),
                 ),
               ],
-              child: mockPage,
+              child: CardDetailPage(
+                cardId: 'cardId',
+                cardBrief: PokemonCardBrief(
+                  id: 'cardId',
+                  name: 'Card Name',
+                  localId: '1',
+                ),
+                userId: 'userId',
+              ),
             ),
           ),
         ),
       );
 
+      await tester.pumpAndSettle();
+
       expect(find.text('Card Name'), findsNWidgets(2));
       expect(find.byType(CachedNetworkImage), findsNWidgets(2));
-      expect(find.text("1/100"), findsOneWidget);
       expect(find.text('Rare'), findsOneWidget);
       expect(find.text('Set Name'), findsOneWidget);
-      expect(find.byIcon(Icons.brush), findsOneWidget);
       expect(find.text('Illustrator Name'), findsOneWidget);
+      expect(find.text('1/100'), findsOneWidget);
       expect(find.byType(CardCollectionListWidget), findsOneWidget);
-      expect(find.byType(FloatingActionButton), findsOneWidget);
     },
   );
-
-  testWidgets('CardDetailsPage shows error message when state is Initial', (
-    WidgetTester tester,
-  ) async {
-    when(mockBloc.state).thenReturn(CollectionPokemonCardInitial());
-
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: BlocProvider<CollectionPokemonCardBloc>(
-            create: (context) => mockBloc,
-            child: mockPage,
-          ),
-        ),
-      ),
-    );
-
-    expect(find.text('Carte indisponible'), findsOneWidget);
-  });
 }

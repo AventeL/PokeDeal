@@ -127,6 +127,10 @@ class _BottomSheetCardSelectorState extends State<BottomSheetCardSelector> {
   ) {
     final series = state.seriesCollection;
 
+    if (series.isEmpty) {
+      return const Center(child: Text('Aucune série disponible.'));
+    }
+
     return ListView.builder(
       itemCount: series.length,
       itemBuilder: (context, index) {
