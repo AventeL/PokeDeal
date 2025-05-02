@@ -36,6 +36,7 @@ class _TradeRequestListPageState extends State<TradeRequestListPage>
           ),
           Expanded(
             child: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
               controller: _tabController,
               children: [
                 TradeListWidget(tabIndex: 0),

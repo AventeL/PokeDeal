@@ -25,8 +25,8 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
   ) async {
     try {
       emit(TradeStateSuccessGetAllUsers());
-      final users = tradeRepository.getAllUser();
-      emit(TradeStateUsersLoaded(users: await users));
+      final users = await tradeRepository.getAllUser();
+      emit(TradeStateUsersLoaded(users: users));
     } catch (e) {
       emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
     }
@@ -37,8 +37,8 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     Emitter<TradeState> emit,
   ) async {
     try {
-      final trades = tradeRepository.getSendTrade();
-      emit(TradeStateSendTradesLoaded(trades: await trades));
+      final trades = await tradeRepository.getSendTrade();
+      emit(TradeStateSendTradesLoaded(trades: trades));
     } catch (e) {
       emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
     }
@@ -49,8 +49,8 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     Emitter<TradeState> emit,
   ) async {
     try {
-      final trades = tradeRepository.getReceivedTrade();
-      emit(TradeStateReceivedTradesLoaded(trades: await trades));
+      final trades = await tradeRepository.getReceivedTrade();
+      emit(TradeStateReceivedTradesLoaded(trades: trades));
     } catch (e) {
       emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
     }

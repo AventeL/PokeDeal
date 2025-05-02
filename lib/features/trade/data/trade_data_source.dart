@@ -56,16 +56,19 @@ class TradeDataSource implements ITradeDataSource {
         .from('exchanges')
         .select('*, sender:sender_id(*), receiver:receiver_id(*)')
         .eq('sender_id', supabaseClient.auth.currentUser!.id);
-    final List<dynamic> data = response;
-    return data.map((trade) {
-      return Trade(
-        id: trade['id'] as String,
-        senderId: UserProfile.fromJson(trade['sender']),
-        receiveId: UserProfile.fromJson(trade['receiver']),
-        status: trade['status'] as TradeStatus,
-        timestamp: DateTime.parse(trade['created_at'] as String),
-      );
-    }).toList();
+
+    final List<Trade> data =
+        response.map((trade) {
+          return Trade(
+            id: trade['id'] as String,
+            senderId: UserProfile.fromJson(trade['sender']),
+            receiveId: UserProfile.fromJson(trade['receiver']),
+            status: TradeStatusExtension.fromString(trade['status'] as String),
+            timestamp: DateTime.parse(trade['created_at'] as String),
+          );
+        }).toList();
+
+    return data;
   }
 
   @override
@@ -74,16 +77,19 @@ class TradeDataSource implements ITradeDataSource {
         .from('exchanges')
         .select('*, sender:sender_id(*), receiver:receiver_id(*)')
         .eq('receiver_id', supabaseClient.auth.currentUser!.id);
-    final List<dynamic> data = response;
-    return data.map((trade) {
-      return Trade(
-        id: trade['id'] as String,
-        senderId: UserProfile.fromJson(trade['sender']),
-        receiveId: UserProfile.fromJson(trade['receiver']),
-        status: trade['status'] as TradeStatus,
-        timestamp: DateTime.parse(trade['created_at'] as String),
-      );
-    }).toList();
+
+    final List<Trade> data =
+        response.map((trade) {
+          return Trade(
+            id: trade['id'] as String,
+            senderId: UserProfile.fromJson(trade['sender']),
+            receiveId: UserProfile.fromJson(trade['receiver']),
+            status: TradeStatusExtension.fromString(trade['status'] as String),
+            timestamp: DateTime.parse(trade['created_at'] as String),
+          );
+        }).toList();
+
+    return data;
   }
 
   @override

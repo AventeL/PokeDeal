@@ -2,7 +2,7 @@ enum TradeStatus { waiting, refused, accepted }
 
 extension TradeStatusExtension on TradeStatus {
   static TradeStatus fromString(String status) {
-    switch (status.toLowerCase()) {
+    switch (status) {
       case 'Accepté':
         return TradeStatus.accepted;
       case 'Refusé':
