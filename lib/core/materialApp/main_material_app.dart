@@ -7,6 +7,7 @@ import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collect
 import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
+import 'package:pokedeal/features/discussion/presentation/bloc/discussion_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/theme/custom_theme.dart';
 import 'package:pokedeal/theme/theme_notifier.dart';
@@ -40,6 +41,7 @@ class MainMaterialApp extends StatelessWidget {
         BlocProvider<TradeBloc>(create: (context) => getIt<TradeBloc>()),
         BlocProvider(create: (context) => getIt<ProfileBloc>()),
         BlocProvider(create: (context) => getIt<UserCollectionBloc>()),
+        BlocProvider(create: (context) => getIt<DiscussionBloc>()),
       ],
       child: ValueListenableBuilder<ThemeMode>(
         valueListenable: themeModeNotifier,
