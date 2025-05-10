@@ -14,6 +14,7 @@ import 'package:pokedeal/features/discussion/presentation/pages/discussion_page.
 import 'package:pokedeal/features/profile/presentation/pages/modify_profile_page.dart';
 import 'package:pokedeal/features/profile/presentation/pages/profile_page.dart';
 import 'package:pokedeal/features/profile/presentation/pages/settings_page.dart';
+import 'package:pokedeal/features/trade/domain/models/trade.dart';
 import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 import 'package:pokedeal/features/trade/presentation/pages/trade_request_page.dart';
 
@@ -156,9 +157,9 @@ final GoRouter router = GoRouter(
       name: 'discussion',
       builder: (context, state) {
         final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
-        final String tradeId = extra['tradeId'] as String;
+        final Trade tradeId = extra['trade'] as Trade;
 
-        return DiscussionPage(tradeId: tradeId);
+        return DiscussionPage(trade: tradeId);
       },
     ),
   ],

@@ -13,6 +13,9 @@ class CollectionPokemonCardBloc
   CollectionPokemonCardBloc({required this.collectionPokemonRepository})
     : super(CollectionPokemonCardInitial()) {
     on<CollectionPokemonGetCardEvent>(_onCollectionPokemonGetCardEvent);
+    on<CollectionPokemonGetCardsByIdsEvent>(
+      _onCollectionPokemonGetCardsByIdsEvent,
+    );
   }
 
   Future<void> _onCollectionPokemonGetCardEvent(
@@ -25,6 +28,20 @@ class CollectionPokemonCardBloc
         id: event.cardId,
       );
       emit(CollectionPokemonCardsGet(card: card));
+    } catch (e) {
+      emit(CollectionPokemonCardError(message: e.toString()));
+    }
+  }
+
+  Future<void> _onCollectionPokemonGetCardsByIdsEvent(
+    CollectionPokemonGetCardsByIdsEvent event,
+    Emitter<CollectionPokemonCardState> emit,
+  ) async {
+    try {
+      emit(CollectionPokemonCardLoading());
+      Map<String, BasePokemonCard> card = await collectionPokemonRepository
+          .getCardByIds(ids: event.cardIds);
+      emit(CollectionPokemonCardsByIdsGet(cards: card));
     } catch (e) {
       emit(CollectionPokemonCardError(message: e.toString()));
     }

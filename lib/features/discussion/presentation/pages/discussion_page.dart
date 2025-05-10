@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
+import 'package:pokedeal/core/widgets/empty_space.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
+import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_card.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
+import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_unavailable_widget.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/pokemon_card_widget.dart';
 import 'package:pokedeal/features/discussion/domain/model/discussion.dart';
 import 'package:pokedeal/features/discussion/domain/model/message.dart';
 import 'package:pokedeal/features/discussion/presentation/bloc/discussion_bloc.dart';
+import 'package:pokedeal/features/discussion/presentation/widgets/message_widget.dart';
+import 'package:pokedeal/features/trade/domain/models/trade.dart';
 
 class DiscussionPage extends StatefulWidget {
-  final String tradeId;
+  final Trade trade;
 
-  const DiscussionPage({super.key, required this.tradeId});
+  const DiscussionPage({super.key, required this.trade});
 
   @override
   State<DiscussionPage> createState() => _DiscussionPageState();
@@ -18,7 +26,9 @@ class DiscussionPage extends StatefulWidget {
 class _DiscussionPageState extends State<DiscussionPage> {
   Discussion? discussion;
   final TextEditingController messageController = TextEditingController();
-  final String senderId = getIt<AuthenticationRepository>().userProfile!.id;
+  final String myId = getIt<AuthenticationRepository>().userProfile!.id;
+  BasePokemonCard? myCard;
+  BasePokemonCard? otherCard;
   bool hasSubscribedToMessages = false;
   bool isMessageLoading = false;
 
@@ -26,7 +36,12 @@ class _DiscussionPageState extends State<DiscussionPage> {
   void initState() {
     super.initState();
     context.read<DiscussionBloc>().add(
-      DiscussionEventGetDiscussionByTradeId(tradeId: widget.tradeId),
+      DiscussionEventGetDiscussionByTradeId(tradeId: widget.trade.id),
+    );
+    context.read<CollectionPokemonCardBloc>().add(
+      CollectionPokemonGetCardsByIdsEvent(
+        cardIds: [widget.trade.senderCardId, widget.trade.receiverCardId],
+      ),
     );
   }
 
@@ -40,7 +55,12 @@ class _DiscussionPageState extends State<DiscussionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          "Echange avec ${widget.trade.receiveId.id == myId ? widget.trade.senderId.pseudo : widget.trade.receiveId.pseudo}",
+          style: const TextStyle(fontSize: 18),
+        ),
+      ),
       body: SafeArea(
         child: BlocConsumer<DiscussionBloc, DiscussionState>(
           listener: (context, state) {
@@ -103,49 +123,35 @@ class _DiscussionPageState extends State<DiscussionPage> {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
-                      final isMine = message.senderId == senderId;
+                      final isMine = message.senderId == myId;
 
                       return Column(
                         children: [
+                          if (index == messages.length - 1)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: buildTradePropose(widget.trade),
+                            ),
                           Align(
                             alignment:
                                 isMine
                                     ? Alignment.centerRight
                                     : Alignment.centerLeft,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                              margin: const EdgeInsets.symmetric(vertical: 4),
-                              decoration: BoxDecoration(
-                                color:
-                                    isMine
-                                        ? Colors.blue[100]
-                                        : Colors.grey[300],
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(message.content),
-                            ),
+                            child: MessageWidget(message: message),
                           ),
                           if (isMessageLoading &&
                               message.id == messages.first.id)
                             Align(
                               alignment: Alignment.centerRight,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 8,
-                                ),
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue[100],
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                              child: MessageWidget(
+                                message: message,
                                 child: SizedBox(
-                                  height: 16,
                                   width: 16,
-                                  child: CircularProgressIndicator(),
+                                  height: 16,
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
                                 ),
                               ),
                             ),
@@ -186,7 +192,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
         message: Message(
           id: '',
           discussionId: discussion!.id,
-          senderId: senderId,
+          senderId: myId,
           content: content,
           sendAt: DateTime.now(),
           type: MessageType.normal,
@@ -203,5 +209,109 @@ class _DiscussionPageState extends State<DiscussionPage> {
         discussion?.messages.insert(0, message);
       }
     });
+  }
+
+  Widget buildTradePropose(Trade trade) {
+    return BlocBuilder<CollectionPokemonCardBloc, CollectionPokemonCardState>(
+      builder: (context, state) {
+        if (state is CollectionPokemonCardsByIdsGet) {
+          myCard =
+              trade.senderId.id == myId
+                  ? state.cards[trade.senderCardId]
+                  : state.cards[trade.receiverCardId];
+          otherCard =
+              trade.senderId.id == myId
+                  ? state.cards[trade.receiverCardId]
+                  : state.cards[trade.senderCardId];
+        }
+
+        return Container(
+          padding: const EdgeInsets.all(8),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.tertiaryContainer,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Proposition d\'échange',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              16.height,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  16.width,
+                  Column(
+                    children: [
+                      Text(
+                        "Vous recevez",
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      8.height,
+                      state is CollectionPokemonCardLoading
+                          ? CircularProgressIndicator()
+                          : buildCardDisplay(
+                            otherCard,
+                            trade.senderId.id == myId
+                                ? trade.receiverCardVariant
+                                : trade.senderCardVariant,
+                          ),
+                    ],
+                  ),
+                  Icon(Icons.compare_arrows),
+                  Column(
+                    children: [
+                      Text(
+                        "Vous donnez",
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      8.height,
+                      state is CollectionPokemonCardLoading
+                          ? CircularProgressIndicator()
+                          : buildCardDisplay(
+                            myCard,
+                            trade.senderId.id == myId
+                                ? trade.senderCardVariant
+                                : trade.receiverCardVariant,
+                          ),
+                    ],
+                  ),
+                  16.width,
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildCardDisplay(BasePokemonCard? card, VariantValue variant) {
+    if (card == null) {
+      return const SizedBox(height: 208 / 2, width: 151 / 2);
+    }
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 208 / 2,
+          width: 151 / 2,
+          child:
+              card.image != null
+                  ? PokemonCardWidget(cardUrl: card.image!)
+                  : PokemonCardUnavailableWidget(
+                    card: card.toBrief(),
+                    totalCard: card.setBrief.cardCount.total,
+                  ),
+        ),
+        8.height,
+        Text(card.name),
+        Text(variant.getFullName),
+        Text(card.setBrief.name, style: const TextStyle(fontSize: 10)),
+      ],
+    );
   }
 }

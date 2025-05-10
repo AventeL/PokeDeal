@@ -26,3 +26,12 @@ final class CollectionPokemonCardsGet extends CollectionPokemonCardState {
   @override
   List<Object?> get props => [card];
 }
+
+final class CollectionPokemonCardsByIdsGet extends CollectionPokemonCardState {
+  final Map<String, BasePokemonCard> cards;
+
+  CollectionPokemonCardsByIdsGet({required this.cards});
+
+  @override
+  List<Object?> get props => [cards];
+}

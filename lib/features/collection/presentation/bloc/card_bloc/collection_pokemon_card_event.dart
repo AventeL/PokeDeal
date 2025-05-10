@@ -7,3 +7,10 @@ final class CollectionPokemonGetCardEvent extends CollectionPokemonCardEvent {
 
   CollectionPokemonGetCardEvent({required this.cardId});
 }
+
+final class CollectionPokemonGetCardsByIdsEvent
+    extends CollectionPokemonCardEvent {
+  final List<String> cardIds;
+
+  CollectionPokemonGetCardsByIdsEvent({required this.cardIds});
+}
