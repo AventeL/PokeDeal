@@ -12,7 +12,10 @@ import 'package:pokedeal/features/discussion/domain/model/discussion.dart';
 import 'package:pokedeal/features/discussion/domain/model/message.dart';
 import 'package:pokedeal/features/discussion/presentation/bloc/discussion_bloc.dart';
 import 'package:pokedeal/features/discussion/presentation/widgets/message_widget.dart';
+import 'package:pokedeal/features/trade/domain/models/enum/trade_status.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
+import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
+import 'package:pokedeal/shared/widgets/custom_large_button.dart';
 
 class DiscussionPage extends StatefulWidget {
   final Trade trade;
@@ -119,7 +122,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
                   ? const Center(child: Text('Aucun message.'))
                   : ListView.builder(
                     reverse: true,
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(16),
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
@@ -160,25 +163,8 @@ class _DiscussionPageState extends State<DiscussionPage> {
                     },
                   ),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-          color: Colors.black.withValues(alpha: 0.5),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: messageController,
-                  decoration: const InputDecoration(
-                    hintText: 'Écrire un message...',
-                    border: InputBorder.none,
-                  ),
-                  onSubmitted: (_) => _sendMessage(),
-                ),
-              ),
-              IconButton(icon: const Icon(Icons.send), onPressed: _sendMessage),
-            ],
-          ),
-        ),
+
+        buildTextField(),
       ],
     );
   }
@@ -282,6 +268,44 @@ class _DiscussionPageState extends State<DiscussionPage> {
                   16.width,
                 ],
               ),
+              16.height,
+              BlocBuilder<TradeBloc, TradeState>(
+                builder: (context, state) {
+                  if (state is TradeStateLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return Row(
+                    children: [
+                      if (widget.trade.status == TradeStatus.accepted)
+                        Flexible(child: buildTradeAcceptedInfo()),
+                      if (widget.trade.status == TradeStatus.refused)
+                        Flexible(child: buildTradeRefusedInfo()),
+                      if (widget.trade.status == TradeStatus.waiting) ...[
+                        Flexible(
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text("Refuser"),
+                            ),
+                          ),
+                        ),
+                        16.width,
+                        Flexible(
+                          child: CustomLargeButton(
+                            label: "Accepter",
+                            onPressed: () {
+                              context.read<TradeBloc>().add(
+                                TradeEventAcceptTrade(tradeId: trade.id),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ],
+                  );
+                },
+              ),
             ],
           ),
         );
@@ -312,6 +336,84 @@ class _DiscussionPageState extends State<DiscussionPage> {
         Text(variant.getFullName),
         Text(card.setBrief.name, style: const TextStyle(fontSize: 10)),
       ],
+    );
+  }
+
+  Widget buildTextField() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      color: Colors.black.withValues(alpha: 0.5),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: messageController,
+              decoration: const InputDecoration(
+                hintText: 'Écrire un message...',
+                border: InputBorder.none,
+              ),
+              onSubmitted: (_) => _sendMessage(),
+            ),
+          ),
+          IconButton(icon: const Icon(Icons.send), onPressed: _sendMessage),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTradeAcceptedInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.green.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Échange accepté',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            16.height,
+            Text(
+              'Vous avez accepté l\'échange avec ${widget.trade.receiveId.id == myId ? widget.trade.senderId.pseudo : widget.trade.receiveId.pseudo}',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildTradeRefusedInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.red.withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Échange refusé',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            16.height,
+            Text(
+              'Vous avez refusé l\'échange avec ${widget.trade.receiveId.id == myId ? widget.trade.senderId.pseudo : widget.trade.receiveId.pseudo}',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

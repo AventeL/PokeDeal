@@ -17,3 +17,15 @@ final class TradeEventAskTrade extends TradeEvent {
     required this.otherTradeRequestData,
   });
 }
+
+final class TradeEventAcceptTrade extends TradeEvent {
+  final String tradeId;
+
+  TradeEventAcceptTrade({required this.tradeId});
+}
+
+final class TradeEventRefuseTrade extends TradeEvent {
+  final String tradeId;
+
+  TradeEventRefuseTrade({required this.tradeId});
+}

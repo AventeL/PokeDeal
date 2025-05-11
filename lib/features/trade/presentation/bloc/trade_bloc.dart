@@ -17,6 +17,8 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     on<TradeEventGetSendTrade>(_onTradeEventGetSendTrade);
     on<TradeEventGetReceivedTrade>(_onTradeEventGetReceivedTrade);
     on<TradeEventAskTrade>(_onTradeEventAskTrade);
+    on<TradeEventAcceptTrade>(_onTradeEventAcceptTrade);
+    on<TradeEventRefuseTrade>(_onTradeEventRefuseTrade);
   }
 
   Future<void> _onTradeEventGetAllUsers(
@@ -67,6 +69,32 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
         otherTradeRequestData: event.otherTradeRequestData,
       );
       emit(TradeStateAskTradeSuccess());
+    } catch (e) {
+      emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
+    }
+  }
+
+  Future<void> _onTradeEventAcceptTrade(
+    TradeEventAcceptTrade event,
+    Emitter<TradeState> emit,
+  ) async {
+    try {
+      emit(TradeStateLoading());
+      await tradeRepository.acceptTrade(tradeId: event.tradeId);
+      emit(TradeStateAcceptTradeSuccess());
+    } catch (e) {
+      emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
+    }
+  }
+
+  Future<void> _onTradeEventRefuseTrade(
+    TradeEventRefuseTrade event,
+    Emitter<TradeState> emit,
+  ) async {
+    try {
+      emit(TradeStateLoading());
+      await tradeRepository.refuseTrade(tradeId: event.tradeId);
+      emit(TradeStateRefuseTradeSuccess());
     } catch (e) {
       emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
     }

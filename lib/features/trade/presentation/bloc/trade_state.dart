@@ -49,3 +49,7 @@ final class TradeStateReceivedTradesLoaded extends TradeState {
 }
 
 final class TradeStateAskTradeSuccess extends TradeState {}
+
+final class TradeStateAcceptTradeSuccess extends TradeState {}
+
+final class TradeStateRefuseTradeSuccess extends TradeState {}

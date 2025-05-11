@@ -34,4 +34,12 @@ class TradeRepository {
       otherTradeRequestData: otherTradeRequestData,
     );
   }
+
+  Future<void> acceptTrade({required String tradeId}) async {
+    await tradeDataSource.acceptTrade(tradeId: tradeId);
+  }
+
+  Future<void> refuseTrade({required String tradeId}) async {
+    await tradeDataSource.refuseTrade(tradeId: tradeId);
+  }
 }

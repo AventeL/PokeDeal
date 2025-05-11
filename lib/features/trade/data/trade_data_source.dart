@@ -126,4 +126,20 @@ class TradeDataSource implements ITradeDataSource {
       },
     );
   }
+
+  @override
+  Future<void> acceptTrade({required String tradeId}) async {
+    await supabaseClient
+        .from('exchanges')
+        .update({'status': 'success'})
+        .eq('id', tradeId);
+  }
+
+  @override
+  Future<void> refuseTrade({required String tradeId}) async {
+    await supabaseClient
+        .from('exchanges')
+        .update({'status': 'refused'})
+        .eq('id', tradeId);
+  }
 }

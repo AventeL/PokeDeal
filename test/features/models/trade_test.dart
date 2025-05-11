@@ -56,7 +56,7 @@ void main() {
         'pseudo': 'Receiver',
         'created_at': now.toIso8601String(),
       },
-      'status': 'En attente',
+      'status': 'waiting',
       'timestamp': now.toIso8601String(),
     });
 
