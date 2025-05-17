@@ -119,7 +119,17 @@ class _DiscussionPageState extends State<DiscussionPage> {
         Expanded(
           child:
               messages.isEmpty
-                  ? const Center(child: Text('Aucun message.'))
+                  ? Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        buildTradePropose(widget.trade),
+                        16.height,
+                        const Text('Aucun message dans cette discussion.'),
+                      ],
+                    ),
+                  )
                   : ListView.builder(
                     reverse: true,
                     padding: const EdgeInsets.all(16),
