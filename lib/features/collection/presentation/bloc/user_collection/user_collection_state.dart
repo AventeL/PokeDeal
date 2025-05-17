@@ -58,3 +58,13 @@ final class UserCollectionAllLoaded extends UserCollectionState {
 }
 
 final class UserCollectionStateCardAdded extends UserCollectionState {}
+
+final class UserCollectionStateCardDeleted extends UserCollectionState {
+  final String cardId;
+  final String userId;
+
+  UserCollectionStateCardDeleted({required this.cardId, required this.userId});
+
+  @override
+  List<Object?> get props => [cardId, userId];
+}

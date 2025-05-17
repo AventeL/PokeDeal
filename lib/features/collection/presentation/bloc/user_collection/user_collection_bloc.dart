@@ -22,6 +22,7 @@ class UserCollectionBloc
     on<UserCollectionLoadCardEvent>(onUserCollectionLoadCardEvent);
     on<UserCollectionAddCardEvent>(onUserCollectionAddCardEvent);
     on<UserCollectionLoadAllEvent>(onUserCollectionLoadAllEvent);
+    on<UserCollectionDeleteCardEvent>(onUserCollectionDeleteCardEvent);
   }
 
   Future<void> onUserCollectionLoadSetEvent(
@@ -106,6 +107,37 @@ class UserCollectionBloc
           listOfCards: listOfCards,
         ),
       );
+    } catch (e) {
+      emit(UserCollectionError(message: e.toString()));
+    }
+  }
+
+  Future<void> onUserCollectionDeleteCardEvent(
+    UserCollectionDeleteCardEvent event,
+    Emitter<UserCollectionState> emit,
+  ) async {
+    emit(UserCollectionLoading());
+    try {
+      await collectionPokemonRepository.deleteCardFromUserCollection(
+        id: event.pokemonCardId,
+        quantity: event.quantity,
+        variant: event.variant,
+        setId: event.setId,
+      );
+      emit(
+        UserCollectionStateCardDeleted(
+          cardId: event.pokemonCardId,
+          userId: event.setId,
+        ),
+      );
+      if (event.needRefresh) {
+        add(
+          UserCollectionLoadCardEvent(
+            userId: getIt<AuthenticationRepository>().userProfile!.id,
+            cardId: event.pokemonCardId,
+          ),
+        );
+      }
     } catch (e) {
       emit(UserCollectionError(message: e.toString()));
     }
