@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/trade/domain/models/enum/trade_status.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/trade_card_widget.dart';
@@ -25,6 +26,10 @@ void main() {
         ),
         status: TradeStatus.waiting,
         timestamp: DateTime.now(),
+        senderCardId: 'senderCardId',
+        receiverCardId: 'receiverCardId',
+        senderCardVariant: VariantValue.normal,
+        receiverCardVariant: VariantValue.holo,
       );
 
       await tester.pumpWidget(
@@ -63,6 +68,10 @@ void main() {
       ),
       status: TradeStatus.waiting,
       timestamp: DateTime.now(),
+      senderCardId: 'senderCardId',
+      receiverCardId: 'receiverCardId',
+      senderCardVariant: VariantValue.normal,
+      receiverCardVariant: VariantValue.holo,
     );
 
     await tester.pumpWidget(

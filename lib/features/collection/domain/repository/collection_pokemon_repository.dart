@@ -166,6 +166,16 @@ class CollectionPokemonRepository {
     return cards;
   }
 
+  Future<Map<String, BasePokemonCard>> getCardByIds({
+    required List<String> ids,
+  }) async {
+    Map<String, BasePokemonCard> cards = {};
+    for (var id in ids) {
+      cards[id] = await getCard(id: id);
+    }
+    return cards;
+  }
+  
   Future<void> deleteCardFromUserCollection({
     required String id,
     required int quantity,

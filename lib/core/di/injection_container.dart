@@ -10,6 +10,10 @@ import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collect
 import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
+import 'package:pokedeal/features/discussion/data/discussion_data_source.dart';
+import 'package:pokedeal/features/discussion/data/discussion_data_source_interface.dart';
+import 'package:pokedeal/features/discussion/domain/repository/discussion_repository.dart';
+import 'package:pokedeal/features/discussion/presentation/bloc/discussion_bloc.dart';
 import 'package:pokedeal/features/profile/data/profile_data_source.dart';
 import 'package:pokedeal/features/profile/data/profile_data_source_interface.dart';
 import 'package:pokedeal/features/profile/domain/repository/profile_repository.dart';
@@ -63,6 +67,9 @@ void initBloc() {
       collectionPokemonRepository: getIt<CollectionPokemonRepository>(),
     ),
   );
+  getIt.registerFactory<DiscussionBloc>(
+    () => DiscussionBloc(discussionRepository: getIt<DiscussionRepository>()),
+  );
 }
 
 void initRepository() {
@@ -82,6 +89,11 @@ void initRepository() {
   getIt.registerLazySingleton<ProfileRepository>(
     () => ProfileRepository(profileDataSource: getIt<IProfileDataSource>()),
   );
+  getIt.registerLazySingleton<DiscussionRepository>(
+    () => DiscussionRepository(
+      discussionDataSource: getIt<IDiscussionDataSource>(),
+    ),
+  );
 }
 
 void initDataSource() {
@@ -95,6 +107,9 @@ void initDataSource() {
     () => TradeDataSource(supabaseClient: supabaseClient),
   );
   getIt.registerLazySingleton<IProfileDataSource>(() => ProfileDataSource());
+  getIt.registerLazySingleton<IDiscussionDataSource>(
+    () => DiscussionDataSource(),
+  );
 }
 
 void initExternal() {}

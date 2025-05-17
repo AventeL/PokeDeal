@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pokedeal/features/trade/domain/models/trade.dart';
 import 'package:pokedeal/features/trade/presentation/widgets/trade_card_widget.dart';
 
 import '../bloc/trade_bloc.dart';
@@ -50,7 +52,7 @@ class _TradeListWidgetState extends State<TradeListWidget> {
                   child: TradeCardRequestWidget(
                     isTradeReceived:
                         state is TradeStateReceivedTradesLoaded ? true : false,
-                    onTap: onTradeCardWidgetTap,
+                    onTap: () => onTradeCardWidgetTap(trade[index]),
                     trade: trade[index],
                   ),
                 );
@@ -69,7 +71,7 @@ class _TradeListWidgetState extends State<TradeListWidget> {
     );
   }
 
-  void onTradeCardWidgetTap() {
-    //@todo
+  void onTradeCardWidgetTap(Trade trade) {
+    context.push('/discussion', extra: {'trade': trade});
   }
 }

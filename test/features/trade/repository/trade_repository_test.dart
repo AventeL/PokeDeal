@@ -59,6 +59,10 @@ void main() {
         ),
         status: TradeStatus.waiting,
         timestamp: DateTime.now(),
+        senderCardId: 'senderCardId',
+        receiverCardId: 'receiverCardId',
+        senderCardVariant: VariantValue.normal,
+        receiverCardVariant: VariantValue.holo,
       ),
     ];
     final mockTradesSend = [
@@ -78,6 +82,10 @@ void main() {
         ),
         status: TradeStatus.waiting,
         timestamp: DateTime.now(),
+        senderCardId: 'senderCardId',
+        receiverCardId: 'receiverCardId',
+        senderCardVariant: VariantValue.normal,
+        receiverCardVariant: VariantValue.holo,
       ),
     ];
 

@@ -65,6 +65,14 @@ class TradeDataSource implements ITradeDataSource {
             receiveId: UserProfile.fromJson(trade['receiver']),
             status: TradeStatusExtension.fromString(trade['status'] as String),
             timestamp: DateTime.parse(trade['created_at'] as String),
+            senderCardId: trade['sender_card_id'] as String,
+            receiverCardId: trade['receiver_card_id'] as String,
+            senderCardVariant: VariantValueExtension.fromJson(
+              trade['sender_card_variant'] as String,
+            ),
+            receiverCardVariant: VariantValueExtension.fromJson(
+              trade['receiver_card_variant'] as String,
+            ),
           );
         }).toList();
 
@@ -86,6 +94,14 @@ class TradeDataSource implements ITradeDataSource {
             receiveId: UserProfile.fromJson(trade['receiver']),
             status: TradeStatusExtension.fromString(trade['status'] as String),
             timestamp: DateTime.parse(trade['created_at'] as String),
+            senderCardId: trade['sender_card_id'] as String,
+            receiverCardId: trade['receiver_card_id'] as String,
+            senderCardVariant: VariantValueExtension.fromJson(
+              trade['sender_card_variant'] as String,
+            ),
+            receiverCardVariant: VariantValueExtension.fromJson(
+              trade['receiver_card_variant'] as String,
+            ),
           );
         }).toList();
 
@@ -109,5 +125,21 @@ class TradeDataSource implements ITradeDataSource {
             otherTradeRequestData.variantValue?.getFullName,
       },
     );
+  }
+
+  @override
+  Future<void> acceptTrade({required String tradeId}) async {
+    await supabaseClient
+        .from('exchanges')
+        .update({'status': 'success'})
+        .eq('id', tradeId);
+  }
+
+  @override
+  Future<void> refuseTrade({required String tradeId}) async {
+    await supabaseClient
+        .from('exchanges')
+        .update({'status': 'refused'})
+        .eq('id', tradeId);
   }
 }

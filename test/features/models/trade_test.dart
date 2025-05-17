@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart'
+    show VariantValue;
 import 'package:pokedeal/features/trade/domain/models/enum/trade_status.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
 
@@ -25,6 +27,10 @@ void main() {
       receiveId: receiver,
       status: TradeStatus.waiting,
       timestamp: now,
+      senderCardId: 'senderCardId',
+      receiverCardId: 'receiverCardId',
+      senderCardVariant: VariantValue.normal,
+      receiverCardVariant: VariantValue.holo,
     );
 
     expect(trade.id, 'tradeId');
@@ -50,8 +56,12 @@ void main() {
         'pseudo': 'Receiver',
         'created_at': now.toIso8601String(),
       },
-      'status': 'En attente',
+      'status': 'waiting',
       'timestamp': now.toIso8601String(),
+      'sender_card_id': 'senderCardId',
+      'receiver_card_id': 'receiverCardId',
+      'sender_card_variant': 'Normal',
+      'receiver_card_variant': 'Holo',
     });
 
     expect(trade.id, 'tradeId');

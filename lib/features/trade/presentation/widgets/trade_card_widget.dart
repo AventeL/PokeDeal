@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedeal/features/trade/domain/models/enum/trade_status.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
 
 class TradeCardRequestWidget extends StatelessWidget {
@@ -24,11 +25,9 @@ class TradeCardRequestWidget extends StatelessWidget {
       borderRadius: borderRadius,
       child: InkWell(
         onTap: onTap,
+        borderRadius: borderRadius,
         child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-            borderRadius: borderRadius,
-          ),
+          decoration: BoxDecoration(borderRadius: borderRadius),
           padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -57,11 +56,23 @@ class TradeCardRequestWidget extends StatelessWidget {
                 ),
                 Spacer(),
                 if (isNew) Icon(Icons.circle, color: Colors.orange, size: 10),
+                buildStatusIcon(),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget buildStatusIcon() {
+    if (trade.status == TradeStatus.waiting) {
+      return Icon(Icons.pending, color: Colors.orange);
+    } else if (trade.status == TradeStatus.accepted) {
+      return Icon(Icons.check_circle, color: Colors.green);
+    } else if (trade.status == TradeStatus.refused) {
+      return Icon(Icons.cancel, color: Colors.red);
+    }
+    return SizedBox.shrink();
   }
 }
