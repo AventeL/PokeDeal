@@ -310,5 +310,87 @@ void main() {
         ).called(1);
       },
     );
+
+    blocTest<UserCollectionBloc, UserCollectionState>(
+      'emits [UserCollectionLoading, UserCollectionStateCardDeleted] when UserCollectionDeleteCardEvent is added and successful',
+      build: () {
+        when(
+          collectionPokemonRepository.deleteCardFromUserCollection(
+            id: 'cardId',
+            quantity: 1,
+            variant: VariantValue.normal,
+            setId: 'setId',
+          ),
+        ).thenAnswer((_) async {});
+        return userCollectionBloc;
+      },
+      act: (bloc) {
+        bloc.add(
+          UserCollectionDeleteCardEvent(
+            pokemonCardId: 'cardId',
+            quantity: 1,
+            variant: VariantValue.normal,
+            setId: 'setId',
+          ),
+        );
+      },
+      expect:
+          () => [
+            UserCollectionLoading(),
+            UserCollectionStateCardDeleted(cardId: 'cardId', userId: 'setId'),
+            UserCollectionLoading(),
+            UserCollectionCardLoaded(userCardsCollection: []),
+          ],
+      verify: (bloc) {
+        verify(
+          collectionPokemonRepository.deleteCardFromUserCollection(
+            id: 'cardId',
+            quantity: 1,
+            variant: VariantValue.normal,
+            setId: 'setId',
+          ),
+        ).called(1);
+      },
+    );
+
+    blocTest<UserCollectionBloc, UserCollectionState>(
+      'emits [UserCollectionLoading, UserCollectionError] when UserCollectionDeleteCardEvent fails',
+      build: () {
+        when(
+          collectionPokemonRepository.deleteCardFromUserCollection(
+            id: 'cardId',
+            quantity: 1,
+            variant: VariantValue.normal,
+            setId: 'setId',
+          ),
+        ).thenThrow(Exception('Failed to delete card'));
+        return userCollectionBloc;
+      },
+      act: (bloc) {
+        bloc.add(
+          UserCollectionDeleteCardEvent(
+            pokemonCardId: 'cardId',
+            quantity: 1,
+            variant: VariantValue.normal,
+            setId: 'setId',
+          ),
+        );
+      },
+      expect:
+          () => [
+            UserCollectionLoading(),
+            UserCollectionError(message: 'Exception: Failed to delete card'),
+          ],
+      verify: (bloc) {
+        verify(
+          collectionPokemonRepository.deleteCardFromUserCollection(
+            id: 'cardId',
+            quantity: 1,
+            variant: VariantValue.normal,
+            setId: 'setId',
+          ),
+        ).called(1);
+      },
+    );
   });
 }

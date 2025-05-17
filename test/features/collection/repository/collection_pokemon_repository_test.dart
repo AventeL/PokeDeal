@@ -319,7 +319,32 @@ void main() {
         ),
       ).called(1);
     });
+    test('deleteCardFromUserCollection supprime une carte', () async {
+      when(
+        dataSource.deleteCardFromUserCollection(
+          id: 'cardId',
+          quantity: 1,
+          variant: VariantValue.normal,
+          setId: 'setId',
+        ),
+      ).thenAnswer((_) async {});
 
+      await repository.deleteCardFromUserCollection(
+        id: 'cardId',
+        quantity: 1,
+        variant: VariantValue.normal,
+        setId: 'setId',
+      );
+
+      verify(
+        dataSource.deleteCardFromUserCollection(
+          id: 'cardId',
+          quantity: 1,
+          variant: VariantValue.normal,
+          setId: 'setId',
+        ),
+      ).called(1);
+    });
     test(
       'removes existing card if already in the collection and adds the new one',
       () async {
