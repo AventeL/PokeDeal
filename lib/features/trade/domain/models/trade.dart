@@ -24,7 +24,7 @@ class Trade {
       receiveId: UserProfile.fromJson(
         json['receive_id'] as Map<String, dynamic>,
       ),
-      status: json['status'] as TradeStatus,
+      status: TradeStatusExtension.fromString(json['status'] as String),
       timestamp: DateTime.parse(json['timestamp'] as String),
     );
   }

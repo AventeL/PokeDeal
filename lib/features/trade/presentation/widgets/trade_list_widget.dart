@@ -40,6 +40,7 @@ class _TradeListWidgetState extends State<TradeListWidget> {
                 state is TradeStateReceivedTradesLoaded
                     ? state.trades
                     : (state as TradeStateSendTradesLoaded).trades;
+
             return ListView.builder(
               padding: EdgeInsets.zero,
               itemCount: trade.length,

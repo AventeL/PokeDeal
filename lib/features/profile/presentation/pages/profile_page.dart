@@ -8,6 +8,7 @@ import 'package:pokedeal/features/authentication/domain/models/user_profile.dart
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/widgets/user_collection_widget.dart';
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 import 'package:pokedeal/shared/widgets/custom_large_button.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -88,6 +89,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     24.height,
+                    if (state.userProfile.id !=
+                        getIt<AuthenticationRepository>().userProfile!.id)
+                      _buildAskTradeButton(),
+                    8.height,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -103,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (state.userProfile.id ==
                         getIt<AuthenticationRepository>().userProfile!.id)
                       CustomLargeButton(
-                        onPressed: () => {context.push("/modify_profil")},
+                        onPressed: () => {context.push("/modify_profile")},
                         label: "Modifier",
                       ),
                   ],
@@ -131,6 +136,21 @@ class _ProfilePageState extends State<ProfilePage> {
           ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w300),
         ),
       ],
+    );
+  }
+
+
+  Widget _buildAskTradeButton() {
+    return ElevatedButton(
+      child: Text("Proposer un échange"),
+      onPressed: () {
+        context.push(
+          "/trade_request",
+          extra: {
+            "otherUserTradeRequest": TradeRequestData(userId: widget.userId!),
+          },
+        );
+      },
     );
   }
 

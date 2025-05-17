@@ -5,6 +5,7 @@ class CustomLargeButton extends StatelessWidget {
   final String label;
   final Color? bgColor;
   final Color? textColor;
+  final bool isActive;
 
   const CustomLargeButton({
     super.key,
@@ -12,6 +13,7 @@ class CustomLargeButton extends StatelessWidget {
     required this.label,
     this.bgColor,
     this.textColor,
+    this.isActive = true,
   });
 
   @override
@@ -19,9 +21,12 @@ class CustomLargeButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: isActive ? () => onPressed() : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: bgColor ?? Theme.of(context).colorScheme.primary,
+          backgroundColor:
+              isActive
+                  ? bgColor ?? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).disabledColor,
           foregroundColor: textColor ?? Theme.of(context).colorScheme.onPrimary,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart';
 
 import '../../domain/models/trade.dart';
 import '../../domain/models/user_stats.dart';
@@ -15,6 +16,7 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     on<TradeEventGetAllUsers>(_onTradeEventGetAllUsers);
     on<TradeEventGetSendTrade>(_onTradeEventGetSendTrade);
     on<TradeEventGetReceivedTrade>(_onTradeEventGetReceivedTrade);
+    on<TradeEventAskTrade>(_onTradeEventAskTrade);
   }
 
   Future<void> _onTradeEventGetAllUsers(
@@ -23,8 +25,8 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
   ) async {
     try {
       emit(TradeStateSuccessGetAllUsers());
-      final users = tradeRepository.getAllUser();
-      emit(TradeStateUsersLoaded(users: await users));
+      final users = await tradeRepository.getAllUser();
+      emit(TradeStateUsersLoaded(users: users));
     } catch (e) {
       emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
     }
@@ -35,8 +37,8 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     Emitter<TradeState> emit,
   ) async {
     try {
-      final trades = tradeRepository.getSendTrade();
-      emit(TradeStateSendTradesLoaded(trades: await trades));
+      final trades = await tradeRepository.getSendTrade();
+      emit(TradeStateSendTradesLoaded(trades: trades));
     } catch (e) {
       emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
     }
@@ -47,8 +49,24 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     Emitter<TradeState> emit,
   ) async {
     try {
-      final trades = tradeRepository.getReceivedTrade();
-      emit(TradeStateReceivedTradesLoaded(trades: await trades));
+      final trades = await tradeRepository.getReceivedTrade();
+      emit(TradeStateReceivedTradesLoaded(trades: trades));
+    } catch (e) {
+      emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
+    }
+  }
+
+  Future<void> _onTradeEventAskTrade(
+    TradeEventAskTrade event,
+    Emitter<TradeState> emit,
+  ) async {
+    try {
+      emit(TradeStateLoading());
+      await tradeRepository.askTrade(
+        myTradeRequestData: event.myTradeRequestData,
+        otherTradeRequestData: event.otherTradeRequestData,
+      );
+      emit(TradeStateAskTradeSuccess());
     } catch (e) {
       emit(TradeStateError(message: e.toString(), timestamp: DateTime.now()));
     }

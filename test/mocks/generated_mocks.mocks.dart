@@ -48,6 +48,8 @@ import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart'
 import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart'
     as _i19;
 import 'package:pokedeal/features/trade/domain/models/trade.dart' as _i27;
+import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart'
+    as _i28;
 import 'package:pokedeal/features/trade/domain/models/user_stats.dart' as _i26;
 import 'package:pokedeal/features/trade/domain/repository/trade_repository.dart'
     as _i8;
@@ -1477,7 +1479,6 @@ class MockCollectionPokemonRepository extends _i1.Mock
                 ),
           )
           as _i22.Future<List<_i17.BasePokemonCard>>);
-
   @override
   _i22.Future<void> deleteCardFromUserCollection({
     required String? id,
@@ -1496,6 +1497,7 @@ class MockCollectionPokemonRepository extends _i1.Mock
             returnValueForMissingStub: _i22.Future<void>.value(),
           )
           as _i22.Future<void>);
+
 }
 
 /// A class which mocks [TradeRepository].
@@ -1551,6 +1553,21 @@ class MockTradeRepository extends _i1.Mock implements _i8.TradeRepository {
             ),
           )
           as _i22.Future<List<_i27.Trade>>);
+
+  @override
+  _i22.Future<void> askTrade({
+    required _i28.TradeRequestData? myTradeRequestData,
+    required _i28.TradeRequestData? otherTradeRequestData,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#askTrade, [], {
+              #myTradeRequestData: myTradeRequestData,
+              #otherTradeRequestData: otherTradeRequestData,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [ProfileRepository].
@@ -1875,6 +1892,21 @@ class MockITradeDataSource extends _i1.Mock implements _i19.ITradeDataSource {
             ),
           )
           as _i22.Future<List<_i27.Trade>>);
+
+  @override
+  _i22.Future<void> askTrade({
+    required _i28.TradeRequestData? myTradeRequestData,
+    required _i28.TradeRequestData? otherTradeRequestData,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#askTrade, [], {
+              #myTradeRequestData: myTradeRequestData,
+              #otherTradeRequestData: otherTradeRequestData,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [IProfileDataSource].

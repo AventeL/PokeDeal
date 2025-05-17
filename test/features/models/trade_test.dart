@@ -50,7 +50,7 @@ void main() {
         'pseudo': 'Receiver',
         'created_at': now.toIso8601String(),
       },
-      'status': TradeStatus.waiting,
+      'status': 'En attente',
       'timestamp': now.toIso8601String(),
     });
 

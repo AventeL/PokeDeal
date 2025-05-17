@@ -22,9 +22,6 @@ class ProfileDataSource implements IProfileDataSource {
     required UserProfile currentUser,
     required String password,
   }) async {
-    print(
-      'Updating profile for user: ${currentUser.email}, current user: ${currentUser.pseudo}',
-    );
     final authResponse = await Supabase.instance.client.auth.signInWithPassword(
       email: currentUser.email,
       password: password,
@@ -40,6 +37,7 @@ class ProfileDataSource implements IProfileDataSource {
         .eq('id', user.id);
   }
 
+  @override
   Future<void> changePassword({
     required String currentPassword,
     required String newPassword,
