@@ -3,6 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedeal/features/collection/domain/models/card/user_card_collection.dart';
 import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
+import 'package:pokedeal/features/collection/presentation/widgets/sheet_delete_card_to_collection.dart';
+
+import '../../../../core/di/injection_container.dart';
+import '../../../authentication/domain/repository/authentication_repository.dart';
+import '../bloc/card_bloc/collection_pokemon_card_bloc.dart';
 
 class CardCollectionListWidget extends StatefulWidget {
   final String userId;
@@ -76,12 +81,51 @@ class _CardCollectionListWidgetState extends State<CardCollectionListWidget> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(card.variant.getFullName),
-                      Text(card.quantity.toString()),
-                    ],
+                  title: InkWell(
+                    onTap: () {
+                      final collectionPokemonCardState =
+                          context.read<CollectionPokemonCardBloc>().state;
+
+                      final isCurrentUser =
+                          widget.userId ==
+                          getIt<AuthenticationRepository>().userProfile!.id;
+
+                      if (collectionPokemonCardState
+                              is CollectionPokemonCardsGet &&
+                          isCurrentUser) {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return SheetDeleteCardToCollection(
+                              card: collectionPokemonCardState.card,
+                              variant: card.variant,
+                              onConfirm: (quantity, variant) {
+                                context.read<UserCollectionBloc>().add(
+                                  UserCollectionDeleteCardEvent(
+                                    setId:
+                                        collectionPokemonCardState
+                                            .card
+                                            .setBrief
+                                            .id,
+                                    pokemonCardId:
+                                        collectionPokemonCardState.card.id,
+                                    quantity: quantity,
+                                    variant: variant,
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(card.variant.getFullName),
+                        Text(card.quantity.toString()),
+                      ],
+                    ),
                   ),
                 ),
               );

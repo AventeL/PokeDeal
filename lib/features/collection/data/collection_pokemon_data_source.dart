@@ -112,4 +112,24 @@ class CollectionPokemonDataSource implements ICollectionPokemonDataSource {
 
     return UserCardCollection.fromJson(response);
   }
+
+  @override
+  Future<void> deleteCardFromUserCollection({
+    required String id,
+    required int quantity,
+    required VariantValue variant,
+    required String setId,
+  }) async {
+    await supabaseClient
+        .rpc(
+          'decrement_card',
+          params: {
+            'p_card_id': id,
+            'p_quantity': quantity,
+            'p_variant': variant.getFullName,
+            'p_set_id': setId,
+          },
+        )
+        .single();
+  }
 }
