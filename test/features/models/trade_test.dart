@@ -58,6 +58,10 @@ void main() {
       },
       'status': 'waiting',
       'timestamp': now.toIso8601String(),
+      'sender_card_id': 'senderCardId',
+      'receiver_card_id': 'receiverCardId',
+      'sender_card_variant': 'Normal',
+      'receiver_card_variant': 'Holo',
     });
 
     expect(trade.id, 'tradeId');
