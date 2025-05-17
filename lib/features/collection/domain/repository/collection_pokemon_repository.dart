@@ -175,4 +175,18 @@ class CollectionPokemonRepository {
     }
     return cards;
   }
+  
+  Future<void> deleteCardFromUserCollection({
+    required String id,
+    required int quantity,
+    required VariantValue variant,
+    required String setId,
+  }) async {
+    await collectionPokemonDataSource.deleteCardFromUserCollection(
+      id: id,
+      quantity: quantity,
+      variant: variant,
+      setId: setId,
+    );
+  }
 }

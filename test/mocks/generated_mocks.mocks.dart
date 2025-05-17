@@ -1035,6 +1035,18 @@ class MockUserCollectionBloc extends _i1.Mock
           as _i22.Future<void>);
 
   @override
+  _i22.Future<void> onUserCollectionDeleteCardEvent(
+    _i12.UserCollectionDeleteCardEvent? event,
+    _i23.Emitter<_i12.UserCollectionState>? emit,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#onUserCollectionDeleteCardEvent, [event, emit]),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
+
+  @override
   void add(_i12.UserCollectionEvent? event) => super.noSuchMethod(
     Invocation.method(#add, [event]),
     returnValueForMissingStub: null,
@@ -1467,6 +1479,25 @@ class MockCollectionPokemonRepository extends _i1.Mock
                 ),
           )
           as _i22.Future<List<_i17.BasePokemonCard>>);
+  @override
+  _i22.Future<void> deleteCardFromUserCollection({
+    required String? id,
+    required int? quantity,
+    required _i25.VariantValue? variant,
+    required String? setId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteCardFromUserCollection, [], {
+              #id: id,
+              #quantity: quantity,
+              #variant: variant,
+              #setId: setId,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
+
 }
 
 /// A class which mocks [TradeRepository].
@@ -1802,6 +1833,25 @@ class MockICollectionPokemonDataSource extends _i1.Mock
                 ),
           )
           as _i22.Future<_i18.UserCardCollection>);
+
+  @override
+  _i22.Future<void> deleteCardFromUserCollection({
+    required String? id,
+    required int? quantity,
+    required _i25.VariantValue? variant,
+    required String? setId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteCardFromUserCollection, [], {
+              #id: id,
+              #quantity: quantity,
+              #variant: variant,
+              #setId: setId,
+            }),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
+          )
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [ITradeDataSource].

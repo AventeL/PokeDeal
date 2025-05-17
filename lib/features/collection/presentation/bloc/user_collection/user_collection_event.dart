@@ -37,3 +37,19 @@ class UserCollectionAddCardEvent extends UserCollectionEvent {
     this.needRefresh = true,
   });
 }
+
+class UserCollectionDeleteCardEvent extends UserCollectionEvent {
+  String pokemonCardId;
+  int quantity;
+  VariantValue variant;
+  String setId;
+  bool needRefresh;
+
+  UserCollectionDeleteCardEvent({
+    required this.pokemonCardId,
+    required this.quantity,
+    required this.variant,
+    required this.setId,
+    this.needRefresh = true,
+  });
+}

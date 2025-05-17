@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/core/widgets/empty_space.dart';
+import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/widgets/user_collection_widget.dart';
@@ -102,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     24.height,
-                    if (widget.showCollection) _buildCollectionPart(),
+                    _buildCollectionPart(state.userProfile),
                     32.height,
                     if (state.userProfile.id ==
                         getIt<AuthenticationRepository>().userProfile!.id)
@@ -138,6 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+
   Widget _buildAskTradeButton() {
     return ElevatedButton(
       child: Text("Proposer un échange"),
@@ -152,13 +154,13 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildCollectionPart() {
+  Widget _buildCollectionPart(UserProfile user) {
     return Column(
       children: [
         32.height,
         Text("Collection", style: Theme.of(context).textTheme.headlineMedium),
         8.height,
-        UserCollectionWidget(userId: widget.userId),
+        UserCollectionWidget(userId: user.id),
       ],
     );
   }

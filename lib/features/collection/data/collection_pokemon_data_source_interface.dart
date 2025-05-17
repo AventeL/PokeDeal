@@ -26,4 +26,11 @@ abstract class ICollectionPokemonDataSource {
     required VariantValue variant,
     required String setId,
   });
+
+  Future<void> deleteCardFromUserCollection({
+    required String id,
+    required int quantity,
+    required VariantValue variant,
+    required String setId,
+  });
 }
