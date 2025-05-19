@@ -26,7 +26,7 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     Emitter<TradeState> emit,
   ) async {
     try {
-      emit(TradeStateSuccessGetAllUsers());
+      emit(TradeStateLoading());
       final users = await tradeRepository.getAllUser();
       emit(TradeStateUsersLoaded(users: users));
     } catch (e) {
@@ -39,6 +39,7 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     Emitter<TradeState> emit,
   ) async {
     try {
+      emit(TradeStateLoading());
       final trades = await tradeRepository.getSendTrade();
       emit(TradeStateSendTradesLoaded(trades: trades));
     } catch (e) {

@@ -59,6 +59,7 @@ class _TradeSearchPageState extends State<TradeSearchPage> {
               listener: (context, state) {
                 if (state is TradeStateUsersLoaded) {
                   _allUsers = state.users;
+                  _filterUsers();
                 }
               },
               builder: (context, state) {
