@@ -28,6 +28,7 @@ class DiscussionPage extends StatefulWidget {
 
 class _DiscussionPageState extends State<DiscussionPage> {
   Discussion? discussion;
+  late Trade trade;
   final TextEditingController messageController = TextEditingController();
   final String myId = getIt<AuthenticationRepository>().userProfile!.id;
   BasePokemonCard? myCard;
@@ -38,12 +39,13 @@ class _DiscussionPageState extends State<DiscussionPage> {
   @override
   void initState() {
     super.initState();
+    trade = widget.trade;
     context.read<DiscussionBloc>().add(
-      DiscussionEventGetDiscussionByTradeId(tradeId: widget.trade.id),
+      DiscussionEventGetDiscussionByTradeId(tradeId: trade.id),
     );
     context.read<CollectionPokemonCardBloc>().add(
       CollectionPokemonGetCardsByIdsEvent(
-        cardIds: [widget.trade.senderCardId, widget.trade.receiverCardId],
+        cardIds: [trade.senderCardId, trade.receiverCardId],
       ),
     );
   }
@@ -60,47 +62,64 @@ class _DiscussionPageState extends State<DiscussionPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Echange avec ${widget.trade.receiveId.id == myId ? widget.trade.senderId.pseudo : widget.trade.receiveId.pseudo}",
+          "Echange avec ${trade.receiveId.id == myId ? trade.senderId.pseudo : trade.receiveId.pseudo}",
           style: const TextStyle(fontSize: 18),
         ),
       ),
       body: SafeArea(
-        child: BlocConsumer<DiscussionBloc, DiscussionState>(
+        child: BlocConsumer<TradeBloc, TradeState>(
           listener: (context, state) {
-            isMessageLoading = state is DiscussionStateLoadingMessage;
-
-            if (state is DiscussionStateError) {
+            if (state is TradeStateError) {
               ScaffoldMessenger.of(
                 context,
               ).showSnackBar(SnackBar(content: Text(state.message)));
             }
-            if (state is DiscussionStateDiscussionGet ||
-                state is DiscussionStateMessageSent) {
-              discussion =
-                  state is DiscussionStateDiscussionGet
-                      ? state.discussion
-                      : discussion;
-              if (!hasSubscribedToMessages) {
-                context.read<DiscussionBloc>().add(
-                  DiscussionEventSubscribeToMessages(
-                    discussionId: discussion!.id,
-                  ),
-                );
-                hasSubscribedToMessages = true;
-              }
+            if (state is TradeStateAcceptTradeSuccess) {
+              trade = trade.copyWith(status: TradeStatus.accepted);
+            }
+            if (state is TradeStateRefuseTradeSuccess) {
+              trade = trade.copyWith(status: TradeStatus.refused);
             }
           },
           builder: (context, state) {
-            if (state is DiscussionStateLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+            return BlocConsumer<DiscussionBloc, DiscussionState>(
+              listener: (context, state) {
+                isMessageLoading = state is DiscussionStateLoadingMessage;
 
-            if (state is DiscussionStateDiscussionGet ||
-                state is DiscussionStateLoadingMessage) {
-              return buildBody(discussion);
-            }
+                if (state is DiscussionStateError) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.message)));
+                }
+                if (state is DiscussionStateDiscussionGet ||
+                    state is DiscussionStateMessageSent) {
+                  discussion =
+                      state is DiscussionStateDiscussionGet
+                          ? state.discussion
+                          : discussion;
+                  if (!hasSubscribedToMessages) {
+                    context.read<DiscussionBloc>().add(
+                      DiscussionEventSubscribeToMessages(
+                        discussionId: discussion!.id,
+                      ),
+                    );
+                    hasSubscribedToMessages = true;
+                  }
+                }
+              },
+              builder: (context, state) {
+                if (state is DiscussionStateLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-            return const Center(child: Text('Aucune discussion.'));
+                if (state is DiscussionStateDiscussionGet ||
+                    state is DiscussionStateLoadingMessage) {
+                  return buildBody(discussion);
+                }
+
+                return const Center(child: Text('Aucune discussion.'));
+              },
+            );
           },
         ),
       ),
@@ -124,7 +143,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        buildTradePropose(widget.trade),
+                        buildTradePropose(trade),
                         16.height,
                         const Text('Aucun message dans cette discussion.'),
                       ],
@@ -143,7 +162,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
                           if (index == messages.length - 1)
                             Padding(
                               padding: const EdgeInsets.only(bottom: 16),
-                              child: buildTradePropose(widget.trade),
+                              child: buildTradePropose(trade),
                             ),
                           Align(
                             alignment:
@@ -286,11 +305,14 @@ class _DiscussionPageState extends State<DiscussionPage> {
                   }
                   return Row(
                     children: [
-                      if (widget.trade.status == TradeStatus.accepted)
+                      if (trade.status == TradeStatus.accepted)
                         Flexible(child: buildTradeAcceptedInfo()),
-                      if (widget.trade.status == TradeStatus.refused)
+                      if (trade.status == TradeStatus.refused)
                         Flexible(child: buildTradeRefusedInfo()),
-                      if (widget.trade.status == TradeStatus.waiting) ...[
+                      if (trade.status == TradeStatus.waiting)
+                        Flexible(child: buildTradeWaitingInfo()),
+                      if (trade.status == TradeStatus.waiting ||
+                          trade.senderId.id != myId) ...[
                         Flexible(
                           child: SizedBox(
                             width: double.infinity,
@@ -390,7 +412,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
             ),
             16.height,
             Text(
-              'Vous avez accepté l\'échange avec ${widget.trade.receiveId.id == myId ? widget.trade.senderId.pseudo : widget.trade.receiveId.pseudo}',
+              'Vous avez accepté l\'échange avec ${trade.receiveId.id == myId ? trade.senderId.pseudo : trade.receiveId.pseudo}',
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ],
@@ -418,7 +440,35 @@ class _DiscussionPageState extends State<DiscussionPage> {
             ),
             16.height,
             Text(
-              'Vous avez refusé l\'échange avec ${widget.trade.receiveId.id == myId ? widget.trade.senderId.pseudo : widget.trade.receiveId.pseudo}',
+              'Vous avez refusé l\'échange avec ${trade.receiveId.id == myId ? trade.senderId.pseudo : trade.receiveId.pseudo}',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildTradeWaitingInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.orangeAccent.withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Échange en attente',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            16.height,
+            Text(
+              'Vous devez attendre la réponse de ${trade.receiveId.id == myId ? trade.senderId.pseudo : trade.receiveId.pseudo}',
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ],

@@ -48,7 +48,8 @@ class _ProfilePageState extends State<ProfilePage> {
   void didUpdateWidget(covariant ProfilePage oldWidget) {
     BlocProvider.of<ProfileBloc>(context).add(
       ProfileLoadEvent(
-        userId: getIt<AuthenticationRepository>().userProfile!.id,
+        userId:
+            widget.userId ?? getIt<AuthenticationRepository>().userProfile!.id,
       ),
     );
     super.didUpdateWidget(oldWidget);

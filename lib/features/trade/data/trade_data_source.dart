@@ -131,7 +131,7 @@ class TradeDataSource implements ITradeDataSource {
   Future<void> acceptTrade({required String tradeId}) async {
     await supabaseClient
         .from('exchanges')
-        .update({'status': 'success'})
+        .update({'status': TradeStatus.accepted.toStringForApi})
         .eq('id', tradeId);
   }
 
@@ -139,7 +139,7 @@ class TradeDataSource implements ITradeDataSource {
   Future<void> refuseTrade({required String tradeId}) async {
     await supabaseClient
         .from('exchanges')
-        .update({'status': 'refused'})
+        .update({'status': TradeStatus.refused.toStringForApi})
         .eq('id', tradeId);
   }
 }

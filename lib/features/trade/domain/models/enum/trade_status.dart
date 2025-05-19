@@ -13,4 +13,15 @@ extension TradeStatusExtension on TradeStatus {
         throw ArgumentError('Status invalide: $status');
     }
   }
+
+  String get toStringForApi {
+    switch (this) {
+      case TradeStatus.accepted:
+        return 'accepted';
+      case TradeStatus.refused:
+        return 'refused';
+      case TradeStatus.waiting:
+        return 'waiting';
+    }
+  }
 }

@@ -55,32 +55,34 @@ class _TradeSearchPageState extends State<TradeSearchPage> {
           ),
           4.height,
           Expanded(
-            child: BlocBuilder<TradeBloc, TradeState>(
-              builder: (context, state) {
+            child: BlocConsumer<TradeBloc, TradeState>(
+              listener: (context, state) {
                 if (state is TradeStateUsersLoaded) {
-                  if (_allUsers.isEmpty) {
-                    _allUsers = state.users;
-                    _filteredUsers = _allUsers;
-                  }
-                  return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: _filteredUsers.length,
-                    itemBuilder: (context, index) {
-                      final user = _filteredUsers[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: TradeProfileCardWidget(
-                          userProfile: user,
-                          onTap: () => onProfileTap(user.user.id),
-                        ),
-                      );
-                    },
-                  );
-                } else if (state is TradeStateError) {
+                  _allUsers = state.users;
+                }
+              },
+              builder: (context, state) {
+                if (state is TradeStateError) {
                   return Center(child: Text('Erreur : ${state.message}'));
-                } else {
+                }
+                if (state is TradeStateLoading) {
                   return Center(child: CircularProgressIndicator());
                 }
+
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: _filteredUsers.length,
+                  itemBuilder: (context, index) {
+                    final user = _filteredUsers[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: TradeProfileCardWidget(
+                        userProfile: user,
+                        onTap: () => onProfileTap(user.user.id),
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ),

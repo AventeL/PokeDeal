@@ -18,12 +18,16 @@ class TradeListWidget extends StatefulWidget {
 class _TradeListWidgetState extends State<TradeListWidget> {
   @override
   void initState() {
+    super.initState();
+    loadTrades();
+  }
+
+  void loadTrades() {
     if (widget.tabIndex == 0) {
       context.read<TradeBloc>().add(TradeEventGetReceivedTrade());
     } else {
       context.read<TradeBloc>().add(TradeEventGetSendTrade());
     }
-    super.initState();
   }
 
   @override
@@ -34,7 +38,13 @@ class _TradeListWidgetState extends State<TradeListWidget> {
   Widget _buildTradeList() {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: BlocBuilder<TradeBloc, TradeState>(
+      child: BlocConsumer<TradeBloc, TradeState>(
+        listener: (context, state) {
+          if (state is TradeStateAcceptTradeSuccess ||
+              state is TradeStateRefuseTradeSuccess) {
+            loadTrades();
+          }
+        },
         builder: (context, state) {
           if (state is TradeStateReceivedTradesLoaded ||
               state is TradeStateSendTradesLoaded) {

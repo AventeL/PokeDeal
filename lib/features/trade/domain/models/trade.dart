@@ -45,4 +45,18 @@ class Trade {
       ),
     );
   }
+
+  Trade copyWith({required TradeStatus status}) {
+    return Trade(
+      id: id,
+      senderId: senderId,
+      receiveId: receiveId,
+      status: status,
+      timestamp: timestamp,
+      senderCardId: senderCardId,
+      receiverCardId: receiverCardId,
+      senderCardVariant: senderCardVariant,
+      receiverCardVariant: receiverCardVariant,
+    );
+  }
 }
