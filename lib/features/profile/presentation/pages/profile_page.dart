@@ -45,6 +45,16 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
+  void didUpdateWidget(covariant ProfilePage oldWidget) {
+    BlocProvider.of<ProfileBloc>(context).add(
+      ProfileLoadEvent(
+        userId: getIt<AuthenticationRepository>().userProfile!.id,
+      ),
+    );
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: widget.showBackButton ? AppBar() : null,
@@ -138,7 +148,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ],
     );
   }
-
 
   Widget _buildAskTradeButton() {
     return ElevatedButton(
