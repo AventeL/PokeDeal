@@ -9,8 +9,7 @@
 
 ### Installation via APK
 
-```bash
-- Télécharger l'APK depuis le lien suivant : **https://github.com/AventeL/PokeDeal/releases/tag/v1**
+- Télécharger l'APK depuis le lien suivant : [🔗https://github.com/AventeL/PokeDeal/releases/tag/v1]
 - Activer l’**installation d’applications de sources inconnues** dans les paramètres de sécurité de
   votre appareil Android
 - Installer l’APK manuellement
@@ -18,7 +17,6 @@
 
 💡 *Vous pouvez aussi tester l’APK sur un émulateur (Android Studio) en glissant
 simplement l’APK dans l’interface de l’émulateur.*
-```
 
 ---
 
