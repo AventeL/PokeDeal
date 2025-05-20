@@ -11,3 +11,13 @@ Générer une interface lcov
     Afin de voir le coverage de chaque fichier du projet, il faut lancer 2 commandes :
         1. flutter test --coverage (qui va lancer tout les tests)
         2. genhtml -o coverage coverage/lcov.info (qui va générer le ficher html)
+
+Pour générer que les fichiers dont on veut tester :
+     lcov --remove coverage/lcov.info \
+      'lib/core/di/injection_container.dart' \
+      'lib/core/materialApp/main_material_app.dart' \
+      'lib/core/routes/router.dart' \
+      'lib/core/utils/constants/color_constants.dart' \
+      'lib/theme/*' \
+      '*/data/*' \
+      -o coverage/lcov_filtered.info
