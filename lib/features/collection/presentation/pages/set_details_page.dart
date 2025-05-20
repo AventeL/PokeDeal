@@ -131,7 +131,7 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    '58/100',
+                                    '${getTotalOfUserCards()}/${setWithCards.cards.length}',
                                     style:
                                         Theme.of(context).textTheme.bodyMedium,
                                   ),
@@ -139,7 +139,9 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
                               ),
                               8.height,
                               LinearProgressIndicator(
-                                value: 58 / 100,
+                                value:
+                                    getTotalOfUserCards() /
+                                    setWithCards.cards.length,
                                 backgroundColor: Colors.grey[300],
                                 color: Theme.of(context).colorScheme.primary,
                               ),
@@ -245,5 +247,9 @@ class _SetDetailsPageState extends State<SetDetailsPage> {
             ),
           ),
     );
+  }
+
+  int getTotalOfUserCards() {
+    return userCardsCollection.map((element) => element.cardId).toSet().length;
   }
 }

@@ -11,7 +11,7 @@ class PokemonSetCardWidget extends StatelessWidget {
     super.key,
     required this.set,
     this.onTap,
-    this.displayStats = true,
+    this.displayStats = false,
   });
 
   @override
