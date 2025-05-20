@@ -309,9 +309,10 @@ class _DiscussionPageState extends State<DiscussionPage> {
                         Flexible(child: buildTradeAcceptedInfo()),
                       if (trade.status == TradeStatus.refused)
                         Flexible(child: buildTradeRefusedInfo()),
-                      if (trade.status == TradeStatus.waiting)
+                      if (trade.status == TradeStatus.waiting &&
+                          trade.senderId.id == myId)
                         Flexible(child: buildTradeWaitingInfo()),
-                      if (trade.status == TradeStatus.waiting ||
+                      if (trade.status == TradeStatus.waiting &&
                           trade.senderId.id != myId) ...[
                         Flexible(
                           child: SizedBox(
