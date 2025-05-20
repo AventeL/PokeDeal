@@ -23,6 +23,7 @@ class PokemonCardUnavailableWidget extends StatelessWidget {
     final borderRadius = BorderRadius.circular(8.0);
 
     return Stack(
+      alignment: Alignment.bottomRight,
       children: [
         Material(
           color: Colors.transparent,
@@ -45,18 +46,27 @@ class PokemonCardUnavailableWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      card.name,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleMedium,
+                    FittedBox(
+                      child: Text(
+                        card.name,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                    Text('Image non disponible', textAlign: TextAlign.center),
+                    FittedBox(
+                      child: Text(
+                        'Image non disponible',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Text(
-                        "${card.localId}/$totalCard",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.labelSmall,
+                      child: FittedBox(
+                        child: Text(
+                          "${card.localId}/$totalCard",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
                       ),
                     ),
                   ],
