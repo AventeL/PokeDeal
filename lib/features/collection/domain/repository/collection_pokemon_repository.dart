@@ -175,7 +175,7 @@ class CollectionPokemonRepository {
     }
     return cards;
   }
-  
+
   Future<void> deleteCardFromUserCollection({
     required String id,
     required int quantity,
@@ -188,5 +188,25 @@ class CollectionPokemonRepository {
       variant: variant,
       setId: setId,
     );
+
+    userCardsBySetIdMap[setId]?.removeWhere((card) {
+      if (card.cardId == id && card.variant == variant) {
+        if (card.quantity > quantity) {
+          for (var existingCard in userCardsBySetIdMap[setId]!) {
+            if (existingCard.cardId == card.cardId &&
+                existingCard.variant == card.variant) {
+              userCardsBySetIdMap[setId]![userCardsBySetIdMap[setId]!.indexOf(
+                existingCard,
+              )] = existingCard.copyWith(
+                quantity: existingCard.quantity - quantity,
+              );
+            }
+          }
+          return false;
+        }
+        return true;
+      }
+      return false;
+    });
   }
 }

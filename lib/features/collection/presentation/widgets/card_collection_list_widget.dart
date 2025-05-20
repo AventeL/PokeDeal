@@ -76,50 +76,51 @@ class _CardCollectionListWidgetState extends State<CardCollectionListWidget> {
               final card = userCardsCollection[index];
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: ListTile(
-                  tileColor: Theme.of(context).colorScheme.tertiaryContainer,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  title: InkWell(
-                    onTap: () {
-                      final collectionPokemonCardState =
-                          context.read<CollectionPokemonCardBloc>().state;
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {
+                    final collectionPokemonCardState =
+                        context.read<CollectionPokemonCardBloc>().state;
 
-                      final isCurrentUser =
-                          widget.userId ==
-                          getIt<AuthenticationRepository>().userProfile!.id;
+                    final isCurrentUser =
+                        widget.userId ==
+                        getIt<AuthenticationRepository>().userProfile!.id;
 
-                      if (collectionPokemonCardState
-                              is CollectionPokemonCardsGet &&
-                          isCurrentUser) {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return SheetDeleteCardToCollection(
-                              card: collectionPokemonCardState.card,
-                              variant: card.variant,
-                              onConfirm: (quantity, variant) {
-                                context.read<UserCollectionBloc>().add(
-                                  UserCollectionDeleteCardEvent(
-                                    setId:
-                                        collectionPokemonCardState
-                                            .card
-                                            .setBrief
-                                            .id,
-                                    pokemonCardId:
-                                        collectionPokemonCardState.card.id,
-                                    quantity: quantity,
-                                    variant: variant,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        );
-                      }
-                    },
-                    child: Row(
+                    if (collectionPokemonCardState
+                            is CollectionPokemonCardsGet &&
+                        isCurrentUser) {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return SheetDeleteCardToCollection(
+                            card: collectionPokemonCardState.card,
+                            variant: card.variant,
+                            onConfirm: (quantity, variant) {
+                              context.read<UserCollectionBloc>().add(
+                                UserCollectionDeleteCardEvent(
+                                  setId:
+                                      collectionPokemonCardState
+                                          .card
+                                          .setBrief
+                                          .id,
+                                  pokemonCardId:
+                                      collectionPokemonCardState.card.id,
+                                  quantity: quantity,
+                                  variant: variant,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: ListTile(
+                    tileColor: Theme.of(context).colorScheme.tertiaryContainer,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(card.variant.getFullName),

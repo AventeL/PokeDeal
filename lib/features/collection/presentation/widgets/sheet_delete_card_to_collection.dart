@@ -71,7 +71,7 @@ class _SheetDeleteCardToCollectionState
                       VariantValue.values.map((variant) {
                         return DropdownMenuItem<VariantValue>(
                           value: variant,
-                          child: Text(variant.name),
+                          child: Text(variant.getFullName),
                         );
                       }).toList(),
                   onChanged: (value) {

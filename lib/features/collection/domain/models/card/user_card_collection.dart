@@ -18,6 +18,24 @@ class UserCardCollection extends Equatable {
     required this.setId,
   });
 
+  UserCardCollection copyWith({
+    String? id,
+    String? userId,
+    int? quantity,
+    String? cardId,
+    String? setId,
+    VariantValue? variant,
+  }) {
+    return UserCardCollection(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      quantity: quantity ?? this.quantity,
+      cardId: cardId ?? this.cardId,
+      variant: variant ?? this.variant,
+      setId: setId ?? this.setId,
+    );
+  }
+
   factory UserCardCollection.fromJson(Map<String, dynamic> json) {
     return UserCardCollection(
       id: json['id'].toString(),
