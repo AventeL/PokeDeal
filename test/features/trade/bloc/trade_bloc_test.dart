@@ -110,7 +110,7 @@ void main() {
       act: (bloc) => bloc.add(TradeEventGetAllUsers()),
       expect:
           () => [
-            TradeStateSuccessGetAllUsers(),
+            TradeStateLoading(),
             TradeStateUsersLoaded(users: mockFetchAllUsers),
           ],
       verify: (_) {
@@ -150,7 +150,11 @@ void main() {
         return tradeBloc;
       },
       act: (bloc) => bloc.add(TradeEventGetSendTrade()),
-      expect: () => [TradeStateSendTradesLoaded(trades: mockTradesSend)],
+      expect:
+          () => [
+            TradeStateLoading(),
+            TradeStateSendTradesLoaded(trades: mockTradesSend),
+          ],
       verify: (_) {
         verify(mockTradeRepository.getSendTrade()).called(1);
       },

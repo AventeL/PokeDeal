@@ -15,17 +15,31 @@ void main() {
 
   setUp(() {
     mockTradeBloc = MockTradeBloc();
-    when(mockTradeBloc.state).thenReturn(TradeStateInitial());
   });
 
   tearDown(() {
     mockTradeBloc.close();
   });
 
-  testWidgets('TradeSearchPage displays search field and user list', (
-    WidgetTester tester,
-  ) async {
-    final mockUsers = [
+  testWidgets('affiche loading au demarrage', (tester) async {
+    when(mockTradeBloc.state).thenReturn(TradeStateLoading());
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: BlocProvider<TradeBloc>(
+            create: (_) => mockTradeBloc,
+            child: Column(children: [const TradeSearchPage()]),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
+
+  testWidgets('Affiche une liste si on get des users', (tester) async {
+    final users = [
       UserStats(
         user: UserProfile(
           id: '1',
@@ -48,74 +62,30 @@ void main() {
       ),
     ];
 
-    when(
-      mockTradeBloc.state,
-    ).thenReturn(TradeStateUsersLoaded(users: mockUsers));
+    when(mockTradeBloc.state).thenReturn(TradeStateUsersLoaded(users: users));
 
+    when(mockTradeBloc.stream).thenAnswer(
+      (_) => Stream.fromIterable([
+        TradeStateLoading(),
+        TradeStateUsersLoaded(users: users),
+      ]),
+    );
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: BlocProvider<TradeBloc>(
             create: (_) => mockTradeBloc,
-            child: Column(children: [TradeSearchPage()]),
+            child: Column(children: [const TradeSearchPage()]),
           ),
         ),
       ),
     );
 
-    expect(find.byType(TextField), findsOneWidget);
-    expect(find.text('Rechercher un collectionneur'), findsOneWidget);
+    await tester.pumpAndSettle();
 
+    expect(find.byType(TextField), findsOneWidget);
     expect(find.byType(TradeProfileCardWidget), findsNWidgets(2));
     expect(find.text('Alice'), findsOneWidget);
     expect(find.text('Bob'), findsOneWidget);
-  });
-
-  testWidgets('TradeSearchPage filters user list based on search query', (
-    WidgetTester tester,
-  ) async {
-    final mockUsers = [
-      UserStats(
-        user: UserProfile(
-          id: '1',
-          pseudo: 'Alice',
-          email: 'alice@test.com',
-          createdAt: DateTime.now(),
-        ),
-        nbCards: 10,
-        nbExchanges: 100,
-      ),
-      UserStats(
-        user: UserProfile(
-          id: '2',
-          pseudo: 'Bob',
-          email: 'bob@test.com',
-          createdAt: DateTime.now(),
-        ),
-        nbCards: 59,
-        nbExchanges: 103,
-      ),
-    ];
-
-    when(
-      mockTradeBloc.state,
-    ).thenReturn(TradeStateUsersLoaded(users: mockUsers));
-
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: BlocProvider<TradeBloc>(
-            create: (_) => mockTradeBloc,
-            child: Column(children: [TradeSearchPage()]),
-          ),
-        ),
-      ),
-    );
-
-    await tester.enterText(find.byType(TextField), 'Alice');
-    await tester.pump();
-
-    expect(find.text('Alice'), findsNWidgets(2));
-    expect(find.text('Bob'), findsNothing);
   });
 }

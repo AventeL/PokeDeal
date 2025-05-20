@@ -7,13 +7,16 @@ import 'package:pokedeal/features/collection/domain/repository/collection_pokemo
 import 'package:pokedeal/features/collection/presentation/bloc/card_bloc/collection_pokemon_card_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/serie_bloc/collection_pokemon_serie_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/set_bloc/collection_pokemon_set_bloc.dart';
-import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart';
-import 'package:pokedeal/features/trade/domain/repository/trade_repository.dart';
-import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
+import 'package:pokedeal/features/discussion/data/discussion_data_source_interface.dart';
+import 'package:pokedeal/features/discussion/domain/repository/discussion_repository.dart';
+import 'package:pokedeal/features/discussion/presentation/bloc/discussion_bloc.dart';
 import 'package:pokedeal/features/profile/data/profile_data_source_interface.dart';
 import 'package:pokedeal/features/profile/domain/repository/profile_repository.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart';
+import 'package:pokedeal/features/trade/domain/repository/trade_repository.dart';
+import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart';
 
 //Bloc
 @GenerateNiceMocks([
@@ -24,6 +27,7 @@ import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
   MockSpec<TradeBloc>(),
   MockSpec<ProfileBloc>(),
   MockSpec<UserCollectionBloc>(),
+  MockSpec<DiscussionBloc>(),
 ])
 //Repository
 @GenerateNiceMocks([
@@ -31,6 +35,7 @@ import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
   MockSpec<CollectionPokemonRepository>(),
   MockSpec<TradeRepository>(),
   MockSpec<ProfileRepository>(),
+  MockSpec<DiscussionRepository>(),
 ])
 //DataSource
 @GenerateNiceMocks([
@@ -38,5 +43,6 @@ import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
   MockSpec<ICollectionPokemonDataSource>(),
   MockSpec<ITradeDataSource>(),
   MockSpec<IProfileDataSource>(),
+  MockSpec<IDiscussionDataSource>(),
 ])
 main() {}
