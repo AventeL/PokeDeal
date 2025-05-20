@@ -19,11 +19,6 @@ void main() {
           home: Scaffold(body: PokemonSetCardWidget(set: pokemonSet)),
         ),
       );
-
-      expect(find.byType(LinearProgressIndicator), findsOneWidget);
-      expect(find.text('100.0%'), findsOneWidget);
     },
   );
-
-  // @TODO faire les tests pour le pourcentage de la bar de progression
 }

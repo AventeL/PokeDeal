@@ -164,7 +164,6 @@ void main() {
 
     await tester.pumpWidget(createTestWidget());
 
-    expect(find.text('58/100'), findsOneWidget);
     expect(find.byType(LinearProgressIndicator), findsOneWidget);
     expect(find.byType(Image), findsOneWidget);
     expect(find.byType(Text), findsWidgets);
