@@ -6,6 +6,7 @@ import 'package:pokedeal/core/di/injection_container.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
 import 'package:pokedeal/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:pokedeal/features/collection/presentation/bloc/user_collection/user_collection_bloc.dart';
+import 'package:pokedeal/features/profile/domain/model/user_profile_with_stats.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/pages/profile_page.dart';
 import 'package:pokedeal/shared/widgets/custom_large_button.dart';
@@ -69,9 +70,16 @@ void main() {
       email: 'mail',
     );
 
+    final userProfileWithStats = UserProfileWithStats(
+      user: userProfile,
+      nbcards: 10,
+      nbexchange: 1,
+      nbseries: 2,
+    );
+
     when(
       mockProfileBloc.state,
-    ).thenReturn(ProfileLoaded(userProfile: userProfile));
+    ).thenReturn(ProfileLoaded(userProfile: userProfileWithStats));
 
     await tester.pumpWidget(
       MaterialApp(

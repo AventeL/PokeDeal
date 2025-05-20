@@ -3,9 +3,9 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i27;
+import 'dart:async' as _i22;
 
-import 'package:bloc/bloc.dart' as _i28;
+import 'package:bloc/bloc.dart' as _i23;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:pokedeal/features/authentication/data/authentication_data_source_interface.dart'
     as _i15;
@@ -22,11 +22,11 @@ import 'package:pokedeal/features/collection/domain/models/card/base_pokemon_car
 import 'package:pokedeal/features/collection/domain/models/card/user_card_collection.dart'
     as _i20;
 import 'package:pokedeal/features/collection/domain/models/enum/variant_value.dart'
-    as _i30;
+    as _i25;
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie.dart'
-    as _i26;
+    as _i21;
 import 'package:pokedeal/features/collection/domain/models/pokemon_serie_brief.dart'
-    as _i29;
+    as _i24;
 import 'package:pokedeal/features/collection/domain/models/pokemon_set.dart'
     as _i18;
 import 'package:pokedeal/features/collection/domain/repository/collection_pokemon_repository.dart'
@@ -49,17 +49,17 @@ import 'package:pokedeal/features/discussion/domain/repository/discussion_reposi
 import 'package:pokedeal/features/discussion/presentation/bloc/discussion_bloc.dart'
     as _i14;
 import 'package:pokedeal/features/profile/data/profile_data_source_interface.dart'
-    as _i22;
+    as _i20;
 import 'package:pokedeal/features/profile/domain/repository/profile_repository.dart'
     as _i10;
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart'
     as _i11;
 import 'package:pokedeal/features/trade/data/trade_data_source_interface.dart'
-    as _i21;
-import 'package:pokedeal/features/trade/domain/models/trade.dart' as _i32;
+    as _i19;
+import 'package:pokedeal/features/trade/domain/models/trade.dart' as _i27;
 import 'package:pokedeal/features/trade/domain/models/trade_request_data.dart'
-    as _i33;
-import 'package:pokedeal/features/trade/domain/models/user_stats.dart' as _i31;
+    as _i28;
+import 'package:pokedeal/features/trade/domain/models/user_stats.dart' as _i26;
 import 'package:pokedeal/features/trade/domain/repository/trade_repository.dart'
     as _i8;
 import 'package:pokedeal/features/trade/presentation/bloc/trade_bloc.dart'
@@ -219,8 +219,8 @@ class _FakeMessage_23 extends _i1.SmartFake implements _i25.Message {
     : super(parent, parentInvocation);
 }
 
-class _FakePokemonSerie_24 extends _i1.SmartFake implements _i26.PokemonSerie {
-  _FakePokemonSerie_24(Object parent, Invocation parentInvocation)
+class _FakePokemonSerie_19 extends _i1.SmartFake implements _i21.PokemonSerie {
+  _FakePokemonSerie_19(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -260,14 +260,14 @@ class MockAuthenticationBloc extends _i1.Mock
           as _i3.AuthenticationState);
 
   @override
-  _i27.Stream<_i3.AuthenticationState> get stream =>
+  _i22.Stream<_i3.AuthenticationState> get stream =>
       (super.noSuchMethod(
             Invocation.getter(#stream),
-            returnValue: _i27.Stream<_i3.AuthenticationState>.empty(),
+            returnValue: _i22.Stream<_i3.AuthenticationState>.empty(),
             returnValueForMissingStub:
-                _i27.Stream<_i3.AuthenticationState>.empty(),
+                _i22.Stream<_i3.AuthenticationState>.empty(),
           )
-          as _i27.Stream<_i3.AuthenticationState>);
+          as _i22.Stream<_i3.AuthenticationState>);
 
   @override
   bool get isClosed =>
@@ -298,8 +298,8 @@ class MockAuthenticationBloc extends _i1.Mock
 
   @override
   void on<E extends _i3.AuthenticationEvent>(
-    _i28.EventHandler<E, _i3.AuthenticationState>? handler, {
-    _i28.EventTransformer<E>? transformer,
+    _i23.EventHandler<E, _i3.AuthenticationState>? handler, {
+    _i23.EventTransformer<E>? transformer,
   }) => super.noSuchMethod(
     Invocation.method(#on, [handler], {#transformer: transformer}),
     returnValueForMissingStub: null,
@@ -307,7 +307,7 @@ class MockAuthenticationBloc extends _i1.Mock
 
   @override
   void onTransition(
-    _i28.Transition<_i3.AuthenticationEvent, _i3.AuthenticationState>?
+    _i23.Transition<_i3.AuthenticationEvent, _i3.AuthenticationState>?
     transition,
   ) => super.noSuchMethod(
     Invocation.method(#onTransition, [transition]),
@@ -315,16 +315,16 @@ class MockAuthenticationBloc extends _i1.Mock
   );
 
   @override
-  _i27.Future<void> close() =>
+  _i22.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  void onChange(_i28.Change<_i3.AuthenticationState>? change) =>
+  void onChange(_i23.Change<_i3.AuthenticationState>? change) =>
       super.noSuchMethod(
         Invocation.method(#onChange, [change]),
         returnValueForMissingStub: null,
@@ -379,14 +379,14 @@ class MockCollectionPokemonSerieBloc extends _i1.Mock
           as _i5.CollectionPokemonSerieState);
 
   @override
-  _i27.Stream<_i5.CollectionPokemonSerieState> get stream =>
+  _i22.Stream<_i5.CollectionPokemonSerieState> get stream =>
       (super.noSuchMethod(
             Invocation.getter(#stream),
-            returnValue: _i27.Stream<_i5.CollectionPokemonSerieState>.empty(),
+            returnValue: _i22.Stream<_i5.CollectionPokemonSerieState>.empty(),
             returnValueForMissingStub:
-                _i27.Stream<_i5.CollectionPokemonSerieState>.empty(),
+                _i22.Stream<_i5.CollectionPokemonSerieState>.empty(),
           )
-          as _i27.Stream<_i5.CollectionPokemonSerieState>);
+          as _i22.Stream<_i5.CollectionPokemonSerieState>);
 
   @override
   bool get isClosed =>
@@ -417,8 +417,8 @@ class MockCollectionPokemonSerieBloc extends _i1.Mock
 
   @override
   void on<E extends _i5.CollectionPokemonSerieEvent>(
-    _i28.EventHandler<E, _i5.CollectionPokemonSerieState>? handler, {
-    _i28.EventTransformer<E>? transformer,
+    _i23.EventHandler<E, _i5.CollectionPokemonSerieState>? handler, {
+    _i23.EventTransformer<E>? transformer,
   }) => super.noSuchMethod(
     Invocation.method(#on, [handler], {#transformer: transformer}),
     returnValueForMissingStub: null,
@@ -426,7 +426,7 @@ class MockCollectionPokemonSerieBloc extends _i1.Mock
 
   @override
   void onTransition(
-    _i28.Transition<
+    _i23.Transition<
       _i5.CollectionPokemonSerieEvent,
       _i5.CollectionPokemonSerieState
     >?
@@ -437,16 +437,16 @@ class MockCollectionPokemonSerieBloc extends _i1.Mock
   );
 
   @override
-  _i27.Future<void> close() =>
+  _i22.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  void onChange(_i28.Change<_i5.CollectionPokemonSerieState>? change) =>
+  void onChange(_i23.Change<_i5.CollectionPokemonSerieState>? change) =>
       super.noSuchMethod(
         Invocation.method(#onChange, [change]),
         returnValueForMissingStub: null,
@@ -501,14 +501,14 @@ class MockCollectionPokemonSetBloc extends _i1.Mock
           as _i6.CollectionPokemonSetState);
 
   @override
-  _i27.Stream<_i6.CollectionPokemonSetState> get stream =>
+  _i22.Stream<_i6.CollectionPokemonSetState> get stream =>
       (super.noSuchMethod(
             Invocation.getter(#stream),
-            returnValue: _i27.Stream<_i6.CollectionPokemonSetState>.empty(),
+            returnValue: _i22.Stream<_i6.CollectionPokemonSetState>.empty(),
             returnValueForMissingStub:
-                _i27.Stream<_i6.CollectionPokemonSetState>.empty(),
+                _i22.Stream<_i6.CollectionPokemonSetState>.empty(),
           )
-          as _i27.Stream<_i6.CollectionPokemonSetState>);
+          as _i22.Stream<_i6.CollectionPokemonSetState>);
 
   @override
   bool get isClosed =>
@@ -539,8 +539,8 @@ class MockCollectionPokemonSetBloc extends _i1.Mock
 
   @override
   void on<E extends _i6.CollectionPokemonSetEvent>(
-    _i28.EventHandler<E, _i6.CollectionPokemonSetState>? handler, {
-    _i28.EventTransformer<E>? transformer,
+    _i23.EventHandler<E, _i6.CollectionPokemonSetState>? handler, {
+    _i23.EventTransformer<E>? transformer,
   }) => super.noSuchMethod(
     Invocation.method(#on, [handler], {#transformer: transformer}),
     returnValueForMissingStub: null,
@@ -548,7 +548,7 @@ class MockCollectionPokemonSetBloc extends _i1.Mock
 
   @override
   void onTransition(
-    _i28.Transition<
+    _i23.Transition<
       _i6.CollectionPokemonSetEvent,
       _i6.CollectionPokemonSetState
     >?
@@ -559,16 +559,16 @@ class MockCollectionPokemonSetBloc extends _i1.Mock
   );
 
   @override
-  _i27.Future<void> close() =>
+  _i22.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  void onChange(_i28.Change<_i6.CollectionPokemonSetState>? change) =>
+  void onChange(_i23.Change<_i6.CollectionPokemonSetState>? change) =>
       super.noSuchMethod(
         Invocation.method(#onChange, [change]),
         returnValueForMissingStub: null,
@@ -623,14 +623,14 @@ class MockCollectionPokemonCardBloc extends _i1.Mock
           as _i7.CollectionPokemonCardState);
 
   @override
-  _i27.Stream<_i7.CollectionPokemonCardState> get stream =>
+  _i22.Stream<_i7.CollectionPokemonCardState> get stream =>
       (super.noSuchMethod(
             Invocation.getter(#stream),
-            returnValue: _i27.Stream<_i7.CollectionPokemonCardState>.empty(),
+            returnValue: _i22.Stream<_i7.CollectionPokemonCardState>.empty(),
             returnValueForMissingStub:
-                _i27.Stream<_i7.CollectionPokemonCardState>.empty(),
+                _i22.Stream<_i7.CollectionPokemonCardState>.empty(),
           )
-          as _i27.Stream<_i7.CollectionPokemonCardState>);
+          as _i22.Stream<_i7.CollectionPokemonCardState>);
 
   @override
   bool get isClosed =>
@@ -661,8 +661,8 @@ class MockCollectionPokemonCardBloc extends _i1.Mock
 
   @override
   void on<E extends _i7.CollectionPokemonCardEvent>(
-    _i28.EventHandler<E, _i7.CollectionPokemonCardState>? handler, {
-    _i28.EventTransformer<E>? transformer,
+    _i23.EventHandler<E, _i7.CollectionPokemonCardState>? handler, {
+    _i23.EventTransformer<E>? transformer,
   }) => super.noSuchMethod(
     Invocation.method(#on, [handler], {#transformer: transformer}),
     returnValueForMissingStub: null,
@@ -670,7 +670,7 @@ class MockCollectionPokemonCardBloc extends _i1.Mock
 
   @override
   void onTransition(
-    _i28.Transition<
+    _i23.Transition<
       _i7.CollectionPokemonCardEvent,
       _i7.CollectionPokemonCardState
     >?
@@ -681,16 +681,16 @@ class MockCollectionPokemonCardBloc extends _i1.Mock
   );
 
   @override
-  _i27.Future<void> close() =>
+  _i22.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  void onChange(_i28.Change<_i7.CollectionPokemonCardState>? change) =>
+  void onChange(_i23.Change<_i7.CollectionPokemonCardState>? change) =>
       super.noSuchMethod(
         Invocation.method(#onChange, [change]),
         returnValueForMissingStub: null,
@@ -741,13 +741,13 @@ class MockTradeBloc extends _i1.Mock implements _i9.TradeBloc {
           as _i9.TradeState);
 
   @override
-  _i27.Stream<_i9.TradeState> get stream =>
+  _i22.Stream<_i9.TradeState> get stream =>
       (super.noSuchMethod(
             Invocation.getter(#stream),
-            returnValue: _i27.Stream<_i9.TradeState>.empty(),
-            returnValueForMissingStub: _i27.Stream<_i9.TradeState>.empty(),
+            returnValue: _i22.Stream<_i9.TradeState>.empty(),
+            returnValueForMissingStub: _i22.Stream<_i9.TradeState>.empty(),
           )
-          as _i27.Stream<_i9.TradeState>);
+          as _i22.Stream<_i9.TradeState>);
 
   @override
   bool get isClosed =>
@@ -778,8 +778,8 @@ class MockTradeBloc extends _i1.Mock implements _i9.TradeBloc {
 
   @override
   void on<E extends _i9.TradeEvent>(
-    _i28.EventHandler<E, _i9.TradeState>? handler, {
-    _i28.EventTransformer<E>? transformer,
+    _i23.EventHandler<E, _i9.TradeState>? handler, {
+    _i23.EventTransformer<E>? transformer,
   }) => super.noSuchMethod(
     Invocation.method(#on, [handler], {#transformer: transformer}),
     returnValueForMissingStub: null,
@@ -787,23 +787,23 @@ class MockTradeBloc extends _i1.Mock implements _i9.TradeBloc {
 
   @override
   void onTransition(
-    _i28.Transition<_i9.TradeEvent, _i9.TradeState>? transition,
+    _i23.Transition<_i9.TradeEvent, _i9.TradeState>? transition,
   ) => super.noSuchMethod(
     Invocation.method(#onTransition, [transition]),
     returnValueForMissingStub: null,
   );
 
   @override
-  _i27.Future<void> close() =>
+  _i22.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  void onChange(_i28.Change<_i9.TradeState>? change) => super.noSuchMethod(
+  void onChange(_i23.Change<_i9.TradeState>? change) => super.noSuchMethod(
     Invocation.method(#onChange, [change]),
     returnValueForMissingStub: null,
   );
@@ -853,13 +853,13 @@ class MockProfileBloc extends _i1.Mock implements _i11.ProfileBloc {
           as _i11.ProfileState);
 
   @override
-  _i27.Stream<_i11.ProfileState> get stream =>
+  _i22.Stream<_i11.ProfileState> get stream =>
       (super.noSuchMethod(
             Invocation.getter(#stream),
-            returnValue: _i27.Stream<_i11.ProfileState>.empty(),
-            returnValueForMissingStub: _i27.Stream<_i11.ProfileState>.empty(),
+            returnValue: _i22.Stream<_i11.ProfileState>.empty(),
+            returnValueForMissingStub: _i22.Stream<_i11.ProfileState>.empty(),
           )
-          as _i27.Stream<_i11.ProfileState>);
+          as _i22.Stream<_i11.ProfileState>);
 
   @override
   bool get isClosed =>
@@ -871,40 +871,40 @@ class MockProfileBloc extends _i1.Mock implements _i11.ProfileBloc {
           as bool);
 
   @override
-  _i27.Future<void> onProfileLoadEvent(
+  _i22.Future<void> onProfileLoadEvent(
     _i11.ProfileLoadEvent? event,
-    _i28.Emitter<_i11.ProfileState>? emit,
+    _i23.Emitter<_i11.ProfileState>? emit,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#onProfileLoadEvent, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  _i27.Future<void> onProfileUpdateEvent(
+  _i22.Future<void> onProfileUpdateEvent(
     _i11.ProfileUpdateEvent? event,
-    _i28.Emitter<_i11.ProfileState>? emit,
+    _i23.Emitter<_i11.ProfileState>? emit,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#onProfileUpdateEvent, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  _i27.Future<void> onChangePasswordEvent(
+  _i22.Future<void> onChangePasswordEvent(
     _i11.ChangePasswordEvent? event,
-    _i28.Emitter<_i11.ProfileState>? emit,
+    _i23.Emitter<_i11.ProfileState>? emit,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#onChangePasswordEvent, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
   void add(_i11.ProfileEvent? event) => super.noSuchMethod(
@@ -926,8 +926,8 @@ class MockProfileBloc extends _i1.Mock implements _i11.ProfileBloc {
 
   @override
   void on<E extends _i11.ProfileEvent>(
-    _i28.EventHandler<E, _i11.ProfileState>? handler, {
-    _i28.EventTransformer<E>? transformer,
+    _i23.EventHandler<E, _i11.ProfileState>? handler, {
+    _i23.EventTransformer<E>? transformer,
   }) => super.noSuchMethod(
     Invocation.method(#on, [handler], {#transformer: transformer}),
     returnValueForMissingStub: null,
@@ -935,23 +935,23 @@ class MockProfileBloc extends _i1.Mock implements _i11.ProfileBloc {
 
   @override
   void onTransition(
-    _i28.Transition<_i11.ProfileEvent, _i11.ProfileState>? transition,
+    _i23.Transition<_i11.ProfileEvent, _i11.ProfileState>? transition,
   ) => super.noSuchMethod(
     Invocation.method(#onTransition, [transition]),
     returnValueForMissingStub: null,
   );
 
   @override
-  _i27.Future<void> close() =>
+  _i22.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  void onChange(_i28.Change<_i11.ProfileState>? change) => super.noSuchMethod(
+  void onChange(_i23.Change<_i11.ProfileState>? change) => super.noSuchMethod(
     Invocation.method(#onChange, [change]),
     returnValueForMissingStub: null,
   );
@@ -1005,14 +1005,14 @@ class MockUserCollectionBloc extends _i1.Mock
           as _i12.UserCollectionState);
 
   @override
-  _i27.Stream<_i12.UserCollectionState> get stream =>
+  _i22.Stream<_i12.UserCollectionState> get stream =>
       (super.noSuchMethod(
             Invocation.getter(#stream),
-            returnValue: _i27.Stream<_i12.UserCollectionState>.empty(),
+            returnValue: _i22.Stream<_i12.UserCollectionState>.empty(),
             returnValueForMissingStub:
-                _i27.Stream<_i12.UserCollectionState>.empty(),
+                _i22.Stream<_i12.UserCollectionState>.empty(),
           )
-          as _i27.Stream<_i12.UserCollectionState>);
+          as _i22.Stream<_i12.UserCollectionState>);
 
   @override
   bool get isClosed =>
@@ -1024,64 +1024,64 @@ class MockUserCollectionBloc extends _i1.Mock
           as bool);
 
   @override
-  _i27.Future<void> onUserCollectionLoadSetEvent(
+  _i22.Future<void> onUserCollectionLoadSetEvent(
     _i12.UserCollectionLoadSetEvent? event,
-    _i28.Emitter<_i12.UserCollectionState>? emit,
+    _i23.Emitter<_i12.UserCollectionState>? emit,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#onUserCollectionLoadSetEvent, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  _i27.Future<void> onUserCollectionLoadCardEvent(
+  _i22.Future<void> onUserCollectionLoadCardEvent(
     _i12.UserCollectionLoadCardEvent? event,
-    _i28.Emitter<_i12.UserCollectionState>? emit,
+    _i23.Emitter<_i12.UserCollectionState>? emit,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#onUserCollectionLoadCardEvent, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  _i27.Future<void> onUserCollectionAddCardEvent(
+  _i22.Future<void> onUserCollectionAddCardEvent(
     _i12.UserCollectionAddCardEvent? event,
-    _i28.Emitter<_i12.UserCollectionState>? emit,
+    _i23.Emitter<_i12.UserCollectionState>? emit,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#onUserCollectionAddCardEvent, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  _i27.Future<void> onUserCollectionLoadAllEvent(
+  _i22.Future<void> onUserCollectionLoadAllEvent(
     _i12.UserCollectionLoadAllEvent? event,
-    _i28.Emitter<_i12.UserCollectionState>? emit,
+    _i23.Emitter<_i12.UserCollectionState>? emit,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#onUserCollectionLoadAllEvent, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  _i27.Future<void> onUserCollectionDeleteCardEvent(
+  _i22.Future<void> onUserCollectionDeleteCardEvent(
     _i12.UserCollectionDeleteCardEvent? event,
-    _i28.Emitter<_i12.UserCollectionState>? emit,
+    _i23.Emitter<_i12.UserCollectionState>? emit,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#onUserCollectionDeleteCardEvent, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
   void add(_i12.UserCollectionEvent? event) => super.noSuchMethod(
@@ -1103,8 +1103,8 @@ class MockUserCollectionBloc extends _i1.Mock
 
   @override
   void on<E extends _i12.UserCollectionEvent>(
-    _i28.EventHandler<E, _i12.UserCollectionState>? handler, {
-    _i28.EventTransformer<E>? transformer,
+    _i23.EventHandler<E, _i12.UserCollectionState>? handler, {
+    _i23.EventTransformer<E>? transformer,
   }) => super.noSuchMethod(
     Invocation.method(#on, [handler], {#transformer: transformer}),
     returnValueForMissingStub: null,
@@ -1112,7 +1112,7 @@ class MockUserCollectionBloc extends _i1.Mock
 
   @override
   void onTransition(
-    _i28.Transition<_i12.UserCollectionEvent, _i12.UserCollectionState>?
+    _i23.Transition<_i12.UserCollectionEvent, _i12.UserCollectionState>?
     transition,
   ) => super.noSuchMethod(
     Invocation.method(#onTransition, [transition]),
@@ -1120,184 +1120,16 @@ class MockUserCollectionBloc extends _i1.Mock
   );
 
   @override
-  _i27.Future<void> close() =>
+  _i22.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  void onChange(_i28.Change<_i12.UserCollectionState>? change) =>
-      super.noSuchMethod(
-        Invocation.method(#onChange, [change]),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  void addError(Object? error, [StackTrace? stackTrace]) => super.noSuchMethod(
-    Invocation.method(#addError, [error, stackTrace]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void onError(Object? error, StackTrace? stackTrace) => super.noSuchMethod(
-    Invocation.method(#onError, [error, stackTrace]),
-    returnValueForMissingStub: null,
-  );
-}
-
-/// A class which mocks [DiscussionBloc].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockDiscussionBloc extends _i1.Mock implements _i14.DiscussionBloc {
-  @override
-  _i13.DiscussionRepository get discussionRepository =>
-      (super.noSuchMethod(
-            Invocation.getter(#discussionRepository),
-            returnValue: _FakeDiscussionRepository_11(
-              this,
-              Invocation.getter(#discussionRepository),
-            ),
-            returnValueForMissingStub: _FakeDiscussionRepository_11(
-              this,
-              Invocation.getter(#discussionRepository),
-            ),
-          )
-          as _i13.DiscussionRepository);
-
-  @override
-  _i14.DiscussionState get state =>
-      (super.noSuchMethod(
-            Invocation.getter(#state),
-            returnValue: _FakeDiscussionState_12(
-              this,
-              Invocation.getter(#state),
-            ),
-            returnValueForMissingStub: _FakeDiscussionState_12(
-              this,
-              Invocation.getter(#state),
-            ),
-          )
-          as _i14.DiscussionState);
-
-  @override
-  _i27.Stream<_i14.DiscussionState> get stream =>
-      (super.noSuchMethod(
-            Invocation.getter(#stream),
-            returnValue: _i27.Stream<_i14.DiscussionState>.empty(),
-            returnValueForMissingStub:
-                _i27.Stream<_i14.DiscussionState>.empty(),
-          )
-          as _i27.Stream<_i14.DiscussionState>);
-
-  @override
-  bool get isClosed =>
-      (super.noSuchMethod(
-            Invocation.getter(#isClosed),
-            returnValue: false,
-            returnValueForMissingStub: false,
-          )
-          as bool);
-
-  @override
-  void onDiscussionSubscribe(
-    _i14.DiscussionEventSubscribeToMessages? event,
-    _i28.Emitter<_i14.DiscussionState>? emit,
-  ) => super.noSuchMethod(
-    Invocation.method(#onDiscussionSubscribe, [event, emit]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  _i27.Future<void> onDiscussionGetByTradeId(
-    _i14.DiscussionEventGetDiscussionByTradeId? event,
-    _i28.Emitter<_i14.DiscussionState>? emit,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#onDiscussionGetByTradeId, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
-          )
-          as _i27.Future<void>);
-
-  @override
-  _i27.Future<void> onDiscussionSendMessage(
-    _i14.DiscussionEventSendMessage? event,
-    _i28.Emitter<_i14.DiscussionState>? emit,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#onDiscussionSendMessage, [event, emit]),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
-          )
-          as _i27.Future<void>);
-
-  @override
-  void onNewMessageReceived(
-    _i14.DiscussionEventNewMessageReceived? event,
-    _i28.Emitter<_i14.DiscussionState>? emit,
-  ) => super.noSuchMethod(
-    Invocation.method(#onNewMessageReceived, [event, emit]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void onDiscussionUnsubscribe(
-    _i14.DiscussionEventUnsubscribeFromMessages? event,
-    _i28.Emitter<_i14.DiscussionState>? emit,
-  ) => super.noSuchMethod(
-    Invocation.method(#onDiscussionUnsubscribe, [event, emit]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void add(_i14.DiscussionEvent? event) => super.noSuchMethod(
-    Invocation.method(#add, [event]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void onEvent(_i14.DiscussionEvent? event) => super.noSuchMethod(
-    Invocation.method(#onEvent, [event]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void emit(_i14.DiscussionState? state) => super.noSuchMethod(
-    Invocation.method(#emit, [state]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void on<E extends _i14.DiscussionEvent>(
-    _i28.EventHandler<E, _i14.DiscussionState>? handler, {
-    _i28.EventTransformer<E>? transformer,
-  }) => super.noSuchMethod(
-    Invocation.method(#on, [handler], {#transformer: transformer}),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void onTransition(
-    _i28.Transition<_i14.DiscussionEvent, _i14.DiscussionState>? transition,
-  ) => super.noSuchMethod(
-    Invocation.method(#onTransition, [transition]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  _i27.Future<void> close() =>
-      (super.noSuchMethod(
-            Invocation.method(#close, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
-          )
-          as _i27.Future<void>);
-
-  @override
-  void onChange(_i28.Change<_i14.DiscussionState>? change) =>
+  void onChange(_i23.Change<_i12.UserCollectionState>? change) =>
       super.noSuchMethod(
         Invocation.method(#onChange, [change]),
         returnValueForMissingStub: null,
@@ -1343,67 +1175,67 @@ class MockAuthenticationRepository extends _i1.Mock
           as _i15.IAuthenticationDataSource);
 
   @override
-  _i27.Future<_i16.UserProfile> signInWithEmail(
+  _i22.Future<_i14.UserProfile> signInWithEmail(
     String? email,
     String? password,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithEmail, [email, password]),
-            returnValue: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValue: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#signInWithEmail, [email, password]),
               ),
             ),
-            returnValueForMissingStub: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValueForMissingStub: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#signInWithEmail, [email, password]),
               ),
             ),
           )
-          as _i27.Future<_i16.UserProfile>);
+          as _i22.Future<_i14.UserProfile>);
 
   @override
-  _i27.Future<_i16.UserProfile> signUpWithEmail(
+  _i22.Future<_i14.UserProfile> signUpWithEmail(
     String? email,
     String? password,
     String? pseudo,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signUpWithEmail, [email, password, pseudo]),
-            returnValue: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValue: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#signUpWithEmail, [email, password, pseudo]),
               ),
             ),
-            returnValueForMissingStub: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValueForMissingStub: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#signUpWithEmail, [email, password, pseudo]),
               ),
             ),
           )
-          as _i27.Future<_i16.UserProfile>);
+          as _i22.Future<_i14.UserProfile>);
 
   @override
-  _i27.Future<_i16.UserProfile?> getUserProfile() =>
+  _i22.Future<_i14.UserProfile?> getUserProfile() =>
       (super.noSuchMethod(
             Invocation.method(#getUserProfile, []),
-            returnValue: _i27.Future<_i16.UserProfile?>.value(),
-            returnValueForMissingStub: _i27.Future<_i16.UserProfile?>.value(),
+            returnValue: _i22.Future<_i14.UserProfile?>.value(),
+            returnValueForMissingStub: _i22.Future<_i14.UserProfile?>.value(),
           )
-          as _i27.Future<_i16.UserProfile?>);
+          as _i22.Future<_i14.UserProfile?>);
 
   @override
-  _i27.Future<void> signOut() =>
+  _i22.Future<void> signOut() =>
       (super.noSuchMethod(
             Invocation.method(#signOut, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [CollectionPokemonRepository].
@@ -1427,32 +1259,32 @@ class MockCollectionPokemonRepository extends _i1.Mock
           as _i17.ICollectionPokemonDataSource);
 
   @override
-  List<_i29.PokemonSerieBrief> get seriesBriefs =>
+  List<_i24.PokemonSerieBrief> get seriesBriefs =>
       (super.noSuchMethod(
             Invocation.getter(#seriesBriefs),
-            returnValue: <_i29.PokemonSerieBrief>[],
-            returnValueForMissingStub: <_i29.PokemonSerieBrief>[],
+            returnValue: <_i24.PokemonSerieBrief>[],
+            returnValueForMissingStub: <_i24.PokemonSerieBrief>[],
           )
-          as List<_i29.PokemonSerieBrief>);
+          as List<_i24.PokemonSerieBrief>);
 
   @override
-  set seriesBriefs(List<_i29.PokemonSerieBrief>? _seriesBriefs) =>
+  set seriesBriefs(List<_i24.PokemonSerieBrief>? _seriesBriefs) =>
       super.noSuchMethod(
         Invocation.setter(#seriesBriefs, _seriesBriefs),
         returnValueForMissingStub: null,
       );
 
   @override
-  List<_i26.PokemonSerie> get series =>
+  List<_i21.PokemonSerie> get series =>
       (super.noSuchMethod(
             Invocation.getter(#series),
-            returnValue: <_i26.PokemonSerie>[],
-            returnValueForMissingStub: <_i26.PokemonSerie>[],
+            returnValue: <_i21.PokemonSerie>[],
+            returnValueForMissingStub: <_i21.PokemonSerie>[],
           )
-          as List<_i26.PokemonSerie>);
+          as List<_i21.PokemonSerie>);
 
   @override
-  set series(List<_i26.PokemonSerie>? _series) => super.noSuchMethod(
+  set series(List<_i21.PokemonSerie>? _series) => super.noSuchMethod(
     Invocation.setter(#series, _series),
     returnValueForMissingStub: null,
   );
@@ -1507,73 +1339,73 @@ class MockCollectionPokemonRepository extends _i1.Mock
   );
 
   @override
-  _i27.Future<List<_i29.PokemonSerieBrief>> getSeriesBriefs() =>
+  _i22.Future<List<_i24.PokemonSerieBrief>> getSeriesBriefs() =>
       (super.noSuchMethod(
             Invocation.method(#getSeriesBriefs, []),
-            returnValue: _i27.Future<List<_i29.PokemonSerieBrief>>.value(
-              <_i29.PokemonSerieBrief>[],
+            returnValue: _i22.Future<List<_i24.PokemonSerieBrief>>.value(
+              <_i24.PokemonSerieBrief>[],
             ),
             returnValueForMissingStub:
-                _i27.Future<List<_i29.PokemonSerieBrief>>.value(
-                  <_i29.PokemonSerieBrief>[],
+                _i22.Future<List<_i24.PokemonSerieBrief>>.value(
+                  <_i24.PokemonSerieBrief>[],
                 ),
           )
-          as _i27.Future<List<_i29.PokemonSerieBrief>>);
+          as _i22.Future<List<_i24.PokemonSerieBrief>>);
 
   @override
-  _i27.Future<List<_i26.PokemonSerie>> getSeriesWithSets() =>
+  _i22.Future<List<_i21.PokemonSerie>> getSeriesWithSets() =>
       (super.noSuchMethod(
             Invocation.method(#getSeriesWithSets, []),
-            returnValue: _i27.Future<List<_i26.PokemonSerie>>.value(
-              <_i26.PokemonSerie>[],
+            returnValue: _i22.Future<List<_i21.PokemonSerie>>.value(
+              <_i21.PokemonSerie>[],
             ),
             returnValueForMissingStub:
-                _i27.Future<List<_i26.PokemonSerie>>.value(
-                  <_i26.PokemonSerie>[],
+                _i22.Future<List<_i21.PokemonSerie>>.value(
+                  <_i21.PokemonSerie>[],
                 ),
           )
-          as _i27.Future<List<_i26.PokemonSerie>>);
+          as _i22.Future<List<_i21.PokemonSerie>>);
 
   @override
-  _i27.Future<_i18.PokemonSet> getSetWithCards({required String? setId}) =>
+  _i22.Future<_i16.PokemonSet> getSetWithCards({required String? setId}) =>
       (super.noSuchMethod(
             Invocation.method(#getSetWithCards, [], {#setId: setId}),
-            returnValue: _i27.Future<_i18.PokemonSet>.value(
-              _FakePokemonSet_16(
+            returnValue: _i22.Future<_i16.PokemonSet>.value(
+              _FakePokemonSet_14(
                 this,
                 Invocation.method(#getSetWithCards, [], {#setId: setId}),
               ),
             ),
-            returnValueForMissingStub: _i27.Future<_i18.PokemonSet>.value(
-              _FakePokemonSet_16(
+            returnValueForMissingStub: _i22.Future<_i16.PokemonSet>.value(
+              _FakePokemonSet_14(
                 this,
                 Invocation.method(#getSetWithCards, [], {#setId: setId}),
               ),
             ),
           )
-          as _i27.Future<_i18.PokemonSet>);
+          as _i22.Future<_i16.PokemonSet>);
 
   @override
-  _i27.Future<_i19.BasePokemonCard> getCard({required String? id}) =>
+  _i22.Future<_i17.BasePokemonCard> getCard({required String? id}) =>
       (super.noSuchMethod(
             Invocation.method(#getCard, [], {#id: id}),
-            returnValue: _i27.Future<_i19.BasePokemonCard>.value(
-              _FakeBasePokemonCard_17(
+            returnValue: _i22.Future<_i17.BasePokemonCard>.value(
+              _FakeBasePokemonCard_15(
                 this,
                 Invocation.method(#getCard, [], {#id: id}),
               ),
             ),
-            returnValueForMissingStub: _i27.Future<_i19.BasePokemonCard>.value(
-              _FakeBasePokemonCard_17(
+            returnValueForMissingStub: _i22.Future<_i17.BasePokemonCard>.value(
+              _FakeBasePokemonCard_15(
                 this,
                 Invocation.method(#getCard, [], {#id: id}),
               ),
             ),
           )
-          as _i27.Future<_i19.BasePokemonCard>);
+          as _i22.Future<_i17.BasePokemonCard>);
 
   @override
-  _i27.Future<List<_i20.UserCardCollection>> getUserCollection({
+  _i22.Future<List<_i18.UserCardCollection>> getUserCollection({
     required String? userId,
     String? cardId,
     String? setId,
@@ -1584,21 +1416,21 @@ class MockCollectionPokemonRepository extends _i1.Mock
               #cardId: cardId,
               #setId: setId,
             }),
-            returnValue: _i27.Future<List<_i20.UserCardCollection>>.value(
-              <_i20.UserCardCollection>[],
+            returnValue: _i22.Future<List<_i18.UserCardCollection>>.value(
+              <_i18.UserCardCollection>[],
             ),
             returnValueForMissingStub:
-                _i27.Future<List<_i20.UserCardCollection>>.value(
-                  <_i20.UserCardCollection>[],
+                _i22.Future<List<_i18.UserCardCollection>>.value(
+                  <_i18.UserCardCollection>[],
                 ),
           )
-          as _i27.Future<List<_i20.UserCardCollection>>);
+          as _i22.Future<List<_i18.UserCardCollection>>);
 
   @override
-  _i27.Future<_i20.UserCardCollection> addCardToUserCollection({
+  _i22.Future<_i18.UserCardCollection> addCardToUserCollection({
     required String? id,
     required int? quantity,
-    required _i30.VariantValue? variant,
+    required _i25.VariantValue? variant,
     required String? setId,
   }) =>
       (super.noSuchMethod(
@@ -1608,8 +1440,8 @@ class MockCollectionPokemonRepository extends _i1.Mock
               #variant: variant,
               #setId: setId,
             }),
-            returnValue: _i27.Future<_i20.UserCardCollection>.value(
-              _FakeUserCardCollection_18(
+            returnValue: _i22.Future<_i18.UserCardCollection>.value(
+              _FakeUserCardCollection_16(
                 this,
                 Invocation.method(#addCardToUserCollection, [], {
                   #id: id,
@@ -1620,8 +1452,8 @@ class MockCollectionPokemonRepository extends _i1.Mock
               ),
             ),
             returnValueForMissingStub:
-                _i27.Future<_i20.UserCardCollection>.value(
-                  _FakeUserCardCollection_18(
+                _i22.Future<_i18.UserCardCollection>.value(
+                  _FakeUserCardCollection_16(
                     this,
                     Invocation.method(#addCardToUserCollection, [], {
                       #id: id,
@@ -1632,80 +1464,63 @@ class MockCollectionPokemonRepository extends _i1.Mock
                   ),
                 ),
           )
-          as _i27.Future<_i20.UserCardCollection>);
+          as _i22.Future<_i18.UserCardCollection>);
 
   @override
-  _i27.Future<List<_i18.PokemonSet>> getSetsFromUserCards({
-    required List<_i20.UserCardCollection>? userCards,
+  _i22.Future<List<_i16.PokemonSet>> getSetsFromUserCards({
+    required List<_i18.UserCardCollection>? userCards,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getSetsFromUserCards, [], {
               #userCards: userCards,
             }),
-            returnValue: _i27.Future<List<_i18.PokemonSet>>.value(
-              <_i18.PokemonSet>[],
+            returnValue: _i22.Future<List<_i16.PokemonSet>>.value(
+              <_i16.PokemonSet>[],
             ),
-            returnValueForMissingStub: _i27.Future<List<_i18.PokemonSet>>.value(
-              <_i18.PokemonSet>[],
+            returnValueForMissingStub: _i22.Future<List<_i16.PokemonSet>>.value(
+              <_i16.PokemonSet>[],
             ),
           )
-          as _i27.Future<List<_i18.PokemonSet>>);
+          as _i22.Future<List<_i16.PokemonSet>>);
 
   @override
-  _i27.Future<List<_i26.PokemonSerie>> getSeriesFromSets({
-    required List<_i18.PokemonSet>? sets,
+  _i22.Future<List<_i21.PokemonSerie>> getSeriesFromSets({
+    required List<_i16.PokemonSet>? sets,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getSeriesFromSets, [], {#sets: sets}),
-            returnValue: _i27.Future<List<_i26.PokemonSerie>>.value(
-              <_i26.PokemonSerie>[],
+            returnValue: _i22.Future<List<_i21.PokemonSerie>>.value(
+              <_i21.PokemonSerie>[],
             ),
             returnValueForMissingStub:
-                _i27.Future<List<_i26.PokemonSerie>>.value(
-                  <_i26.PokemonSerie>[],
+                _i22.Future<List<_i21.PokemonSerie>>.value(
+                  <_i21.PokemonSerie>[],
                 ),
           )
-          as _i27.Future<List<_i26.PokemonSerie>>);
+          as _i22.Future<List<_i21.PokemonSerie>>);
 
   @override
-  _i27.Future<List<_i19.BasePokemonCard>> getCardsDetailsFromUserCards({
-    required List<_i20.UserCardCollection>? userCards,
+  _i22.Future<List<_i17.BasePokemonCard>> getCardsDetailsFromUserCards({
+    required List<_i18.UserCardCollection>? userCards,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getCardsDetailsFromUserCards, [], {
               #userCards: userCards,
             }),
-            returnValue: _i27.Future<List<_i19.BasePokemonCard>>.value(
-              <_i19.BasePokemonCard>[],
+            returnValue: _i22.Future<List<_i17.BasePokemonCard>>.value(
+              <_i17.BasePokemonCard>[],
             ),
             returnValueForMissingStub:
-                _i27.Future<List<_i19.BasePokemonCard>>.value(
-                  <_i19.BasePokemonCard>[],
+                _i22.Future<List<_i17.BasePokemonCard>>.value(
+                  <_i17.BasePokemonCard>[],
                 ),
           )
-          as _i27.Future<List<_i19.BasePokemonCard>>);
-
+          as _i22.Future<List<_i17.BasePokemonCard>>);
   @override
-  _i27.Future<Map<String, _i19.BasePokemonCard>> getCardByIds({
-    required List<String>? ids,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#getCardByIds, [], {#ids: ids}),
-            returnValue: _i27.Future<Map<String, _i19.BasePokemonCard>>.value(
-              <String, _i19.BasePokemonCard>{},
-            ),
-            returnValueForMissingStub:
-                _i27.Future<Map<String, _i19.BasePokemonCard>>.value(
-                  <String, _i19.BasePokemonCard>{},
-                ),
-          )
-          as _i27.Future<Map<String, _i19.BasePokemonCard>>);
-
-  @override
-  _i27.Future<void> deleteCardFromUserCollection({
+  _i22.Future<void> deleteCardFromUserCollection({
     required String? id,
     required int? quantity,
-    required _i30.VariantValue? variant,
+    required _i25.VariantValue? variant,
     required String? setId,
   }) =>
       (super.noSuchMethod(
@@ -1715,10 +1530,11 @@ class MockCollectionPokemonRepository extends _i1.Mock
               #variant: variant,
               #setId: setId,
             }),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
+
 }
 
 /// A class which mocks [TradeRepository].
@@ -1741,72 +1557,54 @@ class MockTradeRepository extends _i1.Mock implements _i8.TradeRepository {
           as _i21.ITradeDataSource);
 
   @override
-  _i27.Future<List<_i31.UserStats>> getAllUser() =>
+  _i22.Future<List<_i26.UserStats>> getAllUser() =>
       (super.noSuchMethod(
             Invocation.method(#getAllUser, []),
-            returnValue: _i27.Future<List<_i31.UserStats>>.value(
-              <_i31.UserStats>[],
+            returnValue: _i22.Future<List<_i26.UserStats>>.value(
+              <_i26.UserStats>[],
             ),
-            returnValueForMissingStub: _i27.Future<List<_i31.UserStats>>.value(
-              <_i31.UserStats>[],
+            returnValueForMissingStub: _i22.Future<List<_i26.UserStats>>.value(
+              <_i26.UserStats>[],
             ),
           )
-          as _i27.Future<List<_i31.UserStats>>);
+          as _i22.Future<List<_i26.UserStats>>);
 
   @override
-  _i27.Future<List<_i32.Trade>> getSendTrade() =>
+  _i22.Future<List<_i27.Trade>> getSendTrade() =>
       (super.noSuchMethod(
             Invocation.method(#getSendTrade, []),
-            returnValue: _i27.Future<List<_i32.Trade>>.value(<_i32.Trade>[]),
-            returnValueForMissingStub: _i27.Future<List<_i32.Trade>>.value(
-              <_i32.Trade>[],
+            returnValue: _i22.Future<List<_i27.Trade>>.value(<_i27.Trade>[]),
+            returnValueForMissingStub: _i22.Future<List<_i27.Trade>>.value(
+              <_i27.Trade>[],
             ),
           )
-          as _i27.Future<List<_i32.Trade>>);
+          as _i22.Future<List<_i27.Trade>>);
 
   @override
-  _i27.Future<List<_i32.Trade>> getReceivedTrade() =>
+  _i22.Future<List<_i27.Trade>> getReceivedTrade() =>
       (super.noSuchMethod(
             Invocation.method(#getReceivedTrade, []),
-            returnValue: _i27.Future<List<_i32.Trade>>.value(<_i32.Trade>[]),
-            returnValueForMissingStub: _i27.Future<List<_i32.Trade>>.value(
-              <_i32.Trade>[],
+            returnValue: _i22.Future<List<_i27.Trade>>.value(<_i27.Trade>[]),
+            returnValueForMissingStub: _i22.Future<List<_i27.Trade>>.value(
+              <_i27.Trade>[],
             ),
           )
-          as _i27.Future<List<_i32.Trade>>);
+          as _i22.Future<List<_i27.Trade>>);
 
   @override
-  _i27.Future<void> askTrade({
-    required _i33.TradeRequestData? myTradeRequestData,
-    required _i33.TradeRequestData? otherTradeRequestData,
+  _i22.Future<void> askTrade({
+    required _i28.TradeRequestData? myTradeRequestData,
+    required _i28.TradeRequestData? otherTradeRequestData,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#askTrade, [], {
               #myTradeRequestData: myTradeRequestData,
               #otherTradeRequestData: otherTradeRequestData,
             }),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
-
-  @override
-  _i27.Future<void> acceptTrade({required String? tradeId}) =>
-      (super.noSuchMethod(
-            Invocation.method(#acceptTrade, [], {#tradeId: tradeId}),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
-          )
-          as _i27.Future<void>);
-
-  @override
-  _i27.Future<void> refuseTrade({required String? tradeId}) =>
-      (super.noSuchMethod(
-            Invocation.method(#refuseTrade, [], {#tradeId: tradeId}),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
-          )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [ProfileRepository].
@@ -1829,17 +1627,17 @@ class MockProfileRepository extends _i1.Mock implements _i10.ProfileRepository {
           as _i22.IProfileDataSource);
 
   @override
-  _i27.Future<_i16.UserProfile?> getProfile({required String? id}) =>
+  _i22.Future<_i14.UserProfile?> getProfile({required String? id}) =>
       (super.noSuchMethod(
             Invocation.method(#getProfile, [], {#id: id}),
-            returnValue: _i27.Future<_i16.UserProfile?>.value(),
-            returnValueForMissingStub: _i27.Future<_i16.UserProfile?>.value(),
+            returnValue: _i22.Future<_i14.UserProfile?>.value(),
+            returnValueForMissingStub: _i22.Future<_i14.UserProfile?>.value(),
           )
-          as _i27.Future<_i16.UserProfile?>);
+          as _i22.Future<_i14.UserProfile?>);
 
   @override
-  _i27.Future<void> updateProfile({
-    required _i16.UserProfile? user,
+  _i22.Future<void> updateProfile({
+    required _i14.UserProfile? user,
     required String? password,
     required _i16.UserProfile? currentUser,
   }) =>
@@ -1849,13 +1647,13 @@ class MockProfileRepository extends _i1.Mock implements _i10.ProfileRepository {
               #password: password,
               #currentUser: currentUser,
             }),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  _i27.Future<void> changePassword({
+  _i22.Future<void> changePassword({
     required String? currentPassword,
     required String? newPassword,
     required String? email,
@@ -1866,72 +1664,10 @@ class MockProfileRepository extends _i1.Mock implements _i10.ProfileRepository {
               #newPassword: newPassword,
               #email: email,
             }),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
-}
-
-/// A class which mocks [DiscussionRepository].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockDiscussionRepository extends _i1.Mock
-    implements _i13.DiscussionRepository {
-  @override
-  _i23.IDiscussionDataSource get discussionDataSource =>
-      (super.noSuchMethod(
-            Invocation.getter(#discussionDataSource),
-            returnValue: _FakeIDiscussionDataSource_21(
-              this,
-              Invocation.getter(#discussionDataSource),
-            ),
-            returnValueForMissingStub: _FakeIDiscussionDataSource_21(
-              this,
-              Invocation.getter(#discussionDataSource),
-            ),
-          )
-          as _i23.IDiscussionDataSource);
-
-  @override
-  _i27.Future<_i24.Discussion> getDiscussionByTradeId(String? tradeId) =>
-      (super.noSuchMethod(
-            Invocation.method(#getDiscussionByTradeId, [tradeId]),
-            returnValue: _i27.Future<_i24.Discussion>.value(
-              _FakeDiscussion_22(
-                this,
-                Invocation.method(#getDiscussionByTradeId, [tradeId]),
-              ),
-            ),
-            returnValueForMissingStub: _i27.Future<_i24.Discussion>.value(
-              _FakeDiscussion_22(
-                this,
-                Invocation.method(#getDiscussionByTradeId, [tradeId]),
-              ),
-            ),
-          )
-          as _i27.Future<_i24.Discussion>);
-
-  @override
-  _i27.Future<_i25.Message> sendMessage(_i25.Message? message) =>
-      (super.noSuchMethod(
-            Invocation.method(#sendMessage, [message]),
-            returnValue: _i27.Future<_i25.Message>.value(
-              _FakeMessage_23(this, Invocation.method(#sendMessage, [message])),
-            ),
-            returnValueForMissingStub: _i27.Future<_i25.Message>.value(
-              _FakeMessage_23(this, Invocation.method(#sendMessage, [message])),
-            ),
-          )
-          as _i27.Future<_i25.Message>);
-
-  @override
-  _i27.Stream<_i25.Message> subscribeToMessages(String? discussionId) =>
-      (super.noSuchMethod(
-            Invocation.method(#subscribeToMessages, [discussionId]),
-            returnValue: _i27.Stream<_i25.Message>.empty(),
-            returnValueForMissingStub: _i27.Stream<_i25.Message>.empty(),
-          )
-          as _i27.Stream<_i25.Message>);
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [IAuthenticationDataSource].
@@ -1940,67 +1676,67 @@ class MockDiscussionRepository extends _i1.Mock
 class MockIAuthenticationDataSource extends _i1.Mock
     implements _i15.IAuthenticationDataSource {
   @override
-  _i27.Future<_i16.UserProfile> signInWithEmail(
+  _i22.Future<_i14.UserProfile> signInWithEmail(
     String? email,
     String? password,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithEmail, [email, password]),
-            returnValue: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValue: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#signInWithEmail, [email, password]),
               ),
             ),
-            returnValueForMissingStub: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValueForMissingStub: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#signInWithEmail, [email, password]),
               ),
             ),
           )
-          as _i27.Future<_i16.UserProfile>);
+          as _i22.Future<_i14.UserProfile>);
 
   @override
-  _i27.Future<_i16.UserProfile> signUpWithEmail(
+  _i22.Future<_i14.UserProfile> signUpWithEmail(
     String? email,
     String? password,
     String? pseudo,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signUpWithEmail, [email, password, pseudo]),
-            returnValue: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValue: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#signUpWithEmail, [email, password, pseudo]),
               ),
             ),
-            returnValueForMissingStub: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValueForMissingStub: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#signUpWithEmail, [email, password, pseudo]),
               ),
             ),
           )
-          as _i27.Future<_i16.UserProfile>);
+          as _i22.Future<_i14.UserProfile>);
 
   @override
-  _i27.Future<_i16.UserProfile?> getUserProfile() =>
+  _i22.Future<_i14.UserProfile?> getUserProfile() =>
       (super.noSuchMethod(
             Invocation.method(#getUserProfile, []),
-            returnValue: _i27.Future<_i16.UserProfile?>.value(),
-            returnValueForMissingStub: _i27.Future<_i16.UserProfile?>.value(),
+            returnValue: _i22.Future<_i14.UserProfile?>.value(),
+            returnValueForMissingStub: _i22.Future<_i14.UserProfile?>.value(),
           )
-          as _i27.Future<_i16.UserProfile?>);
+          as _i22.Future<_i14.UserProfile?>);
 
   @override
-  _i27.Future<void> signOut() =>
+  _i22.Future<void> signOut() =>
       (super.noSuchMethod(
             Invocation.method(#signOut, []),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [ICollectionPokemonDataSource].
@@ -2009,72 +1745,72 @@ class MockIAuthenticationDataSource extends _i1.Mock
 class MockICollectionPokemonDataSource extends _i1.Mock
     implements _i17.ICollectionPokemonDataSource {
   @override
-  _i27.Future<List<_i29.PokemonSerieBrief>> getSeriesBriefs() =>
+  _i22.Future<List<_i24.PokemonSerieBrief>> getSeriesBriefs() =>
       (super.noSuchMethod(
             Invocation.method(#getSeriesBriefs, []),
-            returnValue: _i27.Future<List<_i29.PokemonSerieBrief>>.value(
-              <_i29.PokemonSerieBrief>[],
+            returnValue: _i22.Future<List<_i24.PokemonSerieBrief>>.value(
+              <_i24.PokemonSerieBrief>[],
             ),
             returnValueForMissingStub:
-                _i27.Future<List<_i29.PokemonSerieBrief>>.value(
-                  <_i29.PokemonSerieBrief>[],
+                _i22.Future<List<_i24.PokemonSerieBrief>>.value(
+                  <_i24.PokemonSerieBrief>[],
                 ),
           )
-          as _i27.Future<List<_i29.PokemonSerieBrief>>);
+          as _i22.Future<List<_i24.PokemonSerieBrief>>);
 
   @override
-  _i27.Future<_i26.PokemonSerie> getSerie(String? serieId) =>
+  _i22.Future<_i21.PokemonSerie> getSerie(String? serieId) =>
       (super.noSuchMethod(
             Invocation.method(#getSerie, [serieId]),
-            returnValue: _i27.Future<_i26.PokemonSerie>.value(
-              _FakePokemonSerie_24(
+            returnValue: _i22.Future<_i21.PokemonSerie>.value(
+              _FakePokemonSerie_19(
                 this,
                 Invocation.method(#getSerie, [serieId]),
               ),
             ),
-            returnValueForMissingStub: _i27.Future<_i26.PokemonSerie>.value(
-              _FakePokemonSerie_24(
+            returnValueForMissingStub: _i22.Future<_i21.PokemonSerie>.value(
+              _FakePokemonSerie_19(
                 this,
                 Invocation.method(#getSerie, [serieId]),
               ),
             ),
           )
-          as _i27.Future<_i26.PokemonSerie>);
+          as _i22.Future<_i21.PokemonSerie>);
 
   @override
-  _i27.Future<_i18.PokemonSet> getSet(String? setId) =>
+  _i22.Future<_i16.PokemonSet> getSet(String? setId) =>
       (super.noSuchMethod(
             Invocation.method(#getSet, [setId]),
-            returnValue: _i27.Future<_i18.PokemonSet>.value(
-              _FakePokemonSet_16(this, Invocation.method(#getSet, [setId])),
+            returnValue: _i22.Future<_i16.PokemonSet>.value(
+              _FakePokemonSet_14(this, Invocation.method(#getSet, [setId])),
             ),
-            returnValueForMissingStub: _i27.Future<_i18.PokemonSet>.value(
-              _FakePokemonSet_16(this, Invocation.method(#getSet, [setId])),
+            returnValueForMissingStub: _i22.Future<_i16.PokemonSet>.value(
+              _FakePokemonSet_14(this, Invocation.method(#getSet, [setId])),
             ),
           )
-          as _i27.Future<_i18.PokemonSet>);
+          as _i22.Future<_i16.PokemonSet>);
 
   @override
-  _i27.Future<_i19.BasePokemonCard> getCard({required String? id}) =>
+  _i22.Future<_i17.BasePokemonCard> getCard({required String? id}) =>
       (super.noSuchMethod(
             Invocation.method(#getCard, [], {#id: id}),
-            returnValue: _i27.Future<_i19.BasePokemonCard>.value(
-              _FakeBasePokemonCard_17(
+            returnValue: _i22.Future<_i17.BasePokemonCard>.value(
+              _FakeBasePokemonCard_15(
                 this,
                 Invocation.method(#getCard, [], {#id: id}),
               ),
             ),
-            returnValueForMissingStub: _i27.Future<_i19.BasePokemonCard>.value(
-              _FakeBasePokemonCard_17(
+            returnValueForMissingStub: _i22.Future<_i17.BasePokemonCard>.value(
+              _FakeBasePokemonCard_15(
                 this,
                 Invocation.method(#getCard, [], {#id: id}),
               ),
             ),
           )
-          as _i27.Future<_i19.BasePokemonCard>);
+          as _i22.Future<_i17.BasePokemonCard>);
 
   @override
-  _i27.Future<List<_i20.UserCardCollection>> getUserCollection({
+  _i22.Future<List<_i18.UserCardCollection>> getUserCollection({
     required String? userId,
     String? cardId,
     String? setId,
@@ -2085,21 +1821,21 @@ class MockICollectionPokemonDataSource extends _i1.Mock
               #cardId: cardId,
               #setId: setId,
             }),
-            returnValue: _i27.Future<List<_i20.UserCardCollection>>.value(
-              <_i20.UserCardCollection>[],
+            returnValue: _i22.Future<List<_i18.UserCardCollection>>.value(
+              <_i18.UserCardCollection>[],
             ),
             returnValueForMissingStub:
-                _i27.Future<List<_i20.UserCardCollection>>.value(
-                  <_i20.UserCardCollection>[],
+                _i22.Future<List<_i18.UserCardCollection>>.value(
+                  <_i18.UserCardCollection>[],
                 ),
           )
-          as _i27.Future<List<_i20.UserCardCollection>>);
+          as _i22.Future<List<_i18.UserCardCollection>>);
 
   @override
-  _i27.Future<_i20.UserCardCollection> addCardToUserCollection({
+  _i22.Future<_i18.UserCardCollection> addCardToUserCollection({
     required String? id,
     required int? quantity,
-    required _i30.VariantValue? variant,
+    required _i25.VariantValue? variant,
     required String? setId,
   }) =>
       (super.noSuchMethod(
@@ -2109,8 +1845,8 @@ class MockICollectionPokemonDataSource extends _i1.Mock
               #variant: variant,
               #setId: setId,
             }),
-            returnValue: _i27.Future<_i20.UserCardCollection>.value(
-              _FakeUserCardCollection_18(
+            returnValue: _i22.Future<_i18.UserCardCollection>.value(
+              _FakeUserCardCollection_16(
                 this,
                 Invocation.method(#addCardToUserCollection, [], {
                   #id: id,
@@ -2121,8 +1857,8 @@ class MockICollectionPokemonDataSource extends _i1.Mock
               ),
             ),
             returnValueForMissingStub:
-                _i27.Future<_i20.UserCardCollection>.value(
-                  _FakeUserCardCollection_18(
+                _i22.Future<_i18.UserCardCollection>.value(
+                  _FakeUserCardCollection_16(
                     this,
                     Invocation.method(#addCardToUserCollection, [], {
                       #id: id,
@@ -2133,13 +1869,13 @@ class MockICollectionPokemonDataSource extends _i1.Mock
                   ),
                 ),
           )
-          as _i27.Future<_i20.UserCardCollection>);
+          as _i22.Future<_i18.UserCardCollection>);
 
   @override
-  _i27.Future<void> deleteCardFromUserCollection({
+  _i22.Future<void> deleteCardFromUserCollection({
     required String? id,
     required int? quantity,
-    required _i30.VariantValue? variant,
+    required _i25.VariantValue? variant,
     required String? setId,
   }) =>
       (super.noSuchMethod(
@@ -2149,10 +1885,10 @@ class MockICollectionPokemonDataSource extends _i1.Mock
               #variant: variant,
               #setId: setId,
             }),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [ITradeDataSource].
@@ -2160,72 +1896,54 @@ class MockICollectionPokemonDataSource extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockITradeDataSource extends _i1.Mock implements _i21.ITradeDataSource {
   @override
-  _i27.Future<List<_i31.UserStats>> getAllUser() =>
+  _i22.Future<List<_i26.UserStats>> getAllUser() =>
       (super.noSuchMethod(
             Invocation.method(#getAllUser, []),
-            returnValue: _i27.Future<List<_i31.UserStats>>.value(
-              <_i31.UserStats>[],
+            returnValue: _i22.Future<List<_i26.UserStats>>.value(
+              <_i26.UserStats>[],
             ),
-            returnValueForMissingStub: _i27.Future<List<_i31.UserStats>>.value(
-              <_i31.UserStats>[],
+            returnValueForMissingStub: _i22.Future<List<_i26.UserStats>>.value(
+              <_i26.UserStats>[],
             ),
           )
-          as _i27.Future<List<_i31.UserStats>>);
+          as _i22.Future<List<_i26.UserStats>>);
 
   @override
-  _i27.Future<List<_i32.Trade>> getSendTrade() =>
+  _i22.Future<List<_i27.Trade>> getSendTrade() =>
       (super.noSuchMethod(
             Invocation.method(#getSendTrade, []),
-            returnValue: _i27.Future<List<_i32.Trade>>.value(<_i32.Trade>[]),
-            returnValueForMissingStub: _i27.Future<List<_i32.Trade>>.value(
-              <_i32.Trade>[],
+            returnValue: _i22.Future<List<_i27.Trade>>.value(<_i27.Trade>[]),
+            returnValueForMissingStub: _i22.Future<List<_i27.Trade>>.value(
+              <_i27.Trade>[],
             ),
           )
-          as _i27.Future<List<_i32.Trade>>);
+          as _i22.Future<List<_i27.Trade>>);
 
   @override
-  _i27.Future<List<_i32.Trade>> getReceivedTrade() =>
+  _i22.Future<List<_i27.Trade>> getReceivedTrade() =>
       (super.noSuchMethod(
             Invocation.method(#getReceivedTrade, []),
-            returnValue: _i27.Future<List<_i32.Trade>>.value(<_i32.Trade>[]),
-            returnValueForMissingStub: _i27.Future<List<_i32.Trade>>.value(
-              <_i32.Trade>[],
+            returnValue: _i22.Future<List<_i27.Trade>>.value(<_i27.Trade>[]),
+            returnValueForMissingStub: _i22.Future<List<_i27.Trade>>.value(
+              <_i27.Trade>[],
             ),
           )
-          as _i27.Future<List<_i32.Trade>>);
+          as _i22.Future<List<_i27.Trade>>);
 
   @override
-  _i27.Future<void> askTrade({
-    required _i33.TradeRequestData? myTradeRequestData,
-    required _i33.TradeRequestData? otherTradeRequestData,
+  _i22.Future<void> askTrade({
+    required _i28.TradeRequestData? myTradeRequestData,
+    required _i28.TradeRequestData? otherTradeRequestData,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#askTrade, [], {
               #myTradeRequestData: myTradeRequestData,
               #otherTradeRequestData: otherTradeRequestData,
             }),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
-
-  @override
-  _i27.Future<void> acceptTrade({required String? tradeId}) =>
-      (super.noSuchMethod(
-            Invocation.method(#acceptTrade, [], {#tradeId: tradeId}),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
-          )
-          as _i27.Future<void>);
-
-  @override
-  _i27.Future<void> refuseTrade({required String? tradeId}) =>
-      (super.noSuchMethod(
-            Invocation.method(#refuseTrade, [], {#tradeId: tradeId}),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
-          )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 }
 
 /// A class which mocks [IProfileDataSource].
@@ -2234,28 +1952,28 @@ class MockITradeDataSource extends _i1.Mock implements _i21.ITradeDataSource {
 class MockIProfileDataSource extends _i1.Mock
     implements _i22.IProfileDataSource {
   @override
-  _i27.Future<_i16.UserProfile> getProfile({required String? id}) =>
+  _i22.Future<_i14.UserProfile> getProfile({required String? id}) =>
       (super.noSuchMethod(
             Invocation.method(#getProfile, [], {#id: id}),
-            returnValue: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValue: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#getProfile, [], {#id: id}),
               ),
             ),
-            returnValueForMissingStub: _i27.Future<_i16.UserProfile>.value(
-              _FakeUserProfile_14(
+            returnValueForMissingStub: _i22.Future<_i14.UserProfile>.value(
+              _FakeUserProfile_12(
                 this,
                 Invocation.method(#getProfile, [], {#id: id}),
               ),
             ),
           )
-          as _i27.Future<_i16.UserProfile>);
+          as _i22.Future<_i14.UserProfile>);
 
   @override
-  _i27.Future<void> updateProfile({
-    required _i16.UserProfile? user,
-    required _i16.UserProfile? currentUser,
+  _i22.Future<void> updateProfile({
+    required _i14.UserProfile? user,
+    required _i14.UserProfile? currentUser,
     required String? password,
   }) =>
       (super.noSuchMethod(
@@ -2264,13 +1982,13 @@ class MockIProfileDataSource extends _i1.Mock
               #currentUser: currentUser,
               #password: password,
             }),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
+          as _i22.Future<void>);
 
   @override
-  _i27.Future<void> changePassword({
+  _i22.Future<void> changePassword({
     required String? currentPassword,
     required String? newPassword,
     required String? email,
@@ -2281,55 +1999,8 @@ class MockIProfileDataSource extends _i1.Mock
               #newPassword: newPassword,
               #email: email,
             }),
-            returnValue: _i27.Future<void>.value(),
-            returnValueForMissingStub: _i27.Future<void>.value(),
+            returnValue: _i22.Future<void>.value(),
+            returnValueForMissingStub: _i22.Future<void>.value(),
           )
-          as _i27.Future<void>);
-}
-
-/// A class which mocks [IDiscussionDataSource].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockIDiscussionDataSource extends _i1.Mock
-    implements _i23.IDiscussionDataSource {
-  @override
-  _i27.Future<_i24.Discussion> getDiscussionByTradeId(String? tradeId) =>
-      (super.noSuchMethod(
-            Invocation.method(#getDiscussionByTradeId, [tradeId]),
-            returnValue: _i27.Future<_i24.Discussion>.value(
-              _FakeDiscussion_22(
-                this,
-                Invocation.method(#getDiscussionByTradeId, [tradeId]),
-              ),
-            ),
-            returnValueForMissingStub: _i27.Future<_i24.Discussion>.value(
-              _FakeDiscussion_22(
-                this,
-                Invocation.method(#getDiscussionByTradeId, [tradeId]),
-              ),
-            ),
-          )
-          as _i27.Future<_i24.Discussion>);
-
-  @override
-  _i27.Future<_i25.Message> sendMessage(_i25.Message? message) =>
-      (super.noSuchMethod(
-            Invocation.method(#sendMessage, [message]),
-            returnValue: _i27.Future<_i25.Message>.value(
-              _FakeMessage_23(this, Invocation.method(#sendMessage, [message])),
-            ),
-            returnValueForMissingStub: _i27.Future<_i25.Message>.value(
-              _FakeMessage_23(this, Invocation.method(#sendMessage, [message])),
-            ),
-          )
-          as _i27.Future<_i25.Message>);
-
-  @override
-  _i27.Stream<_i25.Message> subscribeToMessages(String? discussionId) =>
-      (super.noSuchMethod(
-            Invocation.method(#subscribeToMessages, [discussionId]),
-            returnValue: _i27.Stream<_i25.Message>.empty(),
-            returnValueForMissingStub: _i27.Stream<_i25.Message>.empty(),
-          )
-          as _i27.Stream<_i25.Message>);
+          as _i22.Future<void>);
 }
