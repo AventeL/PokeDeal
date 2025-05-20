@@ -91,16 +91,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     8.height,
                     Text(
-                      state.userProfile.pseudo,
+                      state.userProfile.user.pseudo,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     8.height,
                     Text(
-                      "Membre depuis le ${DateFormat('dd/MM/yyyy').format(state.userProfile.createdAt)}",
+                      "Membre depuis le ${DateFormat('dd/MM/yyyy').format(state.userProfile.user.createdAt)}",
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     24.height,
-                    if (state.userProfile.id !=
+                    if (state.userProfile.user.id !=
                         getIt<AuthenticationRepository>().userProfile!.id)
                       _buildAskTradeButton(),
                     8.height,
@@ -108,15 +108,24 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildStatWidget(label: "Cartes", number: "238"),
-                        _buildStatWidget(label: "Echanges", number: "12"),
-                        _buildStatWidget(label: "Séries", number: "3"),
+                        _buildStatWidget(
+                          label: "Cartes",
+                          number: state.userProfile.nbcards.toString(),
+                        ),
+                        _buildStatWidget(
+                          label: "Echanges",
+                          number: state.userProfile.nbexchange.toString(),
+                        ),
+                        _buildStatWidget(
+                          label: "Séries",
+                          number: state.userProfile.nbseries.toString(),
+                        ),
                       ],
                     ),
                     24.height,
-                    _buildCollectionPart(state.userProfile),
+                    _buildCollectionPart(state.userProfile.user),
                     32.height,
-                    if (state.userProfile.id ==
+                    if (state.userProfile.user.id ==
                         getIt<AuthenticationRepository>().userProfile!.id)
                       CustomLargeButton(
                         onPressed: () => {context.push("/modify_profile")},

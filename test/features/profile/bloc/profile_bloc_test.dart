@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/authentication/domain/models/user_profile.dart';
+import 'package:pokedeal/features/profile/domain/model/user_profile_with_stats.dart';
 import 'package:pokedeal/features/profile/domain/repository/profile_repository.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 
@@ -27,16 +28,23 @@ void main() {
     pseudo: 'name',
   );
 
+  final mockUserProfileWithStats = UserProfileWithStats(
+    user: mockUserProfile,
+    nbcards: 10,
+    nbexchange: 1,
+    nbseries: 2,
+  );
+
   group('onProfileLoadEvent', () {
     void mockGetProfile() {
       when(
-        profileRepository.getProfile(id: 'id'),
-      ).thenAnswer((_) async => mockUserProfile);
+        profileRepository.getProfileWithStats(id: 'id'),
+      ).thenAnswer((_) async => mockUserProfileWithStats);
     }
 
     void mockGetProfileFail() {
       when(
-        profileRepository.getProfile(id: 'id'),
+        profileRepository.getProfileWithStats(id: 'id'),
       ).thenThrow(Exception('Failed to get profile'));
     }
 
@@ -48,9 +56,12 @@ void main() {
       },
       act: (bloc) => bloc.add(ProfileLoadEvent(userId: 'id')),
       expect:
-          () => [ProfileLoading(), ProfileLoaded(userProfile: mockUserProfile)],
+          () => [
+            ProfileLoading(),
+            ProfileLoaded(userProfile: mockUserProfileWithStats),
+          ],
       verify: (_) {
-        verify(profileRepository.getProfile(id: 'id')).called(1);
+        verify(profileRepository.getProfileWithStats(id: 'id')).called(1);
       },
     );
 
@@ -71,7 +82,7 @@ void main() {
             ),
           ],
       verify: (_) {
-        verify(profileRepository.getProfile(id: 'id')).called(1);
+        verify(profileRepository.getProfileWithStats(id: 'id')).called(1);
       },
     );
   });
