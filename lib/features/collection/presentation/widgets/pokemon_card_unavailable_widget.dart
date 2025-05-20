@@ -33,8 +33,8 @@ class PokemonCardUnavailableWidget extends StatelessWidget {
             onTap: onTap,
             onLongPress: onLongPress,
             child: Container(
-              height: 224,
-              width: 150,
+              height: MediaQuery.of(context).size.height * 0.4,
+              width: MediaQuery.of(context).size.width * 0.3,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
                 borderRadius: borderRadius,
@@ -45,18 +45,27 @@ class PokemonCardUnavailableWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      card.name,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleMedium,
+                    FittedBox(
+                      child: Text(
+                        card.name,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                    Text('Image non disponible', textAlign: TextAlign.center),
+                    FittedBox(
+                      child: Text(
+                        'Image non disponible',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Text(
-                        "${card.localId}/$totalCard",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.labelSmall,
+                      child: FittedBox(
+                        child: Text(
+                          "${card.localId}/$totalCard",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
                       ),
                     ),
                   ],
