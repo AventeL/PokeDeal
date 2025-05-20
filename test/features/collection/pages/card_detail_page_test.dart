@@ -118,7 +118,6 @@ void main() {
         ),
       );
 
-      // Simulation du mock du bloc
       when(mockBloc.stream).thenAnswer(
         (_) => Stream.fromIterable([
           CollectionPokemonCardLoading(),
