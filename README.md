@@ -7,6 +7,40 @@
 
 ## 🛠️ Installation
 
+### Installation en local
+
+- Installer [Android Studio](https://developer.android.com/studio) sur votre machine (optionnel mais
+  recommandé)
+- Installer flutter 3.29.2
+- Créer un projet supabase
+- cloner le projet et installer les dépendances
+
+```bash
+git clone https://github.com/AventeL/PokeDeal
+cd PokeDeal
+flutter pub get
+```
+
+- Créer un fichier lib/config/config.dart et y ajouter les informations de votre projet sous la
+  forme
+  suivante :
+
+```dart
+
+const supabaseUrl = 'supabaseUrl';
+const supabaseKey = 'supabaseKey';
+```
+
+- Importer la base de données dans votre projet supabase avec le fichier disponible dans le dossier
+  `supabase/migrations/20250520184527_remote_schema.sql` du projet en copiant le code dans le
+  SqlEditor de supabase
+- Ouvrez le projet dans Android Studio et exécutez-le sur un émulateur ou un appareil physique ou
+  avec la commande suivante :
+
+```bash
+flutter run
+```
+
 ### Installation via APK
 
 - Télécharger l'APK depuis le lien suivant : 🔗https://github.com/AventeL/PokeDeal/releases/tag/v1
