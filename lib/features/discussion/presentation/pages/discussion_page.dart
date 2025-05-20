@@ -318,7 +318,11 @@ class _DiscussionPageState extends State<DiscussionPage> {
                           child: SizedBox(
                             width: double.infinity,
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                context.read<TradeBloc>().add(
+                                  TradeEventRefuseTrade(tradeId: trade.id),
+                                );
+                              },
                               child: Text("Refuser"),
                             ),
                           ),
