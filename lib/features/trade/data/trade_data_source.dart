@@ -27,16 +27,19 @@ class TradeDataSource implements ITradeDataSource {
 
       final cardCountResponse = await supabaseClient
           .from('user_cards')
-          .select('id')
+          .select('quantity')
           .eq('user_id', userId);
 
-      final cardCount = cardCountResponse.length;
+      final cardCount = (cardCountResponse as List).fold(
+        0,
+        (sum, item) => sum + (item['quantity'] as int),
+      );
 
       final exchangesResponse = await supabaseClient
           .from('exchanges')
           .select('id')
           .or('sender_id.eq.$userId,receiver_id.eq.$userId')
-          .eq('status', 'success');
+          .eq('status', 'accepted');
 
       final successfulExchanges = exchangesResponse.length;
       usersWithStats.add(
