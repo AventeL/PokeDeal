@@ -137,7 +137,11 @@ void main() {
         return tradeBloc;
       },
       act: (bloc) => bloc.add(TradeEventGetReceivedTrade()),
-      expect: () => [TradeStateReceivedTradesLoaded(trades: mockTradesReceive)],
+      expect:
+          () => [
+            TradeStateLoading(),
+            TradeStateReceivedTradesLoaded(trades: mockTradesReceive),
+          ],
       verify: (_) {
         verify(mockTradeRepository.getReceivedTrade()).called(1);
       },

@@ -52,6 +52,7 @@ class TradeBloc extends Bloc<TradeEvent, TradeState> {
     Emitter<TradeState> emit,
   ) async {
     try {
+      emit(TradeStateLoading());
       final trades = await tradeRepository.getReceivedTrade();
       emit(TradeStateReceivedTradesLoaded(trades: trades));
     } catch (e) {

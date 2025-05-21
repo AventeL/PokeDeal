@@ -46,12 +46,28 @@ class _TradeListWidgetState extends State<TradeListWidget> {
           }
         },
         builder: (context, state) {
+          if (state is TradeStateLoading) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            );
+          }
           if (state is TradeStateReceivedTradesLoaded ||
               state is TradeStateSendTradesLoaded) {
             final trade =
                 state is TradeStateReceivedTradesLoaded
                     ? state.trades
                     : (state as TradeStateSendTradesLoaded).trades;
+
+            if (trade.isEmpty) {
+              return Center(
+                child: Text(
+                  'Aucun échange trouvé',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              );
+            }
 
             return ListView.builder(
               padding: EdgeInsets.zero,

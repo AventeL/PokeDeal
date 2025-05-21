@@ -70,4 +70,50 @@ void main() {
     expect(trade.status, TradeStatus.waiting);
     expect(trade.timestamp, now);
   });
+
+  test('Trade copyWith updates status', () {
+    DateTime now = DateTime.now();
+    UserProfile sender = UserProfile(
+      id: 'senderId',
+      email: 'sender@test.com',
+      pseudo: 'Sender',
+      createdAt: now,
+    );
+    UserProfile receiver = UserProfile(
+      id: 'receiverId',
+      email: 'receiver@test.com',
+      pseudo: 'Receiver',
+      createdAt: now,
+    );
+
+    Trade trade = Trade(
+      id: 'tradeId',
+      senderId: sender,
+      receiveId: receiver,
+      status: TradeStatus.waiting,
+      timestamp: now,
+      senderCardId: 'senderCardId',
+      receiverCardId: 'receiverCardId',
+      senderCardVariant: VariantValue.normal,
+      receiverCardVariant: VariantValue.holo,
+    );
+
+    Trade updatedTrade = trade.copyWith(status: TradeStatus.accepted);
+
+    expect(updatedTrade.id, trade.id);
+    expect(updatedTrade.senderId, trade.senderId);
+    expect(updatedTrade.receiveId, trade.receiveId);
+    expect(updatedTrade.timestamp, trade.timestamp);
+    expect(updatedTrade.senderCardId, trade.senderCardId);
+    expect(updatedTrade.receiverCardId, trade.receiverCardId);
+    expect(updatedTrade.senderCardVariant, trade.senderCardVariant);
+    expect(updatedTrade.receiverCardVariant, trade.receiverCardVariant);
+    expect(updatedTrade.status, TradeStatus.accepted);
+  });
+
+  test('TradeStatus toStringForApi returns correct string', () {
+    expect(TradeStatus.accepted.toStringForApi, 'accepted');
+    expect(TradeStatus.refused.toStringForApi, 'refused');
+    expect(TradeStatus.waiting.toStringForApi, 'waiting');
+  });
 }

@@ -539,4 +539,188 @@ void main() {
       expect(result, containsAll([serie1, serie2]));
     });
   });
+
+  group('getCardsDetailsFromUserCards', () {
+    final mockUserCards = [
+      UserCardCollection(
+        id: '1',
+        userId: 'userId',
+        quantity: 1,
+        cardId: 'card1',
+        setId: 'set1',
+        variant: VariantValue.normal,
+      ),
+      UserCardCollection(
+        id: '2',
+        userId: 'userId',
+        quantity: 1,
+        cardId: 'card2',
+        setId: 'set2',
+        variant: VariantValue.holo,
+      ),
+    ];
+
+    final mockCard1 = BasePokemonCard(
+      localId: '1',
+      category: CardCategory.trainer,
+      illustrator: 'Illustrator 1',
+      id: 'card1',
+      name: 'Card 1',
+      image: 'https://example.com/card1.png',
+      setBrief: PokemonSetBrief(
+        id: 'set1',
+        name: 'Set 1',
+        symbolUrl: 'https://example.com/set1.png',
+        cardCount: CardCount(total: 100, official: 50),
+      ),
+      variants: CardVariant(
+        firstEdition: true,
+        holo: false,
+        reverse: false,
+        promo: false,
+        normal: true,
+      ),
+    );
+
+    final mockCard2 = BasePokemonCard(
+      localId: '2',
+      category: CardCategory.pokemon,
+      illustrator: 'Illustrator 2',
+      id: 'card2',
+      name: 'Card 2',
+      image: 'https://example.com/card2.png',
+      setBrief: PokemonSetBrief(
+        id: 'set2',
+        name: 'Set 2',
+        symbolUrl: 'https://example.com/set2.png',
+        cardCount: CardCount(total: 150, official: 100),
+      ),
+      variants: CardVariant(
+        firstEdition: false,
+        holo: true,
+        reverse: true,
+        promo: false,
+        normal: false,
+      ),
+    );
+
+    test('returns a list of BasePokemonCard when successful', () async {
+      when(dataSource.getCard(id: 'card1')).thenAnswer((_) async => mockCard1);
+      when(dataSource.getCard(id: 'card2')).thenAnswer((_) async => mockCard2);
+
+      final result = await repository.getCardsDetailsFromUserCards(
+        userCards: mockUserCards,
+      );
+
+      expect(result, isA<List<BasePokemonCard>>());
+      expect(result.length, 2);
+      expect(result, containsAll([mockCard1, mockCard2]));
+      verify(dataSource.getCard(id: 'card1')).called(1);
+      verify(dataSource.getCard(id: 'card2')).called(1);
+    });
+
+    test('returns cached cards if already present', () async {
+      repository.cardsMap['card1'] = mockCard1;
+      repository.cardsMap['card2'] = mockCard2;
+
+      final result = await repository.getCardsDetailsFromUserCards(
+        userCards: mockUserCards,
+      );
+
+      expect(result, containsAll([mockCard1, mockCard2]));
+      verifyNever(dataSource.getCard(id: 'card1'));
+      verifyNever(dataSource.getCard(id: 'card2'));
+    });
+  });
+
+  test(
+    'deleteCardFromUserCollection removes or updates card in cache',
+    () async {
+      final mockCard = UserCardCollection(
+        id: '1',
+        userId: 'userId',
+        quantity: 3,
+        cardId: 'cardId',
+        setId: 'setId',
+        variant: VariantValue.holo,
+      );
+
+      repository.userCardsBySetIdMap['setId'] = [mockCard];
+
+      when(
+        dataSource.deleteCardFromUserCollection(
+          id: 'cardId',
+          quantity: 2,
+          variant: VariantValue.holo,
+          setId: 'setId',
+        ),
+      ).thenAnswer((_) async {});
+
+      await repository.deleteCardFromUserCollection(
+        id: 'cardId',
+        quantity: 2,
+        variant: VariantValue.holo,
+        setId: 'setId',
+      );
+
+      verify(
+        dataSource.deleteCardFromUserCollection(
+          id: 'cardId',
+          quantity: 2,
+          variant: VariantValue.holo,
+          setId: 'setId',
+        ),
+      ).called(1);
+
+      final updatedCards = repository.userCardsBySetIdMap['setId'];
+      expect(updatedCards, isNotNull);
+      expect(updatedCards!.length, 1);
+      expect(updatedCards[0].quantity, 1);
+    },
+  );
+
+  test(
+    'deleteCardFromUserCollection removes card completely if quantity is zero',
+    () async {
+      final mockCard = UserCardCollection(
+        id: '1',
+        userId: 'userId',
+        quantity: 1,
+        cardId: 'cardId',
+        setId: 'setId',
+        variant: VariantValue.holo,
+      );
+
+      repository.userCardsBySetIdMap['setId'] = [mockCard];
+
+      when(
+        dataSource.deleteCardFromUserCollection(
+          id: 'cardId',
+          quantity: 1,
+          variant: VariantValue.holo,
+          setId: 'setId',
+        ),
+      ).thenAnswer((_) async {});
+
+      await repository.deleteCardFromUserCollection(
+        id: 'cardId',
+        quantity: 1,
+        variant: VariantValue.holo,
+        setId: 'setId',
+      );
+
+      verify(
+        dataSource.deleteCardFromUserCollection(
+          id: 'cardId',
+          quantity: 1,
+          variant: VariantValue.holo,
+          setId: 'setId',
+        ),
+      ).called(1);
+
+      final updatedCards = repository.userCardsBySetIdMap['setId'];
+      expect(updatedCards, isNotNull);
+      expect(updatedCards!.isEmpty, true);
+    },
+  );
 }

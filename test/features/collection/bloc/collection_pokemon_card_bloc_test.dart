@@ -100,4 +100,106 @@ void main() {
       },
     );
   });
+  group('on CollectionPokemonGetCardsByIdsEvent', () {
+    void mockGetCardsByIds() {
+      when(
+        collectionPokemonRepository.getCardByIds(ids: ['id1', 'id2']),
+      ).thenAnswer(
+        (_) async => {
+          'id1': BasePokemonCard(
+            localId: 'localId1',
+            category: CardCategory.trainer,
+            illustrator: 'Illustrator 1',
+            id: 'id1',
+            name: 'Card 1',
+            image: 'https://example.com/card1.png',
+            setBrief: PokemonSetBrief(
+              id: 'setId1',
+              name: 'Set Name 1',
+              cardCount: CardCount(total: 100, official: 50),
+            ),
+            variants: CardVariant(
+              firstEdition: true,
+              holo: false,
+              reverse: false,
+              promo: false,
+              normal: true,
+            ),
+          ),
+          'id2': BasePokemonCard(
+            localId: 'localId2',
+            category: CardCategory.pokemon,
+            illustrator: 'Illustrator 2',
+            id: 'id2',
+            name: 'Card 2',
+            image: 'https://example.com/card2.png',
+            setBrief: PokemonSetBrief(
+              id: 'setId2',
+              name: 'Set Name 2',
+              cardCount: CardCount(total: 200, official: 150),
+            ),
+            variants: CardVariant(
+              firstEdition: false,
+              holo: true,
+              reverse: true,
+              promo: false,
+              normal: false,
+            ),
+          ),
+        },
+      );
+    }
+
+    void mockGetCardsByIdsFail() {
+      when(
+        collectionPokemonRepository.getCardByIds(ids: ['id1', 'id2']),
+      ).thenThrow(Exception('Failed to get cards'));
+    }
+
+    blocTest<CollectionPokemonCardBloc, CollectionPokemonCardState>(
+      'emits [CollectionPokemonCardLoading, CollectionPokemonCardsByIdsGet] when successful',
+      build: () {
+        mockGetCardsByIds();
+        return collectionPokemonCardBloc;
+      },
+      act: (bloc) {
+        bloc.add(CollectionPokemonGetCardsByIdsEvent(cardIds: ['id1', 'id2']));
+      },
+      expect:
+          () => [
+            CollectionPokemonCardLoading(),
+            isA<CollectionPokemonCardsByIdsGet>(),
+          ],
+      verify: (bloc) {
+        verify(
+          collectionPokemonRepository.getCardByIds(ids: ['id1', 'id2']),
+        ).called(1);
+      },
+    );
+
+    blocTest<CollectionPokemonCardBloc, CollectionPokemonCardState>(
+      'emits [CollectionPokemonCardLoading, CollectionPokemonCardError] when failed',
+      build: () {
+        mockGetCardsByIdsFail();
+        return collectionPokemonCardBloc;
+      },
+      act: (bloc) {
+        bloc.add(CollectionPokemonGetCardsByIdsEvent(cardIds: ['id1', 'id2']));
+      },
+      expect:
+          () => [
+            CollectionPokemonCardLoading(),
+            isA<CollectionPokemonCardError>(),
+          ],
+      verify: (bloc) {
+        verify(
+          collectionPokemonRepository.getCardByIds(ids: ['id1', 'id2']),
+        ).called(1);
+        expect(
+          (bloc.state as CollectionPokemonCardError).message,
+          Exception('Failed to get cards').toString(),
+        );
+      },
+    );
+  });
 }
