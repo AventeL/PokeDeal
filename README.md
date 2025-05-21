@@ -77,6 +77,8 @@ lien vers la vidéo de démonstration :
   ** : [Lien vers le document](https://docs.google.com/document/d/1GtcCkhAS0JCGFDSxLC0hy2SsbQFXTKJssKmw4-xDeAc/edit?usp=sharing)
 - ✅ **Document de recettage
   ** : [Lien vers le document](https://docs.google.com/document/d/1Kpj16n2Skj8a6MPe-FseexXcbTAVsMD5tquDa4-02M4/edit?usp=sharing)
+- 📋 **Cahier des charges
+  ** : [Lien vers le document](https://docs.google.com/document/d/1OYf8rTrTM0Uq_QeeuuNCileZHrqerd4z-LRkjxAIH0s/edit?usp=sharing)
 
 ---
 
