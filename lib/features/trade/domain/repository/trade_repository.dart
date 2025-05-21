@@ -16,12 +16,18 @@ class TradeRepository {
 
   Future<List<Trade>> getSendTrade() async {
     List<Trade> listTradeFromSupabase = await tradeDataSource.getSendTrade();
+    listTradeFromSupabase.sort((a, b) {
+      return b.timestamp.compareTo(a.timestamp);
+    });
     return listTradeFromSupabase;
   }
 
   Future<List<Trade>> getReceivedTrade() async {
     List<Trade> listTradeFromSupabase =
         await tradeDataSource.getReceivedTrade();
+    listTradeFromSupabase.sort((a, b) {
+      return b.timestamp.compareTo(a.timestamp);
+    });
     return listTradeFromSupabase;
   }
 

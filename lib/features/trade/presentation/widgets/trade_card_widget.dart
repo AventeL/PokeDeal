@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pokedeal/features/trade/domain/models/enum/trade_status.dart';
 import 'package:pokedeal/features/trade/domain/models/trade.dart';
 
@@ -51,6 +52,10 @@ class TradeCardRequestWidget extends StatelessWidget {
                       isTradeReceived
                           ? 'Vous propose un échange'
                           : "A reçu votre demande d'échange",
+                    ),
+                    Text(
+                      DateFormat('dd/MM/yyyy à HH:mm').format(trade.timestamp),
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
