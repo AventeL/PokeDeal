@@ -13,7 +13,8 @@
   recommandé)
 - Installer flutter 3.29.2
 - Créer un projet supabase
-- cloner le projet et installer les dépendances
+- Aller dans Authentication > Sign In / Provider > Email et désactiver Confirm Email
+- cloner le projet git et installer les dépendances
 
 ```bash
 git clone https://github.com/AventeL/PokeDeal
@@ -23,7 +24,7 @@ flutter pub get
 
 - Créer un fichier lib/config/config.dart et y ajouter les informations de votre projet sous la
   forme
-  suivante :
+  suivante (cela se trouve: projectSettings -> data API) :
 
 ```dart
 
