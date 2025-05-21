@@ -333,7 +333,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
                             label: "Accepter",
                             onPressed: () {
                               context.read<TradeBloc>().add(
-                                TradeEventAcceptTrade(tradeId: trade.id),
+                                TradeEventAcceptTrade(trade: trade),
                               );
                             },
                           ),

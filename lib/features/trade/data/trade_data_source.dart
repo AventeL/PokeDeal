@@ -131,18 +131,34 @@ class TradeDataSource implements ITradeDataSource {
   }
 
   @override
-  Future<void> acceptTrade({required String tradeId}) async {
-    await supabaseClient
-        .from('exchanges')
-        .update({'status': TradeStatus.accepted.toStringForApi})
-        .eq('id', tradeId);
-  }
-
-  @override
   Future<void> refuseTrade({required String tradeId}) async {
     await supabaseClient
         .from('exchanges')
         .update({'status': TradeStatus.refused.toStringForApi})
         .eq('id', tradeId);
+  }
+
+  @override
+  Future<void> acceptTrade({required Trade trade}) async {
+    final senderCard = {
+      'user_id': trade.senderId.id,
+      'card_id': trade.senderCardId,
+      'variant': trade.senderCardVariant.getFullName,
+    };
+
+    final receiverCard = {
+      'user_id': trade.receiveId.id,
+      'card_id': trade.receiverCardId,
+      'variant': trade.receiverCardVariant.getFullName,
+    };
+
+    await supabaseClient.rpc(
+      'perform_trade',
+      params: {
+        'trade_uuid': trade.id,
+        'sender_card': senderCard,
+        'receiver_card': receiverCard,
+      },
+    );
   }
 }

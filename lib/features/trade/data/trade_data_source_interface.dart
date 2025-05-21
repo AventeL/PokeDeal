@@ -15,7 +15,7 @@ abstract class ITradeDataSource {
     required TradeRequestData otherTradeRequestData,
   });
 
-  Future<void> acceptTrade({required String tradeId});
+  Future<void> acceptTrade({required Trade trade});
 
   Future<void> refuseTrade({required String tradeId});
 }

@@ -19,9 +19,9 @@ final class TradeEventAskTrade extends TradeEvent {
 }
 
 final class TradeEventAcceptTrade extends TradeEvent {
-  final String tradeId;
+  final Trade trade;
 
-  TradeEventAcceptTrade({required this.tradeId});
+  TradeEventAcceptTrade({required this.trade});
 }
 
 final class TradeEventRefuseTrade extends TradeEvent {

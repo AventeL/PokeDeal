@@ -1808,9 +1808,9 @@ class MockTradeRepository extends _i1.Mock implements _i8.TradeRepository {
           as _i28.Future<void>);
 
   @override
-  _i28.Future<void> acceptTrade({required String? tradeId}) =>
+  _i28.Future<void> acceptTrade({required _i33.Trade? trade}) =>
       (super.noSuchMethod(
-            Invocation.method(#acceptTrade, [], {#tradeId: tradeId}),
+            Invocation.method(#acceptTrade, [], {#trade: trade}),
             returnValue: _i28.Future<void>.value(),
             returnValueForMissingStub: _i28.Future<void>.value(),
           )
@@ -2249,9 +2249,9 @@ class MockITradeDataSource extends _i1.Mock implements _i21.ITradeDataSource {
           as _i28.Future<void>);
 
   @override
-  _i28.Future<void> acceptTrade({required String? tradeId}) =>
+  _i28.Future<void> acceptTrade({required _i33.Trade? trade}) =>
       (super.noSuchMethod(
-            Invocation.method(#acceptTrade, [], {#tradeId: tradeId}),
+            Invocation.method(#acceptTrade, [], {#trade: trade}),
             returnValue: _i28.Future<void>.value(),
             returnValueForMissingStub: _i28.Future<void>.value(),
           )
