@@ -369,9 +369,16 @@ class _DiscussionPageState extends State<DiscussionPage> {
                   ),
         ),
         8.height,
-        Text(card.name),
-        Text(variant.getFullName),
-        Text(card.setBrief.name, style: const TextStyle(fontSize: 10)),
+        SizedBox(
+          width: 151 / 2,
+          child: Column(
+            children: [
+              Text(card.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+              Text(variant.getFullName),
+              Text(card.setBrief.name, style: const TextStyle(fontSize: 10)),
+            ],
+          ),
+        ),
       ],
     );
   }
