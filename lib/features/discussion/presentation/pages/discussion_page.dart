@@ -375,7 +375,11 @@ class _DiscussionPageState extends State<DiscussionPage> {
             children: [
               Text(card.name, maxLines: 1, overflow: TextOverflow.ellipsis),
               Text(variant.getFullName),
-              Text(card.setBrief.name, style: const TextStyle(fontSize: 10)),
+              Text(
+                card.setBrief.name,
+                style: const TextStyle(fontSize: 10),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
