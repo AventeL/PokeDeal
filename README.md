@@ -57,7 +57,7 @@ simplement l’APK dans l’interface de l’émulateur.*
 ## Vidéo de démonstration
 
 lien vers la vidéo de démonstration :  
-[🔗 https://www.youtube.com/watch?v=2g1v0x4X8aE](https://www.youtube.com/watch?v=2g1v0x4X8aE)
+[🔗 https://youtube.com/shorts/RSUdux-iwEg?feature=share](https://www.youtube.com/watch?v=2g1v0x4X8aE)
 
 ## 🎨 Design
 
