@@ -5,19 +5,23 @@ import 'package:mockito/mockito.dart';
 import 'package:pokedeal/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pokedeal/features/profile/presentation/pages/modify_password_page.dart';
 
-class MockProfileBloc extends Mock implements ProfileBloc {}
+import '../../../mocks/generated_mocks.mocks.dart';
 
 void main() {
   late MockProfileBloc mockProfileBloc;
 
   setUp(() {
     mockProfileBloc = MockProfileBloc();
+    when(mockProfileBloc.state).thenReturn(ProfileInitial());
+    when(
+      mockProfileBloc.stream,
+    ).thenAnswer((_) => Stream.value(ProfileInitial()));
   });
 
   Widget createWidgetUnderTest() {
     return MaterialApp(
-      home: BlocProvider<ProfileBloc>.value(
-        value: mockProfileBloc,
+      home: BlocProvider<ProfileBloc>(
+        create: (_) => mockProfileBloc,
         child: const ModifyPasswordPage(),
       ),
     );

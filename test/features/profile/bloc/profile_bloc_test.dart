@@ -98,7 +98,7 @@ void main() {
     }
 
     blocTest<ProfileBloc, ProfileState>(
-      'emits [ProfileLoading, ProfileUpdated] when profile update is successful',
+      'emits [ProfileLoading, ProfileUpdated, ProfileLoading, ProfileLoaded] when profile update is successful',
       build: () {
         mockUpdateProfile();
         return profileBloc;
@@ -119,8 +119,10 @@ void main() {
       },
       expect:
           () => [
-            ProfileLoading(),
-            ProfileUpdated(userProfile: mockUserProfile),
+            isA<ProfileLoading>(),
+            isA<ProfileUpdated>(),
+            isA<ProfileLoading>(),
+            isA<ProfileLoaded>(),
           ],
       verify: (_) {
         verify(

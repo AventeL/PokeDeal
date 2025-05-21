@@ -1412,6 +1412,15 @@ class MockAuthenticationRepository extends _i1.Mock
             returnValueForMissingStub: _i28.Future<void>.value(),
           )
           as _i28.Future<void>);
+
+  @override
+  _i28.Future<void> updateUserProfile(_i16.UserProfile? userProfile) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateUserProfile, [userProfile]),
+            returnValue: _i28.Future<void>.value(),
+            returnValueForMissingStub: _i28.Future<void>.value(),
+          )
+          as _i28.Future<void>);
 }
 
 /// A class which mocks [CollectionPokemonRepository].

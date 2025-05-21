@@ -46,4 +46,8 @@ class AuthenticationRepository {
   Future<void> signOut() async {
     await authenticationDataSource.signOut();
   }
+
+  Future<void> updateUserProfile(UserProfile userProfile) async {
+    this.userProfile = userProfile;
+  }
 }

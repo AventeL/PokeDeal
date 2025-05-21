@@ -33,6 +33,7 @@ class ProfileRepository {
       password: password,
       currentUser: currentUser,
     );
+    getIt<AuthenticationRepository>().updateUserProfile(user);
   }
 
   Future<void> changePassword({

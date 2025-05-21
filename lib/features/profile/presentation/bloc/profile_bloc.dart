@@ -42,6 +42,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         currentUser: event.currentUser,
       );
       emit(ProfileUpdated(userProfile: event.user));
+      add(ProfileLoadEvent(userId: event.user.id));
     } catch (e) {
       emit(ProfileError(message: e.toString()));
     }

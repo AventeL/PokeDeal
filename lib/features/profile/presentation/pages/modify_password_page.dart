@@ -45,80 +45,102 @@ class _ModifyPasswordPageState extends State<ModifyPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Modifier le mot de passe')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Ancien mot de passe',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      TextFormField(
-                        controller: _oldPasswordController,
-                        obscureText: !isOldPasswordVisible,
-                        validator: PasswordValidator.validate,
-                        decoration: InputDecoration(
-                          labelText: 'Ancien mot de passe',
-                          border: const OutlineInputBorder(),
-                          suffixIconColor:
-                              Theme.of(context).colorScheme.primary,
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                isOldPasswordVisible = !isOldPasswordVisible;
-                              });
-                            },
-                            icon: Icon(
-                              isOldPasswordVisible
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
+      body: BlocConsumer<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state is ChangePasswordSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Mot de passe modifié avec succès')),
+            );
+            Navigator.pop(context);
+          }
+        },
+        builder: (context, state) {
+          if (state is ProfileLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Ancien mot de passe',
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                          ),
+                            TextFormField(
+                              controller: _oldPasswordController,
+                              obscureText: !isOldPasswordVisible,
+                              validator: PasswordValidator.validate,
+                              decoration: InputDecoration(
+                                labelText: 'Ancien mot de passe',
+                                border: const OutlineInputBorder(),
+                                suffixIconColor:
+                                    Theme.of(context).colorScheme.primary,
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isOldPasswordVisible =
+                                          !isOldPasswordVisible;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    isOldPasswordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            16.height,
+                            Text(
+                              'Nouveau mot de passe',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            TextFormField(
+                              controller: _newPasswordController,
+                              obscureText: !isNewPasswordVisible,
+                              validator: PasswordValidator.validate,
+                              decoration: InputDecoration(
+                                labelText: 'Nouveau mot de passe',
+                                border: const OutlineInputBorder(),
+                                suffixIconColor:
+                                    Theme.of(context).colorScheme.primary,
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isNewPasswordVisible =
+                                          !isNewPasswordVisible;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    isNewPasswordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      16.height,
-                      Text(
-                        'Nouveau mot de passe',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      TextFormField(
-                        controller: _newPasswordController,
-                        obscureText: !isNewPasswordVisible,
-                        validator: PasswordValidator.validate,
-                        decoration: InputDecoration(
-                          labelText: 'Nouveau mot de passe',
-                          border: const OutlineInputBorder(),
-                          suffixIconColor:
-                              Theme.of(context).colorScheme.primary,
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                isNewPasswordVisible = !isNewPasswordVisible;
-                              });
-                            },
-                            icon: Icon(
-                              isNewPasswordVisible
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    CustomLargeButton(
+                      onPressed: _savePassword,
+                      label: 'Enregistrer',
+                    ),
+                  ],
                 ),
               ),
-              CustomLargeButton(onPressed: _savePassword, label: 'Enregistrer'),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -11,8 +11,6 @@ import 'package:pokedeal/shared/widgets/custom_large_button.dart';
 
 import '../../../mocks/generated_mocks.mocks.dart';
 
-class MockProfileBloc extends Mock implements ProfileBloc {}
-
 void main() {
   late MockProfileBloc mockProfileBloc;
   late MockAuthenticationRepository mockAuthenticationRepository;
