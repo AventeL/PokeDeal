@@ -180,6 +180,120 @@ $$;
 ALTER FUNCTION "public"."increment_or_insert_card"("p_card_id" "text", "p_quantity" integer, "p_variant" "text", "p_set_id" "text") OWNER TO "postgres";
 
 
+CREATE OR REPLACE FUNCTION "public"."perform_trade"("trade_uuid" "uuid", "sender_card" "jsonb", "receiver_card" "jsonb") RETURNS "void"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$
+declare
+  auth_user uuid := auth.uid();
+
+  sender_id uuid := (sender_card->>'user_id')::uuid;
+  receiver_id uuid := (receiver_card->>'user_id')::uuid;
+
+  set_id_from_sender text;
+  set_id_from_receiver text;
+begin
+  -- 1. Vérification que l'utilisateur est connecté
+  if auth_user is null then
+    raise exception 'Non authentifié';
+  end if;
+
+  -- 2. Vérifie que l'utilisateur est bien impliqué dans l’échange
+  if not exists (
+    select 1 from exchanges
+    where exchanges.id = trade_uuid
+      and (exchanges.sender_id = auth_user or exchanges.receiver_id = auth_user)
+  ) then
+    raise exception 'Non autorisé à effectuer cet échange';
+  end if;
+
+  -- 3. Vérifie que chaque joueur possède bien la carte à échanger (quantity >= 1)
+  if not exists (
+    select 1 from user_cards
+    where user_id = sender_id
+      and card_id = sender_card->>'card_id'
+      and variant = sender_card->>'variant'
+      and quantity >= 1
+  ) then
+    raise exception 'Le sender ne possède pas la carte à échanger';
+  end if;
+
+  if not exists (
+    select 1 from user_cards
+    where user_id = receiver_id
+      and card_id = receiver_card->>'card_id'
+      and variant = receiver_card->>'variant'
+      and quantity >= 1
+  ) then
+    raise exception 'Le receiver ne possède pas la carte à échanger';
+  end if;
+
+  -- 4. Récupération des set_id depuis les cartes données
+  select set_id into set_id_from_sender
+  from user_cards
+  where user_id = sender_id
+    and card_id = sender_card->>'card_id'
+    and variant = sender_card->>'variant'
+  limit 1;
+
+  select set_id into set_id_from_receiver
+  from user_cards
+  where user_id = receiver_id
+    and card_id = receiver_card->>'card_id'
+    and variant = receiver_card->>'variant'
+  limit 1;
+
+  -- 5. Marquer l’échange comme accepté
+  update exchanges
+  set status = 'accepted'
+  where exchanges.id = trade_uuid;
+
+  -- 6. Décrémenter la quantité des cartes échangées
+  update user_cards
+  set quantity = quantity - 1
+  where user_id = sender_id
+    and card_id = sender_card->>'card_id'
+    and variant = sender_card->>'variant';
+
+  update user_cards
+  set quantity = quantity - 1
+  where user_id = receiver_id
+    and card_id = receiver_card->>'card_id'
+    and variant = receiver_card->>'variant';
+
+  -- 7. Supprimer les cartes tombées à 0
+  delete from user_cards
+  where quantity <= 0;
+
+  -- 8. Ajouter ou incrémenter la carte reçue par le receiver (du sender)
+  insert into user_cards (user_id, card_id, variant, quantity, set_id)
+  values (
+    receiver_id,
+    sender_card->>'card_id',
+    sender_card->>'variant',
+    1,
+    set_id_from_sender
+  )
+  on conflict (user_id, card_id, variant)
+  do update set quantity = user_cards.quantity + 1;
+
+  -- 9. Ajouter ou incrémenter la carte reçue par le sender (du receiver)
+  insert into user_cards (user_id, card_id, variant, quantity, set_id)
+  values (
+    sender_id,
+    receiver_card->>'card_id',
+    receiver_card->>'variant',
+    1,
+    set_id_from_receiver
+  )
+  on conflict (user_id, card_id, variant)
+  do update set quantity = user_cards.quantity + 1;
+end;
+$$;
+
+
+ALTER FUNCTION "public"."perform_trade"("trade_uuid" "uuid", "sender_card" "jsonb", "receiver_card" "jsonb") OWNER TO "postgres";
+
+
 CREATE TABLE IF NOT EXISTS "public"."user_profiles" (
     "id" "uuid" DEFAULT "auth"."uid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
@@ -346,15 +460,15 @@ ALTER TABLE ONLY "public"."user_cards"
 
 
 
-CREATE POLICY "Allow delete own cards" ON "public"."user_cards" FOR DELETE USING (("user_id" = "auth"."uid"()));
-
-
-
 CREATE POLICY "Allow read access to all user_cards" ON "public"."user_cards" FOR SELECT USING (true);
 
 
 
-CREATE POLICY "Allow read access to all user_profiles" ON "public"."user_profiles" FOR SELECT USING (true);
+CREATE POLICY "Allow user to delete their own cards" ON "public"."user_cards" FOR DELETE USING (("auth"."uid"() = "user_id"));
+
+
+
+CREATE POLICY "Allow user to insert their own cards" ON "public"."user_cards" FOR INSERT WITH CHECK (("auth"."uid"() = "user_id"));
 
 
 
@@ -362,7 +476,7 @@ CREATE POLICY "Allow user to read their own exchanges" ON "public"."exchanges" F
 
 
 
-CREATE POLICY "Allow user to update their own cards" ON "public"."user_cards" FOR UPDATE USING (("auth"."uid"() = "user_id"));
+CREATE POLICY "Allow user to update their own cards" ON "public"."user_cards" FOR UPDATE USING (("auth"."uid"() = "user_id")) WITH CHECK (("auth"."uid"() = "user_id"));
 
 
 
@@ -388,6 +502,10 @@ CREATE POLICY "Enable insert for authenticated users only" ON "public"."exchange
 
 
 
+CREATE POLICY "Enable insert for authenticated users only" ON "public"."user_profiles" FOR INSERT WITH CHECK (true);
+
+
+
 CREATE POLICY "Enable insert for users based on user_id" ON "public"."exchanges" FOR INSERT WITH CHECK (("sender_id" = "auth"."uid"()));
 
 
@@ -397,6 +515,14 @@ CREATE POLICY "Enable read access for all users" ON "public"."exchange_discussio
 
 
 CREATE POLICY "Enable read access for all users" ON "public"."exchange_messages" FOR SELECT USING (true);
+
+
+
+CREATE POLICY "Enable read access for all users" ON "public"."user_profiles" FOR SELECT USING (true);
+
+
+
+CREATE POLICY "allow user to read exchange" ON "public"."exchanges" FOR SELECT TO "authenticated" USING (true);
 
 
 
@@ -410,6 +536,9 @@ ALTER TABLE "public"."exchanges" ENABLE ROW LEVEL SECURITY;
 
 
 ALTER TABLE "public"."user_cards" ENABLE ROW LEVEL SECURITY;
+
+
+ALTER TABLE "public"."user_profiles" ENABLE ROW LEVEL SECURITY;
 
 
 
@@ -630,6 +759,12 @@ GRANT ALL ON FUNCTION "public"."decrement_card"("p_card_id" "text", "p_quantity"
 GRANT ALL ON FUNCTION "public"."increment_or_insert_card"("p_card_id" "text", "p_quantity" integer, "p_variant" "text", "p_set_id" "text") TO "anon";
 GRANT ALL ON FUNCTION "public"."increment_or_insert_card"("p_card_id" "text", "p_quantity" integer, "p_variant" "text", "p_set_id" "text") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."increment_or_insert_card"("p_card_id" "text", "p_quantity" integer, "p_variant" "text", "p_set_id" "text") TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."perform_trade"("trade_uuid" "uuid", "sender_card" "jsonb", "receiver_card" "jsonb") TO "anon";
+GRANT ALL ON FUNCTION "public"."perform_trade"("trade_uuid" "uuid", "sender_card" "jsonb", "receiver_card" "jsonb") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."perform_trade"("trade_uuid" "uuid", "sender_card" "jsonb", "receiver_card" "jsonb") TO "service_role";
 
 
 

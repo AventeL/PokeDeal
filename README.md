@@ -32,7 +32,7 @@ const supabaseKey = 'supabaseKey';
 ```
 
 - Importer la base de données dans votre projet supabase avec le fichier disponible ici
-  `supabase/migrations/20250520184527_remote_schema.sql` du projet en copiant le code dans le
+  `supabase/migrations/20250521143154_remote_schema.sql` du projet en copiant le code dans le
   SqlEditor de supabase
 - Ouvrez le projet dans Android Studio et exécutez-le sur un émulateur ou un appareil physique ou
   avec la commande suivante :
